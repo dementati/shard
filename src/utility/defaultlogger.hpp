@@ -5,14 +5,19 @@
 #include <sstream>
 #include <string>
 
+#include "../core/object.hpp"
 #include "logger.hpp"
 
 class DefaultLogger : public Logger
 {
+    const Object &unit;
+
 public:
-    void log(std::string message);
+    DefaultLogger(const Object &unit);
 
-    void log(time_t timestamp, std::string message);
+    void log(const std::string message) const;
 
-    std::string getTimestampString(time_t timestamp);
+    void log(const time_t timestamp, const std::string &message) const;
+
+    const std::string getTimestampString(const time_t timestamp) const;
 };

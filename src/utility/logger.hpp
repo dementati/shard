@@ -5,5 +5,5 @@
 class Logger
 {
 public:
-    virtual void log(std::string message) = 0;
+    virtual void log(const std::string message) const = 0;
 };

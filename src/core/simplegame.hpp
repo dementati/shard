@@ -7,7 +7,7 @@
 class SimpleGame : public Game 
 {
 public:
-    void update(double dt);
+    void update(const double dt);
 
-    void render();
+    void render() const;
 };
