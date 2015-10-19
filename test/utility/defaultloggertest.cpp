@@ -1,5 +1,7 @@
-#include <string>
+#include <ctime>
+#include <iomanip>
 #include <sstream>
+#include <string>
 
 #include <gtest/gtest.h>
 
@@ -11,9 +13,13 @@ private:
     std::streambuf *stdoutBuffer;
 
 protected:
+    std::time_t timestamp = 1445253011;
+    std::string timestampString;
+    DefaultLogger logger;
     std::stringstream stdoutStream;
 
     DefaultLoggerTest()
+        : timestampString("2015-10-19 13:10:11")
     {
         // Capture stdout
         stdoutBuffer = std::cout.rdbuf();
@@ -29,13 +35,17 @@ protected:
 
 TEST_F(DefaultLoggerTest, Log)
 {
-    DefaultLogger logger;
     std::string message("Test message");
-    std::stringstream ss;
-    ss << message << std::endl;
-    std::string expectedMessage(ss.str());
 
-    logger.log(message);
+    std::stringstream expectedMessageStream;
+    expectedMessageStream << timestampString << ": " << message << std::endl;
 
-    EXPECT_EQ(expectedMessage, stdoutStream.str());
+    logger.log(timestamp, message);
+
+    EXPECT_EQ(expectedMessageStream.str(), stdoutStream.str());
+}
+
+TEST_F(DefaultLoggerTest, GetTimestampString)
+{
+    EXPECT_EQ(timestampString, logger.getTimestampString(timestamp));
 }

@@ -1,5 +1,5 @@
-cmake_minimum_required (VERSION 3.3)
-project (Shard)
+cmake_minimum_required (VERSION 3.3 FATAL_ERROR)
+project (Shard CXX)
 
 # Version number
 set (Shard_VERSION_MAJOR 0)
@@ -38,12 +38,17 @@ set(TEST_SRC
     test/utility/defaultloggertest.cpp
 )
 
-# Add production code
-add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})
+# C++ compile features
+set(CXX_COMPILE_FEATURES cxx_nullptr)
 
-# Add test code
+# Main target
+add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})
+target_compile_features(Shard PRIVATE ${CXX_COMPILE_FEATURES})
+
+# Test target
 add_executable(RunTests ${TEST_SRC} ${PRODUCTION_SRC})
 target_link_libraries(RunTests ${GTEST_BOTH_LIBRARIES})
+target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
 
-# Add coverage target
+# Coverage target
 setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
