@@ -1,6 +1,7 @@
 #include <ctime>
-#include <iomanip>
+#include <fstream>
 #include <sstream>
+#include <streambuf>
 #include <string>
 
 #include <gtest/gtest.h>
@@ -28,7 +29,7 @@ protected:
     const std::stringstream stdoutStream;
 
     DefaultLoggerTest()
-        : logger(unit)
+        : logger(unit, std::cout)
     {
         // Capture stdout
         stdoutBuffer = std::cout.rdbuf();
@@ -124,4 +125,37 @@ TEST_F(DefaultLoggerTest, ManualLogPrint)
     logger.info(DEFAULT_MESSAGE);
     logger.warn(DEFAULT_MESSAGE);
     logger.error(DEFAULT_MESSAGE);
+}
+
+TEST_F(DefaultLoggerTest, LogToString)
+{
+    std::stringstream logStream;
+    std::string expectedEntry(buildExpectedEntry("DEBUG"));
+
+    DefaultLogger stringLogger(unit, logStream);
+
+    stringLogger.log(Severity::DEBUG, DEFAULT_TIMESTAMP, DEFAULT_MESSAGE);
+
+    EXPECT_EQ(expectedEntry, logStream.str());
+}
+
+TEST_F(DefaultLoggerTest, LogToFile)
+{
+    std::string expectedEntry(buildExpectedEntry("DEBUG"));
+
+    std::ofstream outFile;
+    outFile.open("test.log");
+
+    DefaultLogger fileLogger(unit, outFile);
+
+    fileLogger.log(Severity::DEBUG, DEFAULT_TIMESTAMP, DEFAULT_MESSAGE);
+
+    outFile.close();
+
+    std::ifstream inFile;
+    inFile.open("test.log");
+    std::string logFileContents((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
+    inFile.close();
+
+    EXPECT_EQ(expectedEntry, logFileContents);
 }

@@ -2,6 +2,7 @@
 
 #include <ctime>
 #include <iostream>
+#include <ostream>
 #include <sstream>
 #include <string>
 
@@ -20,11 +21,15 @@ class DefaultLogger : public Logger
 {
 private:
     const Object &unit;
+
+    std::ostream &logStream;
     
     void log(const Severity &severity, const std::string &message) const;
 
 public:
     DefaultLogger(const Object &unit);
+
+    DefaultLogger(const Object &unit, std::ostream &logStream);
 
     void debug(const std::string &message) const;
 

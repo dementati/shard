@@ -1,7 +1,12 @@
 #include "defaultlogger.hpp"
 
 DefaultLogger::DefaultLogger(const Object &unit)
-    : unit(unit)
+    : DefaultLogger(unit, std::cout)
+{
+}
+
+DefaultLogger::DefaultLogger(const Object &unit, std::ostream &logStream)
+    : unit(unit), logStream(logStream)
 {
 }
 
@@ -43,7 +48,7 @@ void DefaultLogger::error(const std::string &message) const
 void DefaultLogger::log(const Severity &severity, const time_t timestamp, 
     const std::string &message) const
 {
-    std::cout << getTimestampString(timestamp) << "|" 
+    logStream << getTimestampString(timestamp) << "|" 
               << unit.unitName() << "|"
               << severityToString(severity) << ": "
               << message << std::endl;
