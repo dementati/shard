@@ -13,22 +13,30 @@ void DefaultLogger::log(const Severity &severity, const std::string &message) co
 
 void DefaultLogger::debug(const std::string &message) const 
 {
+    #if defined(LOG_LEVEL_DEBUG)
     log(Severity::DEBUG, message);
+    #endif 
 }
 
 void DefaultLogger::info(const std::string &message) const 
 {
+    #if defined(LOG_LEVEL_DEBUG) || defined(LOG_LEVEL_INFO)
     log(Severity::INFO, message);
+    #endif
 }
 
 void DefaultLogger::warn(const std::string &message) const 
 {
+    #if defined(LOG_LEVEL_DEBUG) || defined(LOG_LEVEL_INFO) || defined(LOG_LEVEL_WARN)
     log(Severity::WARN, message);
+    #endif
 }
 
 void DefaultLogger::error(const std::string &message) const 
 {
+    #if defined(LOG_LEVEL_DEBUG) || defined(LOG_LEVEL_INFO) || defined(LOG_LEVEL_WARN) || defined(LOG_LEVEL_ERROR)
     log(Severity::ERROR, message);
+    #endif
 }
 // LCOV_EXCL_STOP
 

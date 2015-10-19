@@ -25,6 +25,9 @@ set(CMAKE_C_FLAGS_DEBUG ${COVERAGE_FLAGS})
 set(CMAKE_CXX_FLAGS_DEBUG ${COVERAGE_FLAGS})
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG ${COVERAGE_FLAGS})
 
+# Log level
+add_definitions(-DLOG_LEVEL_DEBUG)
+
 # Production code
 set(MAIN_SRC src/core/main.cpp)
 

@@ -11,6 +11,7 @@
 #define DEFAULT_TIMESTAMP 1445253011
 #define DEFAULT_TIMESTAMP_STRING "2015-10-19 13:10:11"
 #define DEFAULT_TEST_UNIT_NAME "TestUnit"
+#define DEFAULT_MESSAGE "Test message"
 
 class TestUnit : public Object
 {
@@ -20,19 +21,14 @@ public:
 
 class DefaultLoggerTest : public ::testing::Test
 {
-private:
-    std::streambuf *stdoutBuffer;
-
 protected:
-    const std::time_t timestamp = DEFAULT_TIMESTAMP;
-    const std::string timestampString;
+    std::streambuf *stdoutBuffer;
     const TestUnit unit;
     const DefaultLogger logger;
     const std::stringstream stdoutStream;
 
     DefaultLoggerTest()
-        : logger(unit), 
-          timestampString(DEFAULT_TIMESTAMP_STRING)
+        : logger(unit)
     {
         // Capture stdout
         stdoutBuffer = std::cout.rdbuf();
@@ -45,19 +41,33 @@ protected:
         std::cout.rdbuf(stdoutBuffer);
     }
 
+    void testLog(const Severity &severity)
+    {
+        logger.log(severity, DEFAULT_TIMESTAMP, DEFAULT_MESSAGE);
+    }
+
     void testLog(const std::string &expectedSeverityString, const Severity &severity)
     {
-        std::string message("Test message");
-        
+        std::string expectedLogEntry = buildExpectedEntry(expectedSeverityString);
+
+        testLog(severity);
+
+        EXPECT_EQ(expectedLogEntry, stdoutStream.str());   
+    }
+
+    static const std::string buildExpectedEntry(const std::string &timestamp, const std::string &unit, const std::string &severity, const std::string &message)
+    {
         std::stringstream expectedMessageStream;
-        expectedMessageStream << timestampString << "|" 
-            << DEFAULT_TEST_UNIT_NAME << "|" 
-            << expectedSeverityString << ": " 
+        expectedMessageStream << timestamp << "|" 
+            << unit << "|" 
+            << severity << ": " 
             << message << std::endl;
+        return expectedMessageStream.str();
+    }
 
-        logger.log(severity, timestamp, message);
-
-        EXPECT_EQ(expectedMessageStream.str(), stdoutStream.str());   
+    static const std::string buildExpectedEntry(const std::string &severity)
+    {
+        return buildExpectedEntry(DEFAULT_TIMESTAMP_STRING, DEFAULT_TEST_UNIT_NAME, severity, DEFAULT_MESSAGE);
     }
 };
 
@@ -83,7 +93,7 @@ TEST_F(DefaultLoggerTest, LogError)
 
 TEST_F(DefaultLoggerTest, GetTimestampString)
 {
-    EXPECT_EQ(timestampString, logger.getTimestampString(timestamp));
+    EXPECT_EQ(DEFAULT_TIMESTAMP_STRING, logger.getTimestampString(DEFAULT_TIMESTAMP));
 }
 
 TEST_F(DefaultLoggerTest, DebugSeverityToString)
@@ -106,3 +116,12 @@ TEST_F(DefaultLoggerTest, ErrorSeverityToString)
     EXPECT_EQ(std::string("ERROR"), DefaultLogger::severityToString(Severity::ERROR));
 }
 
+TEST_F(DefaultLoggerTest, ManualLogPrint)
+{
+    std::cout.rdbuf(stdoutBuffer);
+
+    logger.debug(DEFAULT_MESSAGE);
+    logger.info(DEFAULT_MESSAGE);
+    logger.warn(DEFAULT_MESSAGE);
+    logger.error(DEFAULT_MESSAGE);
+}
