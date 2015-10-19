@@ -25,13 +25,25 @@ set(CMAKE_C_FLAGS_DEBUG ${COVERAGE_FLAGS})
 set(CMAKE_CXX_FLAGS_DEBUG ${COVERAGE_FLAGS})
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG ${COVERAGE_FLAGS})
 
+# Production code
+set(MAIN_SRC src/core/main.cpp)
+
+set(PRODUCTION_SRC 
+    src/core/simplegame.cpp
+    src/utility/defaultlogger.cpp
+)
+
+# Test code
+set(TEST_SRC
+    test/utility/defaultloggertest.cpp
+)
+
 # Add production code
-add_executable(Shard src/core/main.cpp src/core/simplegame.cpp)
+add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})
 
 # Add test code
-add_executable(ExampleTest test/exampletest.cpp)
-target_link_libraries(ExampleTest ${GTEST_BOTH_LIBRARIES})
-add_test(ExampleTest ExampleTest)
+add_executable(RunTests ${TEST_SRC} ${PRODUCTION_SRC})
+target_link_libraries(RunTests ${GTEST_BOTH_LIBRARIES})
 
 # Add coverage target
-setup_target_for_coverage(coverage ExampleTest coverage '${CMAKE_CURRENT_SOURCE_DIR}/*')
+setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
