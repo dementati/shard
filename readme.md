@@ -17,26 +17,27 @@ Go to https://cmake.org/download/#latest and download and install the latest sta
 1. Download the latest release from https://github.com/google/googletest
 2. Unzip it to a directory of your choice
 3. cd into the directory 
-4. Run "cmake . && make"
+4. ```cmake . && make```
 
 ## Cygwin only: Install lcov
 1. Download http://downloads.sourceforge.net/ltp/lcov-1.12.tar.gz
 2. Extract it to a directory of your choice
-3. cd into it and run "make install"
+3. cd into it and run ```make install```
 
 ## Build
 
-1. Create a subdirectory in the project root called build
-2. cd into the build directory
-3. ccmake ..
-4. Press c - Note: This might result in some errors about missing libraries, which you can disregard unless they persist through the next step.
-5. Specify the path to the directory where you unzipped Google Test with the GTEST_ROOT variable.
-6. Press c again
-7. Press g
-8. make
+1. ```cd my/project/root```
+2. ```mkdir build```
+3. ```cd build```
+4. ```ccmake ..```
+5. Press c - Note: This might result in some errors about missing libraries, which you can disregard unless they persist through the next step.
+6. Specify the path to the directory where you unzipped Google Test with the GTEST_ROOT variable.
+7. Press c again
+8. Press g
+9. ```make```
 
 ## Run 
 From the build directory
-* Rub "./Shard" to run the game
-* Run "make test" to run the tests
-* Run "make coverage" to run the test coverage analysis
+* ```./Shard``` to run the game
+* ```make test``` to run the tests
+* ```make coverage``` to run the test coverage analysis
