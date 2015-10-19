@@ -43,22 +43,65 @@ protected:
         // Release stdout
         std::cout.rdbuf(stdoutBuffer);
     }
+
+    void testLog(const std::string &expectedSeverityString, const Severity &severity)
+    {
+        std::string message("Test message");
+        
+        std::stringstream expectedMessageStream;
+        expectedMessageStream << timestampString << "|" 
+            << DEFAULT_TEST_UNIT_NAME << "|" 
+            << expectedSeverityString << ": " 
+            << message << std::endl;
+
+        logger.log(severity, timestamp, message);
+
+        EXPECT_EQ(expectedMessageStream.str(), stdoutStream.str());   
+    }
 };
 
-TEST_F(DefaultLoggerTest, Log)
+TEST_F(DefaultLoggerTest, LogDebug)
 {
-    std::string message("Test message");
+    testLog("DEBUG", Severity::DEBUG);
+}
 
-    std::stringstream expectedMessageStream;
-    expectedMessageStream << timestampString << "|" << DEFAULT_TEST_UNIT_NAME << ": " 
-        << message << std::endl;
+TEST_F(DefaultLoggerTest, LogInfo)
+{
+    testLog("INFO", Severity::INFO);
+}
 
-    logger.log(timestamp, message);
+TEST_F(DefaultLoggerTest, LogWarn)
+{
+    testLog("WARN", Severity::WARN);
+}
 
-    EXPECT_EQ(expectedMessageStream.str(), stdoutStream.str());
+TEST_F(DefaultLoggerTest, LogError)
+{
+    testLog("ERROR", Severity::ERROR);
 }
 
 TEST_F(DefaultLoggerTest, GetTimestampString)
 {
     EXPECT_EQ(timestampString, logger.getTimestampString(timestamp));
 }
+
+TEST_F(DefaultLoggerTest, DebugSeverityToString)
+{
+    EXPECT_EQ(std::string("DEBUG"), DefaultLogger::severityToString(Severity::DEBUG));
+}
+
+TEST_F(DefaultLoggerTest, InfoSeverityToString)
+{
+    EXPECT_EQ(std::string("INFO"), DefaultLogger::severityToString(Severity::INFO));
+}
+
+TEST_F(DefaultLoggerTest, WarnSeverityToString)
+{
+    EXPECT_EQ(std::string("WARN"), DefaultLogger::severityToString(Severity::WARN));
+}
+
+TEST_F(DefaultLoggerTest, ErrorSeverityToString)
+{
+    EXPECT_EQ(std::string("ERROR"), DefaultLogger::severityToString(Severity::ERROR));
+}
+
