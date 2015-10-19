@@ -24,14 +24,15 @@ private:
     std::streambuf *stdoutBuffer;
 
 protected:
-    std::time_t timestamp = DEFAULT_TIMESTAMP;
-    std::string timestampString;
-    TestUnit unit;
-    DefaultLogger logger;
-    std::stringstream stdoutStream;
+    const std::time_t timestamp = DEFAULT_TIMESTAMP;
+    const std::string timestampString;
+    const TestUnit unit;
+    const DefaultLogger logger;
+    const std::stringstream stdoutStream;
 
     DefaultLoggerTest()
-        : logger(unit), timestampString(DEFAULT_TIMESTAMP_STRING)
+        : logger(unit), 
+          timestampString(DEFAULT_TIMESTAMP_STRING)
     {
         // Capture stdout
         stdoutBuffer = std::cout.rdbuf();
