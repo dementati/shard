@@ -29,7 +29,7 @@ protected:
     const std::stringstream stdoutStream;
 
     DefaultLoggerTest()
-        : logger(unit, std::cout)
+        : logger(unit)
     {
         // Capture stdout
         stdoutBuffer = std::cout.rdbuf();
