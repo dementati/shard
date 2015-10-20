@@ -36,13 +36,13 @@ add_definitions(-DLOG_LEVEL_DEBUG)
 set(MAIN_SRC src/core/main.cpp)
 
 set(PRODUCTION_SRC 
-    src/core/simplegame.cpp
-    src/utility/defaultlogger.cpp
+    src/core/SimpleGame.cpp
+    src/utility/DefaultLogger.cpp
 )
 
 # Test code
 set(TEST_SRC
-    test/utility/defaultloggertest.cpp
+    test/utility/DefaultLoggerTest.cpp
 )
 
 # C++ compile features
@@ -59,7 +59,3 @@ target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
 
 # Coverage target
 setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
-
-# curses test
-add_executable(NCursesHelloWorld src/ncurseshelloworld.cpp)
-target_link_libraries(NCursesHelloWorld ${CURSES_LIBRARIES})
