@@ -13,7 +13,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 set (GTEST_ROOT . CACHE PATH "Path to Google Testing Framework")
 enable_testing()
 find_package(GTest REQUIRED)
-# MESSAGE( STATUS "GTEST_INCLUDE_DIRS: " ${GTEST_INCLUDE_DIRS} )
 include_directories(${GTEST_INCLUDE_DIRS})
 
 # NCurses
@@ -38,6 +37,8 @@ set(MAIN_SRC src/core/main.cpp)
 set(PRODUCTION_SRC 
     src/core/SimpleGame.cpp
     src/ncurses/ColorCache.cpp
+    src/ncurses/NCursesEngine.cpp
+    src/ncurses/NCursesException.cpp
     src/utility/BitPattern.cpp
     src/utility/DefaultLogger.cpp
 )
@@ -58,8 +59,8 @@ set(CXX_COMPILE_FEATURES cxx_nullptr)
 
 # Main target
 add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})
-target_compile_features(Shard PRIVATE ${CXX_COMPILE_FEATURES})
 target_link_libraries(Shard ${PRODUCTION_LIBRARIES})
+target_compile_features(Shard PRIVATE ${CXX_COMPILE_FEATURES})
 
 # Test target
 add_executable(RunTests ${TEST_SRC} ${PRODUCTION_SRC})
@@ -68,3 +69,8 @@ target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
 
 # Coverage target
 setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
+
+# NCurses test app
+add_executable(NCursesTestApp test/NCursesTestApp.cpp ${PRODUCTION_SRC})
+target_link_libraries(NCursesTestApp ${CURSES_LIBRARIES})
+target_compile_features(NCursesTestApp PRIVATE ${CXX_COMPILE_FEATURES})
