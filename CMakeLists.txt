@@ -37,11 +37,13 @@ set(MAIN_SRC src/core/main.cpp)
 
 set(PRODUCTION_SRC 
     src/core/SimpleGame.cpp
+    src/utility/BitPattern.cpp
     src/utility/DefaultLogger.cpp
 )
 
 # Test code
 set(TEST_SRC
+    test/utility/BitPatternTest.cpp
     test/utility/DefaultLoggerTest.cpp
 )
 
