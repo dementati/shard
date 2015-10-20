@@ -2,8 +2,8 @@
  * Contains main loop, spawns game object and calls its top-level methods.
  */
 
-#include "game.hpp"
-#include "simplegame.hpp"
+#include "Game.hpp"
+#include "SimpleGame.hpp"
 
 int main(int argc, char *argv[]) 
 {

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "game.hpp"
+#include "Game.hpp"
 
 class SimpleGame : public Game 
 {

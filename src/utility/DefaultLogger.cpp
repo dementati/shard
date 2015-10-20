@@ -1,4 +1,4 @@
-#include "defaultlogger.hpp"
+#include "DefaultLogger.hpp"
 
 DefaultLogger::DefaultLogger(const Object &unit)
     : DefaultLogger(unit, std::cout)

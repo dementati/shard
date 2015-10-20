@@ -1,4 +1,4 @@
-#include "simplegame.hpp"
+#include "SimpleGame.hpp"
 
 
 // LCOV_EXCL_START <- This method causes side effects that can't be tested automatically.

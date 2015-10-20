@@ -6,8 +6,8 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/core/object.hpp"
-#include "../../src/utility/defaultlogger.hpp"
+#include "../../src/core/Object.hpp"
+#include "../../src/utility/DefaultLogger.hpp"
 
 #define DEFAULT_TIMESTAMP 1445253011
 #define DEFAULT_TIMESTAMP_STRING "2015-10-19 13:10:11"

@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 
-#include "../core/object.hpp"
-#include "logger.hpp"
+#include "../core/Object.hpp"
+#include "Logger.hpp"
 
 enum class Severity
 {
