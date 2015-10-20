@@ -19,6 +19,10 @@ Go to https://cmake.org/download/#latest and download and install the latest sta
 3. cd into the directory 
 4. ```cmake . && make```
 
+## Install NCurses
+
+Use a package manager or Cygwin, or build from source, (>=v5.9). CMake will attempt to locate ncurses automatically. If that fails, contact a senior developer.
+
 ## Cygwin only: Install lcov
 1. Download http://downloads.sourceforge.net/ltp/lcov-1.12.tar.gz
 2. Extract it to a directory of your choice

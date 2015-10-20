@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.3 FATAL_ERROR)
-project (Shard CXX)
+project (Shard)
 
 # Version number
 set (Shard_VERSION_MAJOR 0)
@@ -15,6 +15,10 @@ enable_testing()
 find_package(GTest REQUIRED)
 # MESSAGE( STATUS "GTEST_INCLUDE_DIRS: " ${GTEST_INCLUDE_DIRS} )
 include_directories(${GTEST_INCLUDE_DIRS})
+
+# NCurses
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIRS})
 
 # Code coverage
 include(CodeCoverage)
@@ -55,3 +59,7 @@ target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
 
 # Coverage target
 setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
+
+# curses test
+add_executable(NCursesHelloWorld src/ncurseshelloworld.cpp)
+target_link_libraries(NCursesHelloWorld ${CURSES_LIBRARIES})
