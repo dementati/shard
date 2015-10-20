@@ -16,7 +16,13 @@
 
 class TestUnit : public Object
 {
+    DefaultLogger defaultLogger;
+
 public:
+    TestUnit() : defaultLogger(*this) {}
+
+    const Logger& logger() const { return defaultLogger; }
+
     const std::string unitName() const { return std::string(DEFAULT_TEST_UNIT_NAME); }
 };
 

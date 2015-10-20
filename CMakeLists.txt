@@ -37,15 +37,21 @@ set(MAIN_SRC src/core/main.cpp)
 
 set(PRODUCTION_SRC 
     src/core/SimpleGame.cpp
+    src/ncurses/ColorCache.cpp
     src/utility/BitPattern.cpp
     src/utility/DefaultLogger.cpp
 )
 
 # Test code
 set(TEST_SRC
+    test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp
     test/utility/DefaultLoggerTest.cpp
 )
+
+# Libraries
+set(PRODUCTION_LIBRARIES ${CURSES_LIBRARIES})
+set(TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} ${CURSES_LIBRARIES})
 
 # C++ compile features
 set(CXX_COMPILE_FEATURES cxx_nullptr)
@@ -53,10 +59,11 @@ set(CXX_COMPILE_FEATURES cxx_nullptr)
 # Main target
 add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})
 target_compile_features(Shard PRIVATE ${CXX_COMPILE_FEATURES})
+target_link_libraries(Shard ${PRODUCTION_LIBRARIES})
 
 # Test target
 add_executable(RunTests ${TEST_SRC} ${PRODUCTION_SRC})
-target_link_libraries(RunTests ${GTEST_BOTH_LIBRARIES})
+target_link_libraries(RunTests ${TEST_LIBRARIES})
 target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
 
 # Coverage target
