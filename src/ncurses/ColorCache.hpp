@@ -6,11 +6,11 @@
 
 #include "../core/Object.hpp"
 #include "../utility/BitPattern.hpp"
-#include "../utility/DefaultLogger.hpp"
+#include "../utility/StreamLogger.hpp"
 
 class ColorCache : public Object
 {
-    DefaultLogger defaultLogger;
+    StreamLogger logger;
 
     std::map<uint64_t, short> colorIdMap;
     std::map<uint32_t, short> colorPairIdMap;
@@ -20,8 +20,6 @@ class ColorCache : public Object
 
 public:
     ColorCache();
-
-    virtual const Logger& logger() const;
 
     const std::string unitName() const;
 

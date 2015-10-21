@@ -3,6 +3,7 @@
 #include <exception>
 #include <string>
 
+// LCOV_EXCL_START
 class NCursesException : public std::exception
 {
     const std::string message;
@@ -12,3 +13,4 @@ public:
 
     virtual const char* what() const throw();
 };
+// LCOV_EXCL_STOP

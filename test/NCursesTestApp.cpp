@@ -1,6 +1,9 @@
 #include <fstream>
 
-#include "../src/ncurses/NCursesEngine.hpp"
+#include "../src/graphics/ASCIIRenderingSystem.hpp"
+#include "../src/graphics/CharBitmap.hpp"
+#include "../src/graphics/NCursesRenderingSystem.hpp"
+#include "../src/ncurses/NCursesInterface.hpp"
 
 int main()
 {
@@ -10,11 +13,18 @@ int main()
     {
         try
         {
-            NCursesEngine engine(logFile);
+            NCursesInterface ncurses(logFile);
+            NCursesRenderingSystem system(logFile, ncurses);
 
-            engine.draw('@', 10, 10);
-            engine.refreshScreen();
+            char buffer[] = {
+                '#', '#', '#',
+                '#', '#', '#',
+                '#', '#', '#'
+            };
+            CharBitmap bitmap(buffer, 3, 3);
 
+            system.drawBitmap(bitmap, 3, 3);
+            ncurses.refreshScreen();
             getch();
         } 
         catch(NCursesException &e)

@@ -1,21 +1,22 @@
-#include "NCursesEngine.hpp"
+#include "NCursesInterface.hpp"
 
-NCursesEngine::NCursesEngine()
-    : NCursesEngine(std::cout)
+// LCOV_EXCL_START
+NCursesInterface::NCursesInterface()
+    : NCursesInterface(std::cout)
 {
 }
 
-NCursesEngine::NCursesEngine(std::ostream &logStream)
-    : defaultLogger(*this, logStream)
+NCursesInterface::NCursesInterface(std::ostream &logStream)
+    : logger(*this, logStream)
 {
-    defaultLogger.info("Initializing NCurses engine");
+    logger.info("Initializing NCurses engine");
 
     if(!has_colors())
     {
         // TODO: Can't get this to work on mintty and this is too unimportant to waste time on 
         //       right now, but should be fixed later.
         // throw NCursesException("Terminal does not support colors.");
-        defaultLogger.warn("Terminal does not support colors.");
+        logger.warn("Terminal does not support colors.");
     }
 
     initscr();
@@ -24,31 +25,28 @@ NCursesEngine::NCursesEngine(std::ostream &logStream)
     keypad(stdscr, TRUE);
 }
 
-NCursesEngine::~NCursesEngine()
+NCursesInterface::~NCursesInterface()
 {
-    defaultLogger.info("Destroying NCurses engine");
+    logger.info("Destroying NCurses engine");
     endwin();
 }
 
-const Logger& NCursesEngine::logger() const
+const std::string NCursesInterface::unitName() const
 {
-    return defaultLogger;
+    return "NCursesInterface";
 }
 
-const std::string NCursesEngine::unitName() const
-{
-    return "NCursesEngine";
-}
-
-void NCursesEngine::refreshScreen()
+void NCursesInterface::refreshScreen()
 {
     refresh();
 }
 
-void NCursesEngine::draw(const char character, const int x, const int y, 
+void NCursesInterface::draw(const char character, const int x, const int y, 
                          const short fr, const short fg, const short fb, 
                          const short br, const short bg, const short bb)
 {
+    assert(false && "This method hasn't been properly tested.");
+
     assert(fr >= 0 && fr <= 1000 && "NCurses color values must be in the range [0, 1000]");
     assert(fg >= 0 && fg <= 1000 && "NCurses color values must be in the range [0, 1000]");
     assert(fb >= 0 && fb <= 1000 && "NCurses color values must be in the range [0, 1000]");
@@ -63,12 +61,12 @@ void NCursesEngine::draw(const char character, const int x, const int y,
     mvaddch(y, x, character | COLOR_PAIR(colorPair));
 }
 
-void NCursesEngine::draw(const char character, const int x, const int y)
+void NCursesInterface::draw(const char character, const int x, const int y)
 {
     mvaddch(y, x, character);
 }
 
-const short NCursesEngine::getColorId(const short r, const short g, const short b)
+const short NCursesInterface::getColorId(const short r, const short g, const short b)
 {
     assert(r >= 0 && r <= 1000 && "NCurses color values must be in the range [0, 1000]");
     assert(g >= 0 && g <= 1000 && "NCurses color values must be in the range [0, 1000]");
@@ -86,7 +84,7 @@ const short NCursesEngine::getColorId(const short r, const short g, const short 
     }
 }
 
-const short NCursesEngine::getColorPairId(const short colorId1, const short colorId2)
+const short NCursesInterface::getColorPairId(const short colorId1, const short colorId2)
 {
     assert(colorId1 >= 0 && "Color IDs must be non-negative");
     assert(colorId2 >= 0 && "Color IDs must be non-negative");
@@ -102,3 +100,4 @@ const short NCursesEngine::getColorPairId(const short colorId1, const short colo
         return colorCache.getColorPairId(colorId1, colorId2);
     }
 }
+// LCOV_EXCL_STOP

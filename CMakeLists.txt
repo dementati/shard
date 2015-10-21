@@ -36,18 +36,21 @@ set(MAIN_SRC src/core/main.cpp)
 
 set(PRODUCTION_SRC 
     src/core/SimpleGame.cpp
+    src/graphics/CharBitmap.cpp
+    src/graphics/NCursesRenderingSystem.cpp
     src/ncurses/ColorCache.cpp
-    src/ncurses/NCursesEngine.cpp
+    src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
     src/utility/BitPattern.cpp
-    src/utility/DefaultLogger.cpp
+    src/utility/StreamLogger.cpp
 )
 
 # Test code
 set(TEST_SRC
+    test/graphics/CharBitmapTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp
-    test/utility/DefaultLoggerTest.cpp
+    test/utility/StreamLoggerTest.cpp
 )
 
 # Libraries

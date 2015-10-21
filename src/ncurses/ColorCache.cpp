@@ -1,19 +1,16 @@
 #include "ColorCache.hpp"
 
 ColorCache::ColorCache()
-    : defaultLogger(*this), colorIdCounter(0), colorPairIdCounter(0)
+    : logger(*this), colorIdCounter(0), colorPairIdCounter(0)
 {
 }
 
-const Logger& ColorCache::logger() const
-{
-    return defaultLogger;
-}
-
+// LCOV_EXCL_START
 const std::string ColorCache::unitName() const
 {
     return "ColorCache";
 }
+// LCOV_EXCL_STOP
 
 const short ColorCache::getColorId(const short r, const short g, const short b)
 {

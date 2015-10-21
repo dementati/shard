@@ -7,22 +7,20 @@
 
 #include <ncurses.h>
 
-#include "../core/object.hpp"
+#include "../core/Object.hpp"
 #include "../utility/BitPattern.hpp"
-#include "../utility/DefaultLogger.hpp"
+#include "../utility/StreamLogger.hpp"
 #include "ColorCache.hpp"
 #include "NCursesException.hpp"
 
-class NCursesEngine : public Object
+class NCursesInterface : public Object
 {
 public:
-    NCursesEngine();
+    NCursesInterface();
 
-    NCursesEngine(std::ostream &logStream);
+    NCursesInterface(std::ostream &logStream);
 
-    virtual ~NCursesEngine();
-
-    const Logger& logger() const;
+    virtual ~NCursesInterface();
 
     const std::string unitName() const;
 
@@ -35,7 +33,7 @@ public:
     void draw(const char character, const int x, const int y);
 
 private:
-    DefaultLogger defaultLogger;
+    StreamLogger logger;
 
     ColorCache colorCache;    
 
