@@ -12,8 +12,8 @@ int main()
         {
             NCursesEngine engine(logFile);
 
-            engine.addCharacter('@', 1000, 0, 0, 0, 0, 0);
-            engine.redraw();
+            engine.draw('@', 10, 10);
+            engine.refreshScreen();
 
             getch();
         } 

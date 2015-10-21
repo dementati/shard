@@ -12,7 +12,10 @@ NCursesEngine::NCursesEngine(std::ostream &logStream)
 
     if(!has_colors())
     {
-        throw NCursesException("Terminal does not support colors.");
+        // TODO: Can't get this to work on mintty and this is too unimportant to waste time on 
+        //       right now, but should be fixed later.
+        // throw NCursesException("Terminal does not support colors.");
+        defaultLogger.warn("Terminal does not support colors.");
     }
 
     initscr();
@@ -23,8 +26,8 @@ NCursesEngine::NCursesEngine(std::ostream &logStream)
 
 NCursesEngine::~NCursesEngine()
 {
-    endwin();
     defaultLogger.info("Destroying NCurses engine");
+    endwin();
 }
 
 const Logger& NCursesEngine::logger() const
@@ -37,12 +40,14 @@ const std::string NCursesEngine::unitName() const
     return "NCursesEngine";
 }
 
-void NCursesEngine::redraw()
+void NCursesEngine::refreshScreen()
 {
     refresh();
 }
 
-void NCursesEngine::addCharacter(const char character, const short fr, const short fg, const short fb, const short br, const short bg, const short bb)
+void NCursesEngine::draw(const char character, const int x, const int y, 
+                         const short fr, const short fg, const short fb, 
+                         const short br, const short bg, const short bb)
 {
     assert(fr >= 0 && fr <= 1000 && "NCurses color values must be in the range [0, 1000]");
     assert(fg >= 0 && fg <= 1000 && "NCurses color values must be in the range [0, 1000]");
@@ -55,7 +60,12 @@ void NCursesEngine::addCharacter(const char character, const short fr, const sho
     short backColorId = getColorId(br, bg, bb);
     short colorPair = getColorPairId(frontColorId, backColorId);
 
-    addch(character | COLOR_PAIR(colorPair));
+    mvaddch(y, x, character | COLOR_PAIR(colorPair));
+}
+
+void NCursesEngine::draw(const char character, const int x, const int y)
+{
+    mvaddch(y, x, character);
 }
 
 const short NCursesEngine::getColorId(const short r, const short g, const short b)

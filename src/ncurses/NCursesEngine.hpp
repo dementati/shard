@@ -26,10 +26,13 @@ public:
 
     const std::string unitName() const;
 
-    void redraw();
+    void refreshScreen();
 
-    void addCharacter(const char character, const short fr, const short fg, const short fb,
-        const short br, const short bg, const short bb);
+    void draw(const char character, const int x, const int y, 
+              const short fr, const short fg, const short fb,
+              const short br, const short bg, const short bb);
+
+    void draw(const char character, const int x, const int y);
 
 private:
     DefaultLogger defaultLogger;
