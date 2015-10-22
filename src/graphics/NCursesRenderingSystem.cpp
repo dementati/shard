@@ -15,11 +15,11 @@ void NCursesRenderingSystem::drawBitmap(const CharBitmap &bitmap, const glm::ive
 {
     glm::ivec2 screenPosition = getScreenCoordinates(position);
 
-    for(int ry = 0; ry < bitmap.height; ry++)
+    for(int ry = 0; ry < bitmap.dimensions.y; ry++)
     {
-        for(int rx = 0; rx < bitmap.width; rx++)
+        for(int rx = 0; rx < bitmap.dimensions.x; rx++)
         {
-            ncurses.draw(bitmap.get(rx, ry), screenPosition.x + rx, screenPosition.y + ry); 
+            ncurses.draw(bitmap.get(glm::uvec2(rx, ry)), screenPosition.x + rx, screenPosition.y + ry); 
         }
     }
 }

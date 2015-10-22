@@ -2,7 +2,7 @@
 
 // LCOV_EXCL_START
 TestRenderable::TestRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem)
-    : ASCIIRenderable(logStream, renderingSystem), logger(*this, logStream), bitmap("/\\\\/", 2, 2)
+    : ASCIIRenderable(logStream, renderingSystem), logger(*this, logStream), bitmap("/\\\\/", glm::uvec2(2, 2))
 {
 }
 

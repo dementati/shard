@@ -1,22 +1,22 @@
 #include "CharBitmap.hpp"
 
-CharBitmap::CharBitmap(const char *bitmap, const unsigned int width, const unsigned int height)
-    : width(width), height(height)
+CharBitmap::CharBitmap(const char *bitmap, const glm::uvec2 dimensions)
+    : dimensions(dimensions)
 {
     assert(bitmap != nullptr && "Bitmap cannot be null");
-    assert(width > 0 && "Width must be positive");
-    assert(height > 0 && "Width must be positive");
+    assert(dimensions.x != 0 && "Width must be positive");
+    assert(dimensions.y != 0 && "Width must be positive");
 
-    for(int i = 0; i < width*height; i++)
+    for(int i = 0; i < dimensions.x*dimensions.y; i++)
     {
         buffer.push_back(bitmap[i]); 
     }
 }
 
-const char CharBitmap::get(const unsigned int x, const unsigned int y) const
+const char CharBitmap::get(const glm::uvec2 position) const
 {
-    assert(x >= 0 && x < width && "x must be within bounds");
-    assert(y >= 0 && y < height && "x must be within bounds");
+    assert(position.x < dimensions.x && "x must be within bounds");
+    assert(position.y < dimensions.y && "x must be within bounds");
 
-    return buffer[y*width + x];
+    return buffer[position.y*dimensions.x + position.x];
 }

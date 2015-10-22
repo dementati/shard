@@ -39,7 +39,9 @@ add_definitions(-DLOG_LEVEL_DEBUG)
 set(MAIN_SRC src/core/main.cpp)
 
 set(PRODUCTION_SRC 
+    src/core/InvalidFormatException.cpp
     src/core/SimpleGame.cpp
+    src/core/StringException.cpp
     src/graphics/ASCIIRenderable.cpp
     src/graphics/ASCIIRenderingSystem.cpp
     src/graphics/CharBitmap.cpp
