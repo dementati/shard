@@ -3,11 +3,13 @@
 #include <ostream>
 #include <string>
 
+#include <glm/glm.hpp>
+
 #include "../ncurses/NCursesInterface.hpp"
 #include "../utility/StreamLogger.hpp"
 #include "ASCIIRenderingSystem.hpp"
 
-class NCursesRenderingSystem : ASCIIRenderingSystem
+class NCursesRenderingSystem : public ASCIIRenderingSystem
 {
     StreamLogger logger;
     NCursesInterface& ncurses;
@@ -17,5 +19,5 @@ public:
 
     const std::string unitName() const;
 
-    void drawBitmap(const CharBitmap &bitmap, const int x, const int y);
+    void drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position);
 };

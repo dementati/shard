@@ -23,6 +23,7 @@ NCursesInterface::NCursesInterface(std::ostream &logStream)
     raw();
     noecho();
     keypad(stdscr, TRUE);
+    curs_set(0);
 }
 
 NCursesInterface::~NCursesInterface()

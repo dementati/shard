@@ -23,6 +23,10 @@ include_directories(${CURSES_INCLUDE_DIRS})
 include(CodeCoverage)
 set(COVERAGE_FLAGS "--coverage")
 
+# GLM
+set(GLM_ROOT . CACHE PATH "Path to GLM")
+include_directories(${GLM_ROOT})
+
 # Compiler flags
 set(CMAKE_C_FLAGS_DEBUG ${COVERAGE_FLAGS})
 set(CMAKE_CXX_FLAGS_DEBUG ${COVERAGE_FLAGS})
@@ -36,8 +40,11 @@ set(MAIN_SRC src/core/main.cpp)
 
 set(PRODUCTION_SRC 
     src/core/SimpleGame.cpp
+    src/graphics/ASCIIRenderable.cpp
+    src/graphics/ASCIIRenderingSystem.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/NCursesRenderingSystem.cpp
+    src/graphics/TestRenderable.cpp
     src/ncurses/ColorCache.cpp
     src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
@@ -47,6 +54,7 @@ set(PRODUCTION_SRC
 
 # Test code
 set(TEST_SRC
+    test/graphics/ASCIIRenderingSystemTest.cpp
     test/graphics/CharBitmapTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp
@@ -74,6 +82,6 @@ target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
 setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
 
 # NCurses test app
-add_executable(NCursesTestApp test/NCursesTestApp.cpp ${PRODUCTION_SRC})
+add_executable(NCursesTestApp test/manual/NCursesTestApp.cpp ${PRODUCTION_SRC})
 target_link_libraries(NCursesTestApp ${CURSES_LIBRARIES})
 target_compile_features(NCursesTestApp PRIVATE ${CXX_COMPILE_FEATURES})
