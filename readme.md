@@ -7,6 +7,7 @@ Shard project.
 * If on Windows, Cygwin.
 * g++
 * make
+* Perl (for lcov)
 
 ## Install CMake
 
