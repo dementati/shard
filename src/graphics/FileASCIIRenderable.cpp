@@ -1,36 +1,23 @@
 #include "FileASCIIRenderable.hpp"
 
+// LCOV_EXCL_START
 FileASCIIRenderable::FileASCIIRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem, std::string filePath)
-    : ASCIIRenderable(logStream, renderingSystem), bitmap(FileASCIIRenderable::loadBitmap(filePath)
+    : ASCIIRenderable(logStream, renderingSystem), 
+      bitmapLoader(logStream), 
+      logger(*this, logStream), 
+      bitmap(bitmapLoader.load(filePath))
 {
+    assert(filePath.length() > 0 && "File path cannot be empty");
 }
 
-CharBitmap FileASCIIRenderable::loadBitmap(std::string filePath)
+void FileASCIIRenderable::draw()
 {
-    std::ifstream file(filePath);
-    std::stringstream ss;
-
-    if(!std::getline(file, line))
-    {
-        throw InvalidFormatException("Input is empty.");
-    }
-
-    int rowCount = 1;
-    ss << line;
-    
-    int lastLineLength = line.length();
-    while(std::getline(file, line))
-    {
-        if(line.length() != lastLineLength)
-        {
-            throw InvalidFormatException("Bitmap is jagged.");
-        }
-
-        lastLineLength = line.length()
-
-        rowCount++;
-        ss << line;
-    }
-
-    return CharBitmap(ss.str().c_str(), glm::uvec2(lastLineLength, rowCounter));
+    renderingSystem.drawBitmap(bitmap, position);
 }
+
+void FileASCIIRenderable::setPosition(glm::ivec2 position)
+{
+    this->position = position;
+}
+// LCOV_EXCL_STOP
+

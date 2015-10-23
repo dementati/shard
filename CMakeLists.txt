@@ -39,12 +39,15 @@ add_definitions(-DLOG_LEVEL_DEBUG)
 set(MAIN_SRC src/core/main.cpp)
 
 set(PRODUCTION_SRC 
+    src/core/InvalidArgumentException.cpp
     src/core/InvalidFormatException.cpp
     src/core/SimpleGame.cpp
     src/core/StringException.cpp
     src/graphics/ASCIIRenderable.cpp
     src/graphics/ASCIIRenderingSystem.cpp
     src/graphics/CharBitmap.cpp
+    src/graphics/CharBitmapLoader.cpp
+    src/graphics/FileASCIIRenderable.cpp
     src/graphics/NCursesRenderingSystem.cpp
     src/graphics/TestRenderable.cpp
     src/ncurses/ColorCache.cpp
@@ -58,6 +61,7 @@ set(PRODUCTION_SRC
 set(TEST_SRC
     test/graphics/ASCIIRenderingSystemTest.cpp
     test/graphics/CharBitmapTest.cpp
+    test/graphics/CharBitmapLoaderTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp
     test/utility/StreamLoggerTest.cpp
