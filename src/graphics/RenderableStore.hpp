@@ -22,6 +22,8 @@ public:
 template <class R>
 void RenderableStore<R>::add(std::string key, std::unique_ptr<R> renderable)
 {
+    assert(renderable && "Renderable must not be null.");
+
     store[key] = std::move(renderable);
 }
 
