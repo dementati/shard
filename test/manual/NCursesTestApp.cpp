@@ -2,11 +2,15 @@
 
 #include <glm/glm.hpp>
 
-#include "../../src/graphics/ASCIIRenderingSystem.hpp"
+#include "../../src/graphics/ascii/ncurses/NCursesRenderingSystem.hpp"
+#include "../../src/graphics/ascii/ASCIIFileRenderable.hpp"
+#include "../../src/graphics/ascii/ASCIIRenderable.hpp"
+#include "../../src/graphics/ascii/ASCIIRenderingSystem.hpp"
+#include "../../src/graphics/ascii/ASCIIWorldRenderer.hpp"
 #include "../../src/graphics/CharBitmap.hpp"
-#include "../../src/graphics/FileASCIIRenderable.hpp"
-#include "../../src/graphics/NCursesRenderingSystem.hpp"
-#include "../../src/graphics/TestRenderable.hpp"
+#include "../../src/graphics/RenderableStore.hpp"
+#include "../../src/logic/Entity.hpp"
+#include "../../src/logic/World.hpp"
 #include "../../src/ncurses/NCursesInterface.hpp"
 
 #define SIZE_2x2_FILE_PATH "../test/resources/charBitmaps/2x2.txt"
@@ -21,16 +25,19 @@ int main()
         {
             NCursesInterface ncurses(logFile);
             NCursesRenderingSystem system(logFile, ncurses);
-            system.setScreenPosition(glm::ivec2(-20, -20));
             
-            TestRenderable renderable(logFile, system);
-            renderable.setPosition(glm::ivec2(0, 0));
+            RenderableStore<ASCIIRenderable> renderableStore;
+            renderableStore.add("test", std::make_unique<ASCIIFileRenderable>(logFile, system, SIZE_2x2_FILE_PATH));
 
-            FileASCIIRenderable fileRenderable(logFile, system, SIZE_2x2_FILE_PATH);
-            fileRenderable.setPosition(glm::ivec2(10, 5));
+            Entity testEntity("test");
+            testEntity.position = glm::ivec2(10, 30);
 
-            renderable.draw();
-            fileRenderable.draw();
+            World world;
+            world.add(testEntity);
+
+            ASCIIWorldRenderer worldRenderer(renderableStore, world);
+
+            worldRenderer.render();
 
             ncurses.refreshScreen();
             getch();

@@ -5,9 +5,9 @@
 
 #include <glm/glm.hpp>
 
-#include "../ncurses/NCursesInterface.hpp"
-#include "../utility/StreamLogger.hpp"
-#include "ASCIIRenderingSystem.hpp"
+#include "../../../ncurses/NCursesInterface.hpp"
+#include "../../../utility/StreamLogger.hpp"
+#include "../ASCIIRenderingSystem.hpp"
 
 class NCursesRenderingSystem : public ASCIIRenderingSystem
 {

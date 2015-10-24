@@ -43,13 +43,15 @@ set(PRODUCTION_SRC
     src/core/InvalidFormatException.cpp
     src/core/SimpleGame.cpp
     src/core/StringException.cpp
-    src/graphics/ASCIIRenderable.cpp
-    src/graphics/ASCIIRenderingSystem.cpp
+    src/graphics/ascii/ncurses/NCursesRenderingSystem.cpp
+    src/graphics/ascii/ASCIIRenderable.cpp
+    src/graphics/ascii/ASCIIRenderingSystem.cpp
+    src/graphics/ascii/ASCIIFileRenderable.cpp
+    src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
-    src/graphics/FileASCIIRenderable.cpp
-    src/graphics/NCursesRenderingSystem.cpp
-    src/graphics/TestRenderable.cpp
+    src/logic/Entity.cpp
+    src/logic/World.cpp
     src/ncurses/ColorCache.cpp
     src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
@@ -59,9 +61,11 @@ set(PRODUCTION_SRC
 
 # Test code
 set(TEST_SRC
-    test/graphics/ASCIIRenderingSystemTest.cpp
+    test/graphics/ascii/ASCIIRenderingSystemTest.cpp
+    test/graphics/ascii/ASCIIWorldRendererTest.cpp
     test/graphics/CharBitmapTest.cpp
     test/graphics/CharBitmapLoaderTest.cpp
+    test/graphics/RenderableStoreTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp
     test/utility/StreamLoggerTest.cpp
@@ -72,7 +76,8 @@ set(PRODUCTION_LIBRARIES ${CURSES_LIBRARIES})
 set(TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} ${CURSES_LIBRARIES})
 
 # C++ compile features
-set(CXX_COMPILE_FEATURES cxx_nullptr)
+# set(CXX_COMPILE_FEATURES cxx_nullptr)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
 
 # Main target
 add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})

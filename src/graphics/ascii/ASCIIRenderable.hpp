@@ -3,9 +3,9 @@
 #include <ostream>
 #include <string>
 
-#include "../utility/StreamLogger.hpp"
+#include "../../utility/StreamLogger.hpp"
+#include "../Renderable.hpp"
 #include "ASCIIRenderingSystem.hpp"
-#include "Renderable.hpp"
 
 class ASCIIRenderable : public Renderable
 {
@@ -18,4 +18,6 @@ public:
     ASCIIRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem);
 
     const std::string unitName() const;
+
+    virtual void setPosition(glm::ivec2 position) = 0;
 };

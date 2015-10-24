@@ -5,8 +5,8 @@
 
 #include <glm/glm.hpp>
 
-#include "../core/object.hpp"
-#include "CharBitmap.hpp"
+#include "../../core/object.hpp"
+#include "../CharBitmap.hpp"
 
 // LCOV_EXCL_START
 class ASCIIRenderingSystem : public Object

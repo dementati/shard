@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#include "../../src/graphics/ASCIIRenderingSystem.hpp"
-#include "../../src/graphics/CharBitmap.hpp"
+#include "../../../src/graphics/ascii/ASCIIRenderingSystem.hpp"
+#include "../../../src/graphics/CharBitmap.hpp"
 
 class TestRenderingSystem : public ASCIIRenderingSystem
 {
