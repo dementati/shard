@@ -6,7 +6,7 @@ Entity::Entity(const std::string renderableId)
 {
 }
 
-const std::string Entity::getRenderableId()
+const std::string Entity::getRenderableId() const
 {
     return renderableId;
 }

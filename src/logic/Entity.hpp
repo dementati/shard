@@ -14,7 +14,7 @@ class Entity : public Object
 public:
     Entity(const std::string renderableId);
 
-    const std::string getRenderableId();
+    const std::string getRenderableId() const;
 
     const std::string unitName() const;
 
