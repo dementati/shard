@@ -1,23 +1,32 @@
 #pragma once
 
+#include <algorithm>
+#include <memory>
 #include <string>
+#include <vector>
 
 #include <glm/glm.hpp>
 
 #include "../core/Object.hpp"
+#include "Need.hpp"
 
 // LCOV_EXCL_START
 class Entity : public Object
 {
-    const std::string renderableId;
+    std::vector<std::unique_ptr<Need>> needs;
 
 public:
+    glm::ivec2 position;
+    const std::string renderableId;
+
     Entity(const std::string renderableId);
 
-    const std::string getRenderableId() const;
+    Entity(Entity&& entity);
+
+    void addNeed(std::unique_ptr<Need>);
+
+    Need& selectNeed();
 
     const std::string unitName() const;
-
-    glm::ivec2 position;
 };
 // LCOV_EXCL_STOP

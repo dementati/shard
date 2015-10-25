@@ -4,21 +4,12 @@
 
 #include "../../src/graphics/Renderable.hpp"
 #include "../../src/graphics/RenderableStore.hpp"
-#include "../mocks/TestASCIIRenderable.hpp"
+#include "../mocks/TestRenderable.hpp"
 
 #define SIZE_2x2_FILE_PATH "../test/resources/charBitmaps/2x2.txt"
 
 class RenderableStoreTest : public ::testing::Test
 {
-};
-
-class TestRenderable : public Renderable
-{
-public:
-    int id;
-    TestRenderable(int id) : id(id) {}
-    void draw() {}
-    const std::string unitName() const { return std::string(); } 
 };
 
 TEST_F(RenderableStoreTest, AddAndGetRenderable)

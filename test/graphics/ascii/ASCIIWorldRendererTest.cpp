@@ -28,7 +28,7 @@ TEST_F(ASCIIWorldRendererTest, SingleEntityWorld)
 {
     World world;
     Entity entity("test");
-    world.add(entity);
+    world.add(std::move(entity));
    
     ASCIIWorldRenderer renderer(store, world);
     renderer.render();

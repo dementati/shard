@@ -13,12 +13,18 @@ Shard project.
 
 Go to https://cmake.org/download/#latest and download and install the latest stable release. If you're on a Unix-based system, you might wanna use a package manager. If you're on Windows, you can install it through Cygwin.
 
-## Install Google Testing Framework
+## Install Google Testing Framework and Google Mock
 
-1. Download the latest release from https://github.com/google/googletest
+Google Test comes bundled with Google Mock
+
+1. Download the latest release of gmock from https://code.google.com/p/googlemock/downloads/list
 2. Unzip it to a directory of your choice
 3. cd into the directory 
-4. ```cmake . && make```
+4. ```ccmake .```
+5. Press c
+6. If you're on Cygwin, turn the option "gtest_disable_pthreads" ON.
+7. Press c and g
+8. ```make```
 
 ## Install NCurses
 
@@ -43,7 +49,7 @@ Use a package manager or Cygwin, or build from source, (>=v5.9). CMake will atte
 3. ```cd build```
 4. ```ccmake ..```
 5. Press c - Note: This might result in some errors about missing libraries, which you can disregard unless they persist through the next step.
-6. Specify the path to the directory where you unzipped Google Test with the GTEST_ROOT variable.
+6. Specify the path to the directory where you unzipped Google Mock with the GMOCK_ROOT variable.
 7. Specify the path to the directory where you unzipped GLM with the GLM_ROOT variable.
 8. Press c again
 9. Press g

@@ -9,8 +9,16 @@ set (Shard_VERSION_PATCH 1)
 # Set custom CMake modules path
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
+# Google mock
+set (GMOCK_ROOT "" CACHE PATH "Path to Google Mock")
+set (GMOCK_INCLUDE_DIRS "${GMOCK_ROOT}/include")
+set (GMOCK_LIB ${GMOCK_ROOT}/libgmock.a)
+set (GMOCK_MAIN_LIB ${GMOCK_ROOT/libgmock_main.a})
+set (GMOCK_BOTH_LIBRARIES ${GMOCK_ROOT}/libgmock.a ${GMOCK_ROOT}/libgmock_main.a)
+include_directories(${GMOCK_INCLUDE_DIRS})
+
 # Google testing framework
-set (GTEST_ROOT . CACHE PATH "Path to Google Testing Framework")
+set (GTEST_ROOT ${GMOCK_ROOT}/gtest)
 enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
@@ -21,16 +29,14 @@ include_directories(${CURSES_INCLUDE_DIRS})
 
 # Code coverage
 include(CodeCoverage)
-set(COVERAGE_FLAGS "--coverage")
 
 # GLM
-set(GLM_ROOT . CACHE PATH "Path to GLM")
+set(GLM_ROOT "" CACHE PATH "Path to GLM")
 include_directories(${GLM_ROOT})
 
 # Compiler flags
-set(CMAKE_C_FLAGS_DEBUG ${COVERAGE_FLAGS})
-set(CMAKE_CXX_FLAGS_DEBUG ${COVERAGE_FLAGS})
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG ${COVERAGE_FLAGS})
+set(CMAKE_CXX_FLAGS_DEBUG "-g --coverage")
+set(CMAKE_EXE_LINKER_FLAGS_DEBUG "--coverage")
 
 # Log level
 add_definitions(-DLOG_LEVEL_DEBUG)
@@ -50,8 +56,10 @@ set(PRODUCTION_SRC
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
+    src/logic/needs/Thirst.cpp
     src/logic/Entity.cpp
     src/logic/World.cpp
+    src/logic/WorldUpdater.cpp
     src/ncurses/ColorCache.cpp
     src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
@@ -66,6 +74,7 @@ set(TEST_SRC
     test/graphics/CharBitmapTest.cpp
     test/graphics/CharBitmapLoaderTest.cpp
     test/graphics/RenderableStoreTest.cpp
+    test/logic/EntityTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp
     test/utility/StreamLoggerTest.cpp
@@ -73,11 +82,11 @@ set(TEST_SRC
 
 # Libraries
 set(PRODUCTION_LIBRARIES ${CURSES_LIBRARIES})
-set(TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} ${CURSES_LIBRARIES})
+set(TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} ${GMOCK_BOTH_LIBRARIES} ${CURSES_LIBRARIES})
 
 # C++ compile features
 # set(CXX_COMPILE_FEATURES cxx_nullptr)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -Dgtest_disable_pthreads=ON")
 
 # Main target
 add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})

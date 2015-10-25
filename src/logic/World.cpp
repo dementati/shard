@@ -3,11 +3,6 @@
 // LCOV_EXCL_START
 void World::add(Entity entity)
 {
-    entities.push_back(entity);
-}
-
-std::vector<Entity>& World::getEntities()
-{
-    return entities;
+    entities.push_back(std::move(entity));
 }
 // LCOV_EXCL_STOP

@@ -1,15 +1,15 @@
 #pragma once
 
+#include <utility>
 #include <vector>
 
 #include "Entity.hpp"
 
 class World
 {
-    std::vector<Entity> entities;
 
 public:
-    void add(Entity entity);
+    std::vector<Entity> entities;
 
-    std::vector<Entity>& getEntities();
+    void add(Entity entity);
 };
