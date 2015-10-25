@@ -29,7 +29,9 @@ Need& Entity::selectNeed()
     return *needs.back();
 }
 
+// LCOV_EXCL_START
 const std::string Entity::unitName() const
 {
     return std::string("Entity");
 }
+// LCOV_EXCL_STOP

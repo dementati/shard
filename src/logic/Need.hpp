@@ -9,6 +9,8 @@ class Entity;
 class Need : public Object
 {
 public:
+    virtual ~Need() {};
+
     virtual int getIntensity() = 0;
 
     virtual Job& getJob() = 0;

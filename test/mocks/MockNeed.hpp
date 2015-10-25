@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include <gmock/gmock.h>
 
 #include "../../src/logic/Entity.hpp"

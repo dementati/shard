@@ -6,6 +6,7 @@
 
 #define INTENSITY_WEIGHT 1
 
+// LCOV_EXCL_START
 class Thirst : public Need
 {
     unsigned int thirst;
@@ -25,3 +26,4 @@ public:
 
     Entity& getOwner();
 };
+// LCOV_EXCL_STOP
