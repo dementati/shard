@@ -5,16 +5,11 @@ Entity::Entity(const std::string renderableId)
     : renderableId(renderableId)
 {
 }
-
-Entity::Entity(Entity&& entity)
-    : needs(std::move(entity.needs)), position(entity.position), renderableId(entity.renderableId)
-{
-}
 // LCOV_EXCL_STOP
 
-void Entity::addNeed(std::unique_ptr<Need> need)
+void Entity::add(CopyableNeed need)
 {
-    needs.push_back(std::move(need));
+    needs.push_back(need);
 }
 
 Need& Entity::selectNeed()
@@ -27,6 +22,21 @@ Need& Entity::selectNeed()
     });
 
     return *needs.back();
+}
+
+glm::ivec2 Entity::getPosition()
+{
+    return position;
+}
+
+void Entity::setPosition(glm::ivec2 position)
+{
+    this->position = position;
+}
+
+const std::string Entity::getRenderableId()
+{
+    return renderableId;
 }
 
 // LCOV_EXCL_START

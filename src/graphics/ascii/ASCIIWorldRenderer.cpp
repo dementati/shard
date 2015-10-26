@@ -7,10 +7,10 @@ ASCIIWorldRenderer::ASCIIWorldRenderer(RenderableStore<ASCIIRenderable> &store, 
 
 void ASCIIWorldRenderer::render() const
 {
-    for(Entity &entity : world.entities)
+    for(Entity &entity : world.getEntities())
     {
-        ASCIIRenderable& renderable = store.get(entity.renderableId);
-        renderable.setPosition(entity.position);
+        ASCIIRenderable& renderable = store.get(entity.getRenderableId());
+        renderable.setPosition(entity.getPosition());
         renderable.draw();
     }
 }

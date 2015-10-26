@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -7,9 +8,10 @@
 
 class World
 {
-
-public:
     std::vector<Entity> entities;
 
-    void add(Entity entity);
+public:
+    virtual std::vector<Entity>& getEntities();
+
+    virtual void add(Entity entity);
 };

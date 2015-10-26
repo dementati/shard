@@ -1,8 +1,11 @@
 #include "World.hpp"
 
-// LCOV_EXCL_START
+std::vector<Entity>& World::getEntities()
+{
+    return entities;
+}
+
 void World::add(Entity entity)
 {
-    entities.push_back(std::move(entity));
+    entities.push_back(entity);
 }
-// LCOV_EXCL_STOP

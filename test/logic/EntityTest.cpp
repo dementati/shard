@@ -6,28 +6,30 @@
 
 using ::testing::Return; 
 
-typedef ::testing::NiceMock<MockNeed> NiceNeed;
+using WrappedMockNeed = MockNeedWrapper<::testing::NiceMock<MockNeed>>;
 
 class EntityTest : public ::testing::Test
 {
-protected:
-    std::unique_ptr<Need> createNeed(int intensity)
+public:
+    WrappedMockNeed createNeed(int intensity)
     {
-        std::unique_ptr<NiceNeed> need = std::make_unique<NiceNeed>();
-        ON_CALL(*need, getIntensity())
+        WrappedMockNeed need;
+        ON_CALL(need.get(), getIntensity())
             .WillByDefault(Return(intensity));
-
-        return std::move(need);
+        return need;
     }
 };
 
 TEST_F(EntityTest, SelectNeed)
 {
     Entity entity("");
-    entity.addNeed(createNeed(2));
-    entity.addNeed(createNeed(0));
-    entity.addNeed(createNeed(3));
-    entity.addNeed(createNeed(1));
+    
+    entity.add(createNeed(3));
+    entity.add(createNeed(4));
+    entity.add(createNeed(1));
+    entity.add(createNeed(2));
+    
+    WrappedMockNeed& selectedNeed = dynamic_cast<WrappedMockNeed&>(entity.selectNeed());
 
-    EXPECT_EQ(3, entity.selectNeed().getIntensity());
+    EXPECT_EQ(4, selectedNeed.getIntensity());
 }

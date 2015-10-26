@@ -7,7 +7,7 @@ WorldUpdater::WorldUpdater(World &world)
 
 void WorldUpdater::update(double dt)
 {
-    for(Entity &entity : world.entities)
+    for(Entity &entity : world.getEntities())
     {
         Need& need = entity.selectNeed();
         Job& job = need.getJob();

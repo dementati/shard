@@ -11,23 +11,27 @@
 #include "../core/Object.hpp"
 #include "Need.hpp"
 
+
 // LCOV_EXCL_START
 class Entity : public Object
 {
-    std::vector<std::unique_ptr<Need>> needs;
-
-public:
+    std::vector<CopyableNeed> needs;
     glm::ivec2 position;
     const std::string renderableId;
 
+public:
     Entity(const std::string renderableId);
 
-    Entity(Entity&& entity);
+    virtual void add(CopyableNeed need);
 
-    void addNeed(std::unique_ptr<Need>);
+    virtual Need& selectNeed();
 
-    Need& selectNeed();
+    virtual glm::ivec2 getPosition();
 
-    const std::string unitName() const;
+    virtual void setPosition(glm::ivec2 position);
+
+    virtual const std::string getRenderableId();
+
+    virtual const std::string unitName() const;
 };
 // LCOV_EXCL_STOP

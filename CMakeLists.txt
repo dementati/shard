@@ -6,8 +6,15 @@ set (Shard_VERSION_MAJOR 0)
 set (Shard_VERSION_MINOR 0)
 set (Shard_VERSION_PATCH 1)
 
+# Set compiler
+set(CMAKE_CXX_COMPILER /usr/bin/g++.exe)
+set(CMAKE_C_COMPILER /usr/bin/gcc.exe)
+
 # Set custom CMake modules path
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+
+# C++ compile features
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -Dgtest_disable_pthreads=ON")
 
 # Google mock
 set (GMOCK_ROOT "" CACHE PATH "Path to Google Mock")
@@ -29,14 +36,15 @@ include_directories(${CURSES_INCLUDE_DIRS})
 
 # Code coverage
 include(CodeCoverage)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
+set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
 
 # GLM
 set(GLM_ROOT "" CACHE PATH "Path to GLM")
 include_directories(${GLM_ROOT})
 
-# Compiler flags
-set(CMAKE_CXX_FLAGS_DEBUG "-g --coverage")
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "--coverage")
+# Debug flags
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 # Log level
 add_definitions(-DLOG_LEVEL_DEBUG)
@@ -75,6 +83,8 @@ set(TEST_SRC
     test/graphics/CharBitmapLoaderTest.cpp
     test/graphics/RenderableStoreTest.cpp
     test/logic/EntityTest.cpp
+    test/logic/ThirstTest.cpp
+    test/logic/WorldUpdaterTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp
     test/utility/StreamLoggerTest.cpp
@@ -84,9 +94,6 @@ set(TEST_SRC
 set(PRODUCTION_LIBRARIES ${CURSES_LIBRARIES})
 set(TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} ${GMOCK_BOTH_LIBRARIES} ${CURSES_LIBRARIES})
 
-# C++ compile features
-# set(CXX_COMPILE_FEATURES cxx_nullptr)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -Dgtest_disable_pthreads=ON")
 
 # Main target
 add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})
@@ -105,3 +112,6 @@ setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR
 add_executable(NCursesTestApp test/manual/NCursesTestApp.cpp ${PRODUCTION_SRC})
 target_link_libraries(NCursesTestApp ${CURSES_LIBRARIES})
 target_compile_features(NCursesTestApp PRIVATE ${CXX_COMPILE_FEATURES})
+
+# Build test app
+add_executable(BuildTestApp test/manual/BuildTestApp.cpp)
