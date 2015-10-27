@@ -2,12 +2,12 @@
 
 // LCOV_EXCL_START
 StringException::StringException(const std::string message)
-    : message(message)
+    : exceptionMessage(message)
 {
 }
 
 const char* StringException::what() const throw()
 {
-    return message.c_str();
+    return exceptionMessage.c_str();
 }
 // LCOV_EXCL_STOP

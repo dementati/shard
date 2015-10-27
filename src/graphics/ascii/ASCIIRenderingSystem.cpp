@@ -9,10 +9,10 @@ const std::string ASCIIRenderingSystem::unitName() const
 
 glm::ivec2 ASCIIRenderingSystem::getScreenCoordinates(glm::ivec2 worldCoordinates)
 {
-    return worldCoordinates - screenPosition;
+    return worldCoordinates - mScreenPosition;
 }
 
 void ASCIIRenderingSystem::setScreenPosition(const glm::ivec2 position)
 {
-    screenPosition = position;
+    mScreenPosition = position;
 }

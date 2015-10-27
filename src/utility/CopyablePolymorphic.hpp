@@ -1,6 +1,8 @@
 #include <memory>
 #include <functional>
 
+#pragma GCC diagnostic ignored "-Weffc++"
+
 template<typename BaseType>
 class CopyablePolymorphic
 {
@@ -20,15 +22,17 @@ class CopyablePolymorphic
     }
 
     CopyablePolymorphic(const CopyablePolymorphic& other)
+    :
+        mCopyFunction(other.mCopyFunction),
+        mValue(mCopyFunction(other.mValue))
     {
-        mCopyFunction = other.mCopyFunction;
-        mValue = mCopyFunction(other.mValue); //uses stored lambda to copy
     }
 
     CopyablePolymorphic(CopyablePolymorphic&& other)
+    :
+        mCopyFunction(other.mCopyFunction),
+        mValue(std::move(other.mValue))
     {
-        mCopyFunction = other.mCopyFunction;
-        mValue = std::move(other.mValue);
     }
 
     CopyablePolymorphic& operator=(const CopyablePolymorphic& other)

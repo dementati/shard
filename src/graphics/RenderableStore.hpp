@@ -6,18 +6,27 @@
 
 #include "../core/Object.hpp"
 
+// LCOV_EXCL_START
 template <class R>
 class RenderableStore : public Object
 {
-    std::map<std::string, std::unique_ptr<R>> store;
+    std::map<std::string, std::unique_ptr<R>> store = std::map<std::string, std::unique_ptr<R>>();
 
 public:
-    void add(std::string key, std::unique_ptr<R> renderable);
+    virtual ~RenderableStore();
 
-    R& get(const std::string key);
+    virtual void add(std::string key, std::unique_ptr<R> renderable);
+
+    virtual R& get(const std::string key);
 
     const std::string unitName() const;
 };
+// LCOV_EXCL_START
+
+template <class R>
+RenderableStore<R>::~RenderableStore()
+{
+}
 
 template <class R>
 void RenderableStore<R>::add(std::string key, std::unique_ptr<R> renderable)

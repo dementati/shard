@@ -5,7 +5,7 @@
 #include "Game.hpp"
 #include "SimpleGame.hpp"
 
-int main(int argc, char *argv[]) 
+int main() 
 {
     // Create game object
     SimpleGame simpleGame;
@@ -19,4 +19,6 @@ int main(int argc, char *argv[])
         // Call render method
         game->render();
     }
+
+    return 0;
 }

@@ -15,6 +15,15 @@
 
 class NCursesInterface : public Object
 {
+private:
+    StreamLogger logger;
+
+    ColorCache colorCache;    
+
+    short getColorId(const short r, const short g, const short b);
+
+    short getColorPairId(const short colorId1, const short colorId2);
+
 public:
     NCursesInterface();
 
@@ -26,18 +35,11 @@ public:
 
     void refreshScreen();
 
+    /* TODO: Look into when adding colors
     void draw(const char character, const int x, const int y, 
               const short fr, const short fg, const short fb,
               const short br, const short bg, const short bb);
+    */
 
     void draw(const char character, const int x, const int y);
-
-private:
-    StreamLogger logger;
-
-    ColorCache colorCache;    
-
-    const short getColorId(const short r, const short g, const short b);
-
-    const short getColorPairId(const short colorId1, const short colorId2);
 };

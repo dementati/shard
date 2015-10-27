@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma GCC diagnostic ignored "-Weffc++"
+
 #include <gmock/gmock.h>
 
 #include "../../src/logic/Entity.hpp"
@@ -7,7 +9,7 @@
 #include "../../src/logic/World.hpp"
 
 
-class MockNeed : Need
+class MockNeed : public Need
 {
 public:
     MockNeed() {}

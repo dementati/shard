@@ -1,6 +1,9 @@
-#include <gtest/gtest.h>
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+
+#include <iostream>
 
 #include <glm/glm.hpp>
+#include <gtest/gtest.h>
 
 #include "../../../src/graphics/ascii/ASCIIRenderingSystem.hpp"
 #include "../../../src/graphics/CharBitmap.hpp"
@@ -8,7 +11,9 @@
 class TestRenderingSystem : public ASCIIRenderingSystem
 {
 public:
-    void drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position) {}
+    void drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position) 
+    {
+    }
 
     glm::ivec2 getScreenCoordinates(glm::ivec2 worldCoordinates)
     {

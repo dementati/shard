@@ -8,6 +8,8 @@
 class Object
 {
 public:
-    virtual const std::string unitName() const = 0; 
+    virtual ~Object() {}
+
+    virtual const std::string unitName() const = 0;
 };
 // LCOV_EXCL_STOP

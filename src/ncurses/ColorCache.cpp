@@ -1,7 +1,12 @@
 #include "ColorCache.hpp"
 
 ColorCache::ColorCache()
-    : logger(*this), colorIdCounter(0), colorPairIdCounter(0)
+: 
+    colorIdCounter(0), 
+    colorPairIdCounter(0),
+    colorIdMap(std::map<uint64_t, short>()),
+    colorPairIdMap(std::map<uint32_t, short>()),
+    logger(*this)
 {
 }
 
@@ -12,7 +17,7 @@ const std::string ColorCache::unitName() const
 }
 // LCOV_EXCL_STOP
 
-const short ColorCache::getColorId(const short r, const short g, const short b)
+short ColorCache::getColorId(const short r, const short g, const short b)
 {
     assert(sizeof(r) == 2 && "r must be a 16-bit integer");
     assert(sizeof(g) == 2 && "g must be a 16-bit integer");
@@ -28,7 +33,7 @@ const short ColorCache::getColorId(const short r, const short g, const short b)
     return colorIdMap[hash];
 }
 
-const bool ColorCache::hasColorId(const short r, const short g, const short b)
+bool ColorCache::hasColorId(const short r, const short g, const short b)
 {
     assert(sizeof(r) == 2 && "r must be a 16-bit integer");
     assert(sizeof(g) == 2 && "g must be a 16-bit integer");
@@ -38,7 +43,7 @@ const bool ColorCache::hasColorId(const short r, const short g, const short b)
     return colorIdMap.find(hash) != colorIdMap.end();
 }
 
-const short ColorCache::getColorPairId(const short colorId1, const short colorId2)
+short ColorCache::getColorPairId(const short colorId1, const short colorId2)
 {
     assert(sizeof(colorId1) == 2 && "colorId1 must be a 16-bit integer");
     assert(sizeof(colorId2) == 2 && "colorId2 must be a 16-bit integer");
@@ -54,7 +59,7 @@ const short ColorCache::getColorPairId(const short colorId1, const short colorId
     return colorPairIdMap[hash];
 }
 
-const bool ColorCache::hasColorPairId(const short colorId1, const short colorId2)
+bool ColorCache::hasColorPairId(const short colorId1, const short colorId2)
 {
     assert(sizeof(colorId1) == 2 && "colorId1 must be a 16-bit integer");
     assert(sizeof(colorId2) == 2 && "colorId2 must be a 16-bit integer");

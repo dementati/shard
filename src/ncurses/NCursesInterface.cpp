@@ -2,12 +2,15 @@
 
 // LCOV_EXCL_START
 NCursesInterface::NCursesInterface()
-    : NCursesInterface(std::cout)
+:
+    NCursesInterface(std::cout)
 {
 }
 
 NCursesInterface::NCursesInterface(std::ostream &logStream)
-    : logger(*this, logStream)
+: 
+    logger(*this, logStream),
+    colorCache(ColorCache())
 {
     logger.info("Initializing NCurses engine");
 
@@ -42,10 +45,12 @@ void NCursesInterface::refreshScreen()
     refresh();
 }
 
+/*
 void NCursesInterface::draw(const char character, const int x, const int y, 
                          const short fr, const short fg, const short fb, 
                          const short br, const short bg, const short bb)
 {
+    
     assert(false && "This method hasn't been properly tested.");
 
     assert(fr >= 0 && fr <= 1000 && "NCurses color values must be in the range [0, 1000]");
@@ -61,13 +66,14 @@ void NCursesInterface::draw(const char character, const int x, const int y,
 
     mvaddch(y, x, character | COLOR_PAIR(colorPair));
 }
+*/
 
 void NCursesInterface::draw(const char character, const int x, const int y)
 {
     mvaddch(y, x, character);
 }
 
-const short NCursesInterface::getColorId(const short r, const short g, const short b)
+short NCursesInterface::getColorId(const short r, const short g, const short b)
 {
     assert(r >= 0 && r <= 1000 && "NCurses color values must be in the range [0, 1000]");
     assert(g >= 0 && g <= 1000 && "NCurses color values must be in the range [0, 1000]");
@@ -85,7 +91,7 @@ const short NCursesInterface::getColorId(const short r, const short g, const sho
     }
 }
 
-const short NCursesInterface::getColorPairId(const short colorId1, const short colorId2)
+short NCursesInterface::getColorPairId(const short colorId1, const short colorId2)
 {
     assert(colorId1 >= 0 && "Color IDs must be non-negative");
     assert(colorId2 >= 0 && "Color IDs must be non-negative");

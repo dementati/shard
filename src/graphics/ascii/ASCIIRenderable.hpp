@@ -12,7 +12,7 @@ class ASCIIRenderable : public Renderable
     StreamLogger logger;
 
 protected:
-    ASCIIRenderingSystem &renderingSystem;
+    ASCIIRenderingSystem &mRenderingSystem;
 
 public:
     ASCIIRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem);

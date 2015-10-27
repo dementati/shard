@@ -2,7 +2,14 @@
 
 // LCOV_EXCL_START
 Entity::Entity(const std::string renderableId)
-    : renderableId(renderableId)
+: 
+    needs(std::vector<CopyableNeed>()),
+    mPosition(glm::ivec2(0, 0)),
+    mRenderableId(renderableId)
+{
+}
+
+Entity::~Entity()
 {
 }
 // LCOV_EXCL_STOP
@@ -26,20 +33,20 @@ Need& Entity::selectNeed()
 
 glm::ivec2 Entity::getPosition()
 {
-    return position;
+    return mPosition;
 }
 
 void Entity::setPosition(glm::ivec2 position)
 {
-    this->position = position;
-}
-
-const std::string Entity::getRenderableId()
-{
-    return renderableId;
+    mPosition = position;
 }
 
 // LCOV_EXCL_START
+const std::string Entity::getRenderableId()
+{
+    return mRenderableId;
+}
+
 const std::string Entity::unitName() const
 {
     return std::string("Entity");

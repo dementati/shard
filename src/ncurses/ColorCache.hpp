@@ -8,26 +8,29 @@
 #include "../utility/BitPattern.hpp"
 #include "../utility/StreamLogger.hpp"
 
+// LCOV_EXCL_START
 class ColorCache : public Object
 {
-    StreamLogger logger;
+    short colorIdCounter;
+    short colorPairIdCounter;
 
     std::map<uint64_t, short> colorIdMap;
     std::map<uint32_t, short> colorPairIdMap;
 
-    short colorIdCounter;
-    short colorPairIdCounter;
+    StreamLogger logger;
+
 
 public:
     ColorCache();
 
     const std::string unitName() const;
 
-    const short getColorId(const short r, const short g, const short b);
+    short getColorId(const short r, const short g, const short b);
 
-    const bool hasColorId(const short r, const short g, const short b);
+    bool hasColorId(const short r, const short g, const short b);
 
-    const short getColorPairId(const short colorId1, const short colorId2);
+    short getColorPairId(const short colorId1, const short colorId2);
 
-    const bool hasColorPairId(const short colorId1, const short colorId2);
+    bool hasColorPairId(const short colorId1, const short colorId2);
 };
+// LCOV_EXCL_STOP

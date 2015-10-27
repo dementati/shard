@@ -11,6 +11,7 @@
 #include "../utility/StreamLogger.hpp"
 #include "CharBitmap.hpp"
 
+// LCOV_EXCL_START
 class CharBitmapLoader : public Object
 {
     StreamLogger logger;
@@ -24,3 +25,4 @@ public:
 
     CharBitmap load(const std::string filePath) const;
 };
+// LCOV_EXCL_STOP

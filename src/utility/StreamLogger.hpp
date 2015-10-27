@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <ctime>
 #include <iostream>
 #include <ostream>
@@ -9,6 +10,7 @@
 #include "../core/Object.hpp"
 #include "Logger.hpp"
 
+// LCOV_EXCL_START
 enum class Severity
 {
     DEBUG,
@@ -20,9 +22,9 @@ enum class Severity
 class StreamLogger : public Logger
 {
 private:
-    const Object &unit;
+    const Object &mUnit;
 
-    std::ostream &logStream;
+    std::ostream &mLogStream;
     
     void log(const Severity &severity, const std::string &message) const;
 
@@ -45,3 +47,4 @@ public:
 
     static std::string severityToString(const Severity &severity);
 };
+// LCOV_EXCL_STOP

@@ -6,7 +6,7 @@ StreamLogger::StreamLogger(const Object &unit)
 }
 
 StreamLogger::StreamLogger(const Object &unit, std::ostream &logStream)
-    : unit(unit), logStream(logStream)
+    : mUnit(unit), mLogStream(logStream)
 {
 }
 
@@ -48,10 +48,10 @@ void StreamLogger::error(const std::string &message) const
 void StreamLogger::log(const Severity &severity, const time_t timestamp, 
     const std::string &message) const
 {
-    logStream << getTimestampString(timestamp) << "|" 
-              << unit.unitName() << "|"
-              << severityToString(severity) << ": "
-              << message << std::endl;
+    mLogStream << getTimestampString(timestamp) << "|" 
+               << mUnit.unitName() << "|"
+               << severityToString(severity) << ": "
+               << message << std::endl;
 }
 
 const std::string StreamLogger::getTimestampString(const time_t time) const
@@ -81,5 +81,9 @@ std::string StreamLogger::severityToString(const Severity &severity)
         case Severity::INFO: return std::string("INFO");
         case Severity::WARN: return std::string("WARN");
         case Severity::ERROR: return std::string("ERROR");
+
+        // LCOV_EXCL_START
+        default: assert(false && "Severity not handled");
+        // LCOV_EXCL_STOP
     }
 }

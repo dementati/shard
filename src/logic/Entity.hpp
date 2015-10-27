@@ -16,11 +16,13 @@
 class Entity : public Object
 {
     std::vector<CopyableNeed> needs;
-    glm::ivec2 position;
-    const std::string renderableId;
+    glm::ivec2 mPosition;
+    const std::string mRenderableId;
 
 public:
     Entity(const std::string renderableId);
+
+    virtual ~Entity();
 
     virtual void add(CopyableNeed need);
 

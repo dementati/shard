@@ -8,10 +8,12 @@
 
 class World
 {
-    std::vector<Entity> entities;
+    std::vector<std::unique_ptr<Entity>> entities = std::vector<std::unique_ptr<Entity>>();
 
 public:
-    virtual std::vector<Entity>& getEntities();
+    virtual ~World();
 
-    virtual void add(Entity entity);
+    virtual std::vector<std::unique_ptr<Entity>>& getEntities();
+
+    virtual void add(std::unique_ptr<Entity> entity);
 };

@@ -11,8 +11,8 @@ TEST_F(CharBitmapTest, WidthHeight)
 {
     CharBitmap bitmap("@", glm::uvec2(1, 1));
 
-    EXPECT_EQ(1, bitmap.dimensions.x);
-    EXPECT_EQ(1, bitmap.dimensions.y);
+    EXPECT_EQ(1, bitmap.mDimensions.x);
+    EXPECT_EQ(1, bitmap.mDimensions.y);
 }
 
 TEST_F(CharBitmapTest, Get_1x1)

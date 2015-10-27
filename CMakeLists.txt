@@ -22,13 +22,13 @@ set (GMOCK_INCLUDE_DIRS "${GMOCK_ROOT}/include")
 set (GMOCK_LIB ${GMOCK_ROOT}/libgmock.a)
 set (GMOCK_MAIN_LIB ${GMOCK_ROOT/libgmock_main.a})
 set (GMOCK_BOTH_LIBRARIES ${GMOCK_ROOT}/libgmock.a ${GMOCK_ROOT}/libgmock_main.a)
-include_directories(${GMOCK_INCLUDE_DIRS})
+include_directories(SYSTEM ${GMOCK_INCLUDE_DIRS})
 
 # Google testing framework
 set (GTEST_ROOT ${GMOCK_ROOT}/gtest)
 enable_testing()
 find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 
 # NCurses
 find_package(Curses REQUIRED)
@@ -41,10 +41,33 @@ set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
 
 # GLM
 set(GLM_ROOT "" CACHE PATH "Path to GLM")
-include_directories(${GLM_ROOT})
+include_directories(SYSTEM ${GLM_ROOT})
 
-# Debug flags
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
+# Debug symbols 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
+# Warning flags
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O -Wall -Weffc++ -pedantic  \
+    -pedantic-errors -Wextra -Wcast-align \
+    -Wcast-qual  -Wchar-subscripts  -Wcomment -Wconversion \
+    -Wdisabled-optimization \
+    -Werror -Wfloat-equal  -Wformat  -Wformat=2 \
+    -Wformat-nonliteral -Wformat-security  \
+    -Wformat-y2k \
+    -Wimport  -Winit-self \
+    -Winvalid-pch   \
+    -Wlong-long -Wmissing-braces \
+    -Wmissing-field-initializers -Wmissing-format-attribute   \
+    -Wmissing-include-dirs -Wmissing-noreturn \
+    -Wpacked -Wparentheses  -Wpointer-arith \
+    -Wredundant-decls -Wreturn-type \
+    -Wsequence-point  -Wshadow -Wsign-compare  -Wstack-protector \
+    -Wstrict-aliasing -Wstrict-aliasing=2 -Wswitch  -Wswitch-default \
+    -Wswitch-enum -Wtrigraphs  -Wuninitialized \
+    -Wunknown-pragmas  -Wunreachable-code -Wunused \
+    -Wunused-function  -Wunused-label  -Wunused-parameter \
+    -Wunused-value  -Wunused-variable  -Wvariadic-macros \
+    -Wvolatile-register-var  -Wwrite-strings")
 
 # Log level
 add_definitions(-DLOG_LEVEL_DEBUG)
@@ -64,6 +87,7 @@ set(PRODUCTION_SRC
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
+    src/logic/jobs/Idle.cpp
     src/logic/needs/Thirst.cpp
     src/logic/Entity.cpp
     src/logic/World.cpp
@@ -84,6 +108,7 @@ set(TEST_SRC
     test/graphics/RenderableStoreTest.cpp
     test/logic/EntityTest.cpp
     test/logic/ThirstTest.cpp
+    test/logic/WorldTest.cpp
     test/logic/WorldUpdaterTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp

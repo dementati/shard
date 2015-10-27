@@ -5,9 +5,10 @@
 #include "../core/Object.hpp"
 #include "World.hpp"
 
+// LCOV_EXCL_START
 class WorldUpdater : public Object
 {
-    World &world;
+    World &mWorld;
 
 public:
     WorldUpdater(World &world);
@@ -16,3 +17,4 @@ public:
 
     const std::string unitName() const;
 };
+// LCOV_EXCL_STOP

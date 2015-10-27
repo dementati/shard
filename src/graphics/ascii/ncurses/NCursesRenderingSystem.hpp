@@ -9,10 +9,11 @@
 #include "../../../utility/StreamLogger.hpp"
 #include "../ASCIIRenderingSystem.hpp"
 
+// LCOV_EXCL_START
 class NCursesRenderingSystem : public ASCIIRenderingSystem
 {
     StreamLogger logger;
-    NCursesInterface& ncurses;
+    NCursesInterface& mNcurses;
 
 public:
     NCursesRenderingSystem(std::ostream& logStream, NCursesInterface& ncurses);
@@ -21,3 +22,4 @@ public:
 
     void drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position);
 };
+// LCOV_EXCL_STOP

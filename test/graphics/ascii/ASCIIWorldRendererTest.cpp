@@ -9,30 +9,60 @@
 #include "../../../src/graphics/RenderableStore.hpp"
 #include "../../../src/logic/Entity.hpp"
 #include "../../../src/logic/World.hpp"
-#include "../../mocks/TestASCIIRenderable.hpp"
+#include "../../mocks/MockASCIIRenderable.hpp"
+#include "../../mocks/MockEntity.hpp"
+#include "../../mocks/MockRenderableStore.hpp"
+#include "../../mocks/MockWorld.hpp"
 
-#define SIZE_2x2_FILE_PATH "../test/resources/charBitmaps/2x2.txt"
+using ::testing::Return; 
+using ::testing::ReturnRef; 
+using ::testing::StrEq; 
+
+using MockRenderableType = ::testing::NiceMock<MockASCIIRenderable>;
+using MockRenderableStoreType = ::testing::NiceMock<MockRenderableStore<ASCIIRenderable>>;
+using MockWorldType = ::testing::NiceMock<MockWorld>;
+using MockEntityType = ::testing::NiceMock<MockEntity>;
 
 class ASCIIWorldRendererTest : public ::testing::Test
 {
 protected:
-    RenderableStore<ASCIIRenderable> store;
+    MockRenderableType renderable;
+    MockRenderableStoreType store;
+    MockWorldType world;
+    std::vector<std::unique_ptr<Entity>> entities;
+    ASCIIWorldRenderer renderer;
 
     ASCIIWorldRendererTest()
+    : 
+        renderer(store, world)
     {
-        store.add("test", std::make_unique<TestASCIIRenderable>(1));
+        ON_CALL(store, get(StrEq("test")))
+            .WillByDefault(ReturnRef(renderable));
+
+        auto entity = std::make_unique<MockEntityType>();
+        ON_CALL(*entity, getRenderableId())
+            .WillByDefault(Return(std::string("test")));
+        ON_CALL(*entity, getPosition())
+            .WillByDefault(Return(glm::ivec2(1, 1)));
+        entities.push_back(std::move(entity));
+
+        ON_CALL(world, getEntities())
+            .WillByDefault(ReturnRef(entities));
     }
 };
 
-TEST_F(ASCIIWorldRendererTest, SingleEntityWorld)
+TEST_F(ASCIIWorldRendererTest, SingleEntityWorld_RenderableGetsDrawn)
 {
-    World world;
-    Entity entity("test");
-    world.add(std::move(entity));
-   
-    ASCIIWorldRenderer renderer(store, world);
-    renderer.render();
+    EXPECT_CALL(renderable, draw())
+        .Times(1);
 
-    TestASCIIRenderable& renderable = dynamic_cast<TestASCIIRenderable&>(store.get("test"));
-    EXPECT_TRUE(renderable.drawCalled);
+    renderer.render();
+}
+
+TEST_F(ASCIIWorldRendererTest, SingleEntityWorld_RenderableHasPositionSet)
+{
+    EXPECT_CALL(renderable, setPosition(glm::ivec2(1,1)))
+        .Times(1);
+
+    renderer.render();
 }

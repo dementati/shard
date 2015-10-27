@@ -1,17 +1,21 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
+#include "../jobs/Idle.hpp"
+#include "../Job.hpp"
 #include "../Need.hpp"
-
-#define INTENSITY_WEIGHT 1
 
 // LCOV_EXCL_START
 class Thirst : public Need
 {
     unsigned int thirst;
-    World &world;
-    Entity &owner;
+    World &mWorld;
+    Entity &mOwner;
+
+    // Jobs
+    Idle mIdle;
 
 public:
     Thirst(World &world, Entity &owner);

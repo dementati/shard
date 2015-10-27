@@ -44,7 +44,7 @@ CharBitmap CharBitmapLoader::load(std::string filePath) const
     int rowCount = 1;
     ss << line;
     
-    int lastLineLength = line.length();
+    auto lastLineLength = line.length();
     while(std::getline(file, line))
     {
         line = trimCarriageReturn(line);

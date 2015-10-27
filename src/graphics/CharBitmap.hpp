@@ -10,9 +10,9 @@ class CharBitmap
     std::vector<char> buffer;
 
 public:
-    const glm::uvec2 dimensions;
+    const glm::uvec2 mDimensions;
 
     CharBitmap(const char *bitmap, const glm::uvec2 dimensions);
 
-    const char get(const glm::uvec2 position) const;
+    char get(const glm::uvec2 position) const;
 };

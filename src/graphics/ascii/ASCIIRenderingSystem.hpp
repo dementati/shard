@@ -11,7 +11,7 @@
 // LCOV_EXCL_START
 class ASCIIRenderingSystem : public Object
 {
-    glm::ivec2 screenPosition;
+    glm::ivec2 mScreenPosition = glm::ivec2(0,0);
 
 protected:
     glm::ivec2 getScreenCoordinates(glm::ivec2 worldCoordinates);

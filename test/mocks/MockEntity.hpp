@@ -7,8 +7,8 @@
 class MockEntity : public Entity
 {
 public:
-    MockEntity(const std::string renderableId)
-        : Entity(renderableId) {}
+    MockEntity()
+        : Entity(std::string("")) {}
 
     virtual void addNeed(std::unique_ptr<Need> need)
     {
@@ -25,4 +25,32 @@ public:
     MOCK_METHOD0(getRenderableId, const std::string());
 
     MOCK_CONST_METHOD0(unitName, const std::string());
+};
+
+template<class EntityType>
+class MockEntityWrapper : public Entity 
+{
+    std::shared_ptr<EntityType> wrappedEntity;
+
+public:
+    MockEntityWrapper()
+        : wrappedEntity(std::make_shared<EntityType>())
+    {
+    }
+
+
+    void add(CopyableNeed need) { return wrappedEntity->add(need); }
+
+    Need& selectNeed() { return wrappedEntity->selectNeed(); }
+
+    void setPosition(glm::ivec2 position) { wrappedEntity->setPosition(position); }
+
+    const std::string getRenderableId() { return wrappedEntity->getRenderableId(); }
+
+    const std::string unitName() const { return wrappedEntity->unitName(); }
+
+    EntityType& get()
+    {
+        return *wrappedEntity;
+    }
 };

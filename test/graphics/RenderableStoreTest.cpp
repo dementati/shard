@@ -4,9 +4,11 @@
 
 #include "../../src/graphics/Renderable.hpp"
 #include "../../src/graphics/RenderableStore.hpp"
-#include "../mocks/TestRenderable.hpp"
+#include "../mocks/MockRenderable.hpp"
 
-#define SIZE_2x2_FILE_PATH "../test/resources/charBitmaps/2x2.txt"
+using ::testing::Return; 
+
+using NiceRenderable = ::testing::NiceMock<MockRenderable>;
 
 class RenderableStoreTest : public ::testing::Test
 {
@@ -15,10 +17,12 @@ class RenderableStoreTest : public ::testing::Test
 TEST_F(RenderableStoreTest, AddAndGetRenderable)
 {
     RenderableStore<Renderable> store;
-    std::unique_ptr<TestRenderable> renderable = std::make_unique<TestRenderable>(1);
-    store.add("test", std::move(renderable));
-    TestRenderable& acquiredRenderable = 
-        dynamic_cast<TestRenderable&>(store.get("test"));
+    std::unique_ptr<NiceRenderable> renderable = std::make_unique<NiceRenderable>();
+    ON_CALL(*renderable, getId())
+        .WillByDefault(Return(1));
 
-    EXPECT_EQ(1, acquiredRenderable.id);
+    store.add("test", std::move(renderable));
+    NiceRenderable& acquiredRenderable = dynamic_cast<NiceRenderable&>(store.get("test"));
+
+    EXPECT_EQ(1, acquiredRenderable.getId());
 }

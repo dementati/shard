@@ -42,7 +42,7 @@ TEST_F(CharBitmapLoaderTest, Load1x1File)
 {
     CharBitmap bitmap = loader.load(SIZE_1x1_FILE_PATH);
 
-    ASSERT_EQ(glm::uvec2(1, 1), bitmap.dimensions);
+    ASSERT_EQ(glm::uvec2(1, 1), bitmap.mDimensions);
     ASSERT_EQ('#', bitmap.get(glm::uvec2(0, 0)));
 }
 
@@ -50,7 +50,7 @@ TEST_F(CharBitmapLoaderTest, Load2x2File)
 {
     CharBitmap bitmap = loader.load(SIZE_2x2_FILE_PATH);
 
-    ASSERT_EQ(glm::uvec2(2, 2), bitmap.dimensions);
+    ASSERT_EQ(glm::uvec2(2, 2), bitmap.mDimensions);
     ASSERT_EQ('#', bitmap.get(glm::uvec2(0, 0)));
     ASSERT_EQ('%', bitmap.get(glm::uvec2(1, 0)));
     ASSERT_EQ('C', bitmap.get(glm::uvec2(0, 1)));

@@ -13,13 +13,14 @@
 #include "ASCIIRenderingSystem.hpp"
 #include "ASCIIRenderable.hpp"
 
+// LCOV_EXCL_START
 class ASCIIFileRenderable : public ASCIIRenderable
 {
     CharBitmapLoader bitmapLoader;
 
     CharBitmap bitmap;
 
-    glm::ivec2 position;
+    glm::ivec2 mPosition;
 
     StreamLogger logger;
 
@@ -30,3 +31,4 @@ public:
 
     void setPosition(glm::ivec2 position);
 };
+// LCOV_EXCL_START

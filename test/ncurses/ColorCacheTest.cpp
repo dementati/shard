@@ -5,6 +5,12 @@
 class ColorCacheTest : public ::testing::Test
 {
 protected:
+    ColorCacheTest()
+    :
+        cache(ColorCache())
+    {
+    }
+
     ColorCache cache;
 };
 
