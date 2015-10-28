@@ -19,7 +19,7 @@ protected:
 
     CharBitmapLoaderTest()
     : 
-        mLoader(std::cout)
+        mLoader()
     {
     }
 };

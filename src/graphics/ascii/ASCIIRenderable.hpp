@@ -3,19 +3,19 @@
 #include <ostream>
 #include <string>
 
-#include "../../utility/StreamLogger.hpp"
+#include "../../utility/LoggerFactory.hpp"
 #include "../Renderable.hpp"
 #include "ASCIIRenderingSystem.hpp"
 
 class ASCIIRenderable : public Renderable
 {
-    StreamLogger mLogger;
+    std::unique_ptr<Logger> mLogger;
 
 protected:
     ASCIIRenderingSystem &mRenderingSystem;
 
 public:
-    ASCIIRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem);
+    ASCIIRenderable(ASCIIRenderingSystem &renderingSystem);
 
     const std::string unitName() const;
 

@@ -1,10 +1,9 @@
 #include "NCursesRenderingSystem.hpp"
 
 // LCOV_EXCL_START <- Manual testing required
-NCursesRenderingSystem::NCursesRenderingSystem(std::ostream& logStream, 
-    NCursesInterface& ncurses)
+NCursesRenderingSystem::NCursesRenderingSystem(NCursesInterface& ncurses)
 : 
-    mLogger("NCursesRenderingSystem", logStream), 
+    mLogger(LoggerFactory::createLogger("NCursesRenderingSystem", Severity::DEBUG)), 
     mNcurses(ncurses)
 {
 }

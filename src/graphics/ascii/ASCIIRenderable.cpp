@@ -1,9 +1,9 @@
 #include "ASCIIRenderable.hpp"
 
 // LCOV_EXCL_START
-ASCIIRenderable::ASCIIRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem)
+ASCIIRenderable::ASCIIRenderable(ASCIIRenderingSystem &renderingSystem)
 : 
-    mLogger("ASCIIRenderable", logStream), 
+    mLogger(LoggerFactory::createLogger("ASCIIRenderable", Severity::DEBUG)), 
     mRenderingSystem(renderingSystem)
 {
 }

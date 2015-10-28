@@ -7,7 +7,7 @@
 
 #include "../../core/InvalidArgumentException.hpp"
 #include "../../core/InvalidFormatException.hpp"
-#include "../../utility/StreamLogger.hpp"
+#include "../../utility/LoggerFactory.hpp"
 #include "../CharBitmap.hpp"
 #include "../CharBitmapLoader.hpp"
 #include "ASCIIRenderingSystem.hpp"
@@ -22,10 +22,10 @@ class ASCIIFileRenderable : public ASCIIRenderable
 
     glm::ivec2 mPosition;
 
-    StreamLogger mLogger;
+    std::unique_ptr<Logger> mLogger;
 
 public:
-    ASCIIFileRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem, std::string filePath);
+    ASCIIFileRenderable(ASCIIRenderingSystem &renderingSystem, std::string filePath);
 
     void draw();
 

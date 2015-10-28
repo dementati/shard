@@ -5,7 +5,7 @@
 #include <string>
 
 #include "../utility/BitPattern.hpp"
-#include "../utility/StreamLogger.hpp"
+#include "../utility/LoggerFactory.hpp"
 
 // LCOV_EXCL_START
 class ColorCache
@@ -16,7 +16,7 @@ class ColorCache
     std::map<uint64_t, short> mColorIdMap;
     std::map<uint32_t, short> mColorPairIdMap;
 
-    StreamLogger mLogger;
+    std::unique_ptr<Logger> mLogger;
 
 
 public:

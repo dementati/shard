@@ -10,9 +10,9 @@ std::string CharBitmapLoader::trimCarriageReturn(std::string line) const
     return line;
 }
 
-CharBitmapLoader::CharBitmapLoader(std::ostream &logStream)
+CharBitmapLoader::CharBitmapLoader()
 : 
-    mLogger("CharBitmapLoader", logStream)
+    mLogger(LoggerFactory::createLogger("CharBitmapLoader", Severity::DEBUG))
 {
 }
 
@@ -20,7 +20,7 @@ CharBitmap CharBitmapLoader::load(std::string filePath) const
 {
     assert(filePath.length() > 0 && "File path cannot be empty");
 
-    mLogger.info(std::string("Loading ") + filePath);
+    mLogger->info(std::string("Loading ") + filePath);
 
     std::ifstream file(filePath);
     if(!file.good())

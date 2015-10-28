@@ -6,17 +6,17 @@
 #include <glm/glm.hpp>
 
 #include "../../../ncurses/NCursesInterface.hpp"
-#include "../../../utility/StreamLogger.hpp"
+#include "../../../utility/LoggerFactory.hpp"
 #include "../ASCIIRenderingSystem.hpp"
 
 // LCOV_EXCL_START
 class NCursesRenderingSystem : public ASCIIRenderingSystem
 {
-    StreamLogger mLogger;
+    std::unique_ptr<Logger> mLogger;
     NCursesInterface& mNcurses;
 
 public:
-    NCursesRenderingSystem(std::ostream& logStream, NCursesInterface& ncurses);
+    NCursesRenderingSystem(NCursesInterface& ncurses);
 
     const std::string unitName() const;
 

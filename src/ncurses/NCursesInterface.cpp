@@ -2,24 +2,18 @@
 
 // LCOV_EXCL_START
 NCursesInterface::NCursesInterface()
-:
-    NCursesInterface(std::cout)
-{
-}
-
-NCursesInterface::NCursesInterface(std::ostream &logStream)
 : 
-    mLogger("NCursesInterface", logStream),
+    mLogger(LoggerFactory::createLogger("NCursesInterface", Severity::DEBUG)),
     mColorCache(ColorCache())
 {
-    mLogger.info("Initializing NCurses engine");
+    mLogger->info("Initializing NCurses engine");
 
     if(!has_colors())
     {
         // TODO: Can't get this to work on mintty and this is too unimportant to waste time on 
         //       right now, but should be fixed later.
         // throw NCursesException("Terminal does not support colors.");
-        mLogger.warn("Terminal does not support colors.");
+        mLogger->warn("Terminal does not support colors.");
     }
 
     initscr();
@@ -31,7 +25,7 @@ NCursesInterface::NCursesInterface(std::ostream &logStream)
 
 NCursesInterface::~NCursesInterface()
 {
-    mLogger.info("Destroying NCurses engine");
+    mLogger->info("Destroying NCurses engine");
     endwin();
 }
 

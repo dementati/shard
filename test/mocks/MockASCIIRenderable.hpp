@@ -17,7 +17,7 @@ class MockASCIIRenderable : public ASCIIRenderable
 public:
     MockASCIIRenderable()
 : 
-    ASCIIRenderable(std::cout, cRenderingSystem)
+    ASCIIRenderable(cRenderingSystem)
 {}
 
     MOCK_METHOD0(draw, void());

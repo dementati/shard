@@ -6,7 +6,7 @@ ColorCache::ColorCache()
     mColorPairIdCounter(0),
     mColorIdMap(std::map<uint64_t, short>()),
     mColorPairIdMap(std::map<uint32_t, short>()),
-    mLogger("ColorCache")
+    mLogger(LoggerFactory::createLogger("ColorCache", Severity::DEBUG))
 {
 }
 

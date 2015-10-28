@@ -8,14 +8,14 @@
 #include <ncurses.h>
 
 #include "../utility/BitPattern.hpp"
-#include "../utility/StreamLogger.hpp"
+#include "../utility/LoggerFactory.hpp"
 #include "ColorCache.hpp"
 #include "NCursesException.hpp"
 
 class NCursesInterface
 {
 private:
-    StreamLogger mLogger;
+    std::unique_ptr<Logger> mLogger;
 
     ColorCache mColorCache;    
 
@@ -25,8 +25,6 @@ private:
 
 public:
     NCursesInterface();
-
-    NCursesInterface(std::ostream &logStream);
 
     virtual ~NCursesInterface();
 

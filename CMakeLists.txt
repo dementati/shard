@@ -96,6 +96,8 @@ set(PRODUCTION_SRC
     src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
     src/utility/BitPattern.cpp
+    src/utility/DateTime.cpp
+    src/utility/LoggerFactory.cpp
     src/utility/StreamLogger.cpp
 )
 
@@ -112,6 +114,7 @@ set(TEST_SRC
     test/logic/WorldUpdaterTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/BitPatternTest.cpp
+    test/utility/DateTimeTest.cpp
     test/utility/StreamLoggerTest.cpp
 )
 

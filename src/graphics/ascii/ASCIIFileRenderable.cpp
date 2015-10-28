@@ -1,14 +1,14 @@
 #include "ASCIIFileRenderable.hpp"
 
 // LCOV_EXCL_START
-ASCIIFileRenderable::ASCIIFileRenderable(std::ostream &logStream, 
-    ASCIIRenderingSystem &renderingSystem, std::string filePath)
+ASCIIFileRenderable::ASCIIFileRenderable(ASCIIRenderingSystem &renderingSystem, 
+    std::string filePath)
 : 
-    ASCIIRenderable(logStream, renderingSystem), 
-    mBitmapLoader(logStream), 
+    ASCIIRenderable(renderingSystem), 
+    mBitmapLoader(), 
     mBitmap(mBitmapLoader.load(filePath)),
     mPosition(glm::ivec2(0,0)),
-    mLogger("ASCIIFileRenderable", logStream) 
+    mLogger(LoggerFactory::createLogger("ASCIIFileRenderable", Severity::DEBUG)) 
 {
     assert(filePath.length() > 0 && "File path cannot be empty");
 }
