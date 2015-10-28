@@ -3,7 +3,7 @@
 // LCOV_EXCL_START <- Manual testing required
 NCursesRenderingSystem::NCursesRenderingSystem(std::ostream& logStream, 
     NCursesInterface& ncurses)
-        : logger(*this, logStream), mNcurses(ncurses)
+        : mLogger(*this, logStream), mNcurses(ncurses)
 {
 }
 

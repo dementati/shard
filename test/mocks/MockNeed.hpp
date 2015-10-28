@@ -28,26 +28,26 @@ public:
 template<class NeedType>
 class MockNeedWrapper : public Need
 {
-    std::shared_ptr<NeedType> wrappedNeed;
+    std::shared_ptr<NeedType> mNeed;
 
 public:
     MockNeedWrapper()
-        : wrappedNeed(std::make_shared<NeedType>())
+        : mNeed(std::make_shared<NeedType>())
     {
     }
 
-    const std::string unitName() const { return wrappedNeed->unitName(); }
+    const std::string unitName() const { return mNeed->unitName(); }
 
-    int getIntensity() { return wrappedNeed->getIntensity(); }
+    int getIntensity() { return mNeed->getIntensity(); }
 
-    Job& getJob() { return wrappedNeed->getJob(); }
+    Job& getJob() { return mNeed->getJob(); }
 
-    World& getWorld() { return wrappedNeed->getWorld(); }
+    World& getWorld() { return mNeed->getWorld(); }
 
-    Entity& getOwner() { return wrappedNeed->getOwner(); }
+    Entity& getOwner() { return mNeed->getOwner(); }
 
     NeedType& get()
     {
-        return *wrappedNeed;
+        return *mNeed;
     }
 };

@@ -6,7 +6,7 @@
 // LCOV_EXCL_START
 class StringException : public std::exception
 {
-    const std::string exceptionMessage;
+    const std::string mMessage;
 
 public:
     StringException(const std::string message);

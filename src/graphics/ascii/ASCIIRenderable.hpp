@@ -9,7 +9,7 @@
 
 class ASCIIRenderable : public Renderable
 {
-    StreamLogger logger;
+    StreamLogger mLogger;
 
 protected:
     ASCIIRenderingSystem &mRenderingSystem;

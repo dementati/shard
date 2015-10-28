@@ -16,9 +16,9 @@
 class NCursesInterface : public Object
 {
 private:
-    StreamLogger logger;
+    StreamLogger mLogger;
 
-    ColorCache colorCache;    
+    ColorCache mColorCache;    
 
     short getColorId(const short r, const short g, const short b);
 

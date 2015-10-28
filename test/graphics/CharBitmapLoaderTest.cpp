@@ -15,32 +15,32 @@
 class CharBitmapLoaderTest : public ::testing::Test
 {
 protected:
-    CharBitmapLoader loader;
+    CharBitmapLoader mLoader;
 
     CharBitmapLoaderTest()
-        : loader(std::cout)
+        : mLoader(std::cout)
     {
     }
 };
 
 TEST_F(CharBitmapLoaderTest, LoadNonExistentFile)
 {
-    ASSERT_THROW(loader.load(" "), InvalidArgumentException);
+    ASSERT_THROW(mLoader.load(" "), InvalidArgumentException);
 }
 
 TEST_F(CharBitmapLoaderTest, LoadEmptyFile)
 {
-    ASSERT_THROW(loader.load(EMPTY_FILE_PATH), InvalidFormatException);
+    ASSERT_THROW(mLoader.load(EMPTY_FILE_PATH), InvalidFormatException);
 }
 
 TEST_F(CharBitmapLoaderTest, LoadJaggedFile)
 {
-    ASSERT_THROW(loader.load(JAGGED_FILE_PATH), InvalidFormatException);
+    ASSERT_THROW(mLoader.load(JAGGED_FILE_PATH), InvalidFormatException);
 }
 
 TEST_F(CharBitmapLoaderTest, Load1x1File)
 {
-    CharBitmap bitmap = loader.load(SIZE_1x1_FILE_PATH);
+    CharBitmap bitmap = mLoader.load(SIZE_1x1_FILE_PATH);
 
     ASSERT_EQ(glm::uvec2(1, 1), bitmap.mDimensions);
     ASSERT_EQ('#', bitmap.get(glm::uvec2(0, 0)));
@@ -48,7 +48,7 @@ TEST_F(CharBitmapLoaderTest, Load1x1File)
 
 TEST_F(CharBitmapLoaderTest, Load2x2File)
 {
-    CharBitmap bitmap = loader.load(SIZE_2x2_FILE_PATH);
+    CharBitmap bitmap = mLoader.load(SIZE_2x2_FILE_PATH);
 
     ASSERT_EQ(glm::uvec2(2, 2), bitmap.mDimensions);
     ASSERT_EQ('#', bitmap.get(glm::uvec2(0, 0)));

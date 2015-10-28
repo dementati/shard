@@ -16,13 +16,13 @@
 // LCOV_EXCL_START
 class ASCIIFileRenderable : public ASCIIRenderable
 {
-    CharBitmapLoader bitmapLoader;
+    CharBitmapLoader mBitmapLoader;
 
-    CharBitmap bitmap;
+    CharBitmap mBitmap;
 
     glm::ivec2 mPosition;
 
-    StreamLogger logger;
+    StreamLogger mLogger;
 
 public:
     ASCIIFileRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem, std::string filePath);

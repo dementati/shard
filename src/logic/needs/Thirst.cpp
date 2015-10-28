@@ -2,7 +2,7 @@
 
 Thirst::Thirst(World &world, Entity &owner)
 : 
-    thirst(0), 
+    mThirst(0), 
     mWorld(world), 
     mOwner(owner),
     mIdle(Idle())

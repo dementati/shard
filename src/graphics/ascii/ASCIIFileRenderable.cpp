@@ -5,17 +5,17 @@ ASCIIFileRenderable::ASCIIFileRenderable(std::ostream &logStream,
     ASCIIRenderingSystem &renderingSystem, std::string filePath)
 : 
     ASCIIRenderable(logStream, renderingSystem), 
-    bitmapLoader(logStream), 
-    bitmap(bitmapLoader.load(filePath)),
+    mBitmapLoader(logStream), 
+    mBitmap(mBitmapLoader.load(filePath)),
     mPosition(glm::ivec2(0,0)),
-    logger(*this, logStream) 
+    mLogger(*this, logStream) 
 {
     assert(filePath.length() > 0 && "File path cannot be empty");
 }
 
 void ASCIIFileRenderable::draw()
 {
-    mRenderingSystem.drawBitmap(bitmap, mPosition);
+    mRenderingSystem.drawBitmap(mBitmap, mPosition);
 }
 
 void ASCIIFileRenderable::setPosition(glm::ivec2 position)

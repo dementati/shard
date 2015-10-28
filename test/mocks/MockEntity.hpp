@@ -30,27 +30,27 @@ public:
 template<class EntityType>
 class MockEntityWrapper : public Entity 
 {
-    std::shared_ptr<EntityType> wrappedEntity;
+    std::shared_ptr<EntityType> mEntity;
 
 public:
     MockEntityWrapper()
-        : wrappedEntity(std::make_shared<EntityType>())
+        : mEntity(std::make_shared<EntityType>())
     {
     }
 
 
-    void add(CopyableNeed need) { return wrappedEntity->add(need); }
+    void add(CopyableNeed need) { return mEntity->add(need); }
 
-    Need& selectNeed() { return wrappedEntity->selectNeed(); }
+    Need& selectNeed() { return mEntity->selectNeed(); }
 
-    void setPosition(glm::ivec2 position) { wrappedEntity->setPosition(position); }
+    void setPosition(glm::ivec2 position) { mEntity->setPosition(position); }
 
-    const std::string getRenderableId() { return wrappedEntity->getRenderableId(); }
+    const std::string getRenderableId() { return mEntity->getRenderableId(); }
 
-    const std::string unitName() const { return wrappedEntity->unitName(); }
+    const std::string unitName() const { return mEntity->unitName(); }
 
     EntityType& get()
     {
-        return *wrappedEntity;
+        return *mEntity;
     }
 };

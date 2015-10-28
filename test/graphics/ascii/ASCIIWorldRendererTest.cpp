@@ -26,43 +26,43 @@ using MockEntityType = ::testing::NiceMock<MockEntity>;
 class ASCIIWorldRendererTest : public ::testing::Test
 {
 protected:
-    MockRenderableType renderable;
-    MockRenderableStoreType store;
-    MockWorldType world;
-    std::vector<std::unique_ptr<Entity>> entities;
-    ASCIIWorldRenderer renderer;
+    MockRenderableType mRenderable;
+    MockRenderableStoreType mStore;
+    MockWorldType mWorld;
+    std::vector<std::unique_ptr<Entity>> mEntities;
+    ASCIIWorldRenderer mRenderer;
 
     ASCIIWorldRendererTest()
     : 
-        renderer(store, world)
+        mRenderer(mStore, mWorld)
     {
-        ON_CALL(store, get(StrEq("test")))
-            .WillByDefault(ReturnRef(renderable));
+        ON_CALL(mStore, get(StrEq("test")))
+            .WillByDefault(ReturnRef(mRenderable));
 
         auto entity = std::make_unique<MockEntityType>();
         ON_CALL(*entity, getRenderableId())
             .WillByDefault(Return(std::string("test")));
         ON_CALL(*entity, getPosition())
             .WillByDefault(Return(glm::ivec2(1, 1)));
-        entities.push_back(std::move(entity));
+        mEntities.push_back(std::move(entity));
 
-        ON_CALL(world, getEntities())
-            .WillByDefault(ReturnRef(entities));
+        ON_CALL(mWorld, getEntities())
+            .WillByDefault(ReturnRef(mEntities));
     }
 };
 
 TEST_F(ASCIIWorldRendererTest, SingleEntityWorld_RenderableGetsDrawn)
 {
-    EXPECT_CALL(renderable, draw())
+    EXPECT_CALL(mRenderable, draw())
         .Times(1);
 
-    renderer.render();
+    mRenderer.render();
 }
 
 TEST_F(ASCIIWorldRendererTest, SingleEntityWorld_RenderableHasPositionSet)
 {
-    EXPECT_CALL(renderable, setPosition(glm::ivec2(1,1)))
+    EXPECT_CALL(mRenderable, setPosition(glm::ivec2(1,1)))
         .Times(1);
 
-    renderer.render();
+    mRenderer.render();
 }

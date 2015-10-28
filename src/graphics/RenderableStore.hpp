@@ -10,7 +10,7 @@
 template <class R>
 class RenderableStore : public Object
 {
-    std::map<std::string, std::unique_ptr<R>> store = std::map<std::string, std::unique_ptr<R>>();
+    std::map<std::string, std::unique_ptr<R>> mStore = std::map<std::string, std::unique_ptr<R>>();
 
 public:
     virtual ~RenderableStore();
@@ -33,15 +33,15 @@ void RenderableStore<R>::add(std::string key, std::unique_ptr<R> renderable)
 {
     assert(renderable && "Renderable must not be null.");
 
-    store[key] = std::move(renderable);
+    mStore[key] = std::move(renderable);
 }
 
 template <class R>
 R& RenderableStore<R>::get(const std::string key)
 {
-    assert(store.find(key) != store.end() && "Key does not exist");
+    assert(mStore.find(key) != mStore.end() && "Key does not exist");
 
-    return *(store[key]);
+    return *(mStore[key]);
 }
 
 // LCOV_EXCL_START

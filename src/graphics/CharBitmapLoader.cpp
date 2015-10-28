@@ -11,7 +11,7 @@ std::string CharBitmapLoader::trimCarriageReturn(std::string line) const
 }
 
 CharBitmapLoader::CharBitmapLoader(std::ostream &logStream)
-    : logger(*this, logStream)
+    : mLogger(*this, logStream)
 {
 }
 
@@ -24,7 +24,7 @@ CharBitmap CharBitmapLoader::load(std::string filePath) const
 {
     assert(filePath.length() > 0 && "File path cannot be empty");
 
-    logger.info(std::string("Loading ") + filePath);
+    mLogger.info(std::string("Loading ") + filePath);
 
     std::ifstream file(filePath);
     if(!file.good())

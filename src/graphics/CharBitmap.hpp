@@ -7,7 +7,7 @@
 
 class CharBitmap
 {
-    std::vector<char> buffer;
+    std::vector<char> mBuffer;
 
 public:
     const glm::uvec2 mDimensions;

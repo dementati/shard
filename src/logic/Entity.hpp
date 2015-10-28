@@ -15,7 +15,7 @@
 // LCOV_EXCL_START
 class Entity : public Object
 {
-    std::vector<CopyableNeed> needs;
+    std::vector<CopyableNeed> mNeeds;
     glm::ivec2 mPosition;
     const std::string mRenderableId;
 

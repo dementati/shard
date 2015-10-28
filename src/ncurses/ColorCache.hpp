@@ -11,13 +11,13 @@
 // LCOV_EXCL_START
 class ColorCache : public Object
 {
-    short colorIdCounter;
-    short colorPairIdCounter;
+    short mColorIdCounter;
+    short mColorPairIdCounter;
 
-    std::map<uint64_t, short> colorIdMap;
-    std::map<uint32_t, short> colorPairIdMap;
+    std::map<uint64_t, short> mColorIdMap;
+    std::map<uint32_t, short> mColorPairIdMap;
 
-    StreamLogger logger;
+    StreamLogger mLogger;
 
 
 public:

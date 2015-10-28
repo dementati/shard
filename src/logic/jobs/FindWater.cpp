@@ -1,7 +1,7 @@
 #include "FindWater.hpp"
 
 FindWater::FindWater(Need &need)
-    : need(need)
+    : mNeed(need)
 {
 }
 

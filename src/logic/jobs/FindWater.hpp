@@ -6,7 +6,7 @@
 
 class FindWater : public Job
 {
-    Need &need;
+    Need &mNeed;
 
 public:
     FindWater(Need &need);

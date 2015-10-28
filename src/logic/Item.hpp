@@ -8,8 +8,8 @@
 class Item : public Object
 {
 public:
-    const std::string renderableId;
-    const ItemType type;
+    const std::string mRenderableId;
+    const ItemType mType;
 
     Item(std::string renderableId, ItemType type);
 };

@@ -12,7 +12,7 @@
 // LCOV_EXCL_START
 class NCursesRenderingSystem : public ASCIIRenderingSystem
 {
-    StreamLogger logger;
+    StreamLogger mLogger;
     NCursesInterface& mNcurses;
 
 public:

@@ -9,17 +9,17 @@ NCursesInterface::NCursesInterface()
 
 NCursesInterface::NCursesInterface(std::ostream &logStream)
 : 
-    logger(*this, logStream),
-    colorCache(ColorCache())
+    mLogger(*this, logStream),
+    mColorCache(ColorCache())
 {
-    logger.info("Initializing NCurses engine");
+    mLogger.info("Initializing NCurses engine");
 
     if(!has_colors())
     {
         // TODO: Can't get this to work on mintty and this is too unimportant to waste time on 
         //       right now, but should be fixed later.
         // throw NCursesException("Terminal does not support colors.");
-        logger.warn("Terminal does not support colors.");
+        mLogger.warn("Terminal does not support colors.");
     }
 
     initscr();
@@ -31,7 +31,7 @@ NCursesInterface::NCursesInterface(std::ostream &logStream)
 
 NCursesInterface::~NCursesInterface()
 {
-    logger.info("Destroying NCurses engine");
+    mLogger.info("Destroying NCurses engine");
     endwin();
 }
 
@@ -79,15 +79,15 @@ short NCursesInterface::getColorId(const short r, const short g, const short b)
     assert(g >= 0 && g <= 1000 && "NCurses color values must be in the range [0, 1000]");
     assert(b >= 0 && b <= 1000 && "NCurses color values must be in the range [0, 1000]");
 
-    if(!colorCache.hasColorId(r, g, b))
+    if(!mColorCache.hasColorId(r, g, b))
     {
-        short colorId = colorCache.getColorId(r, g, b);
+        short colorId = mColorCache.getColorId(r, g, b);
         init_color(colorId, r, g, b);
         return colorId;
     } 
     else 
     {
-        return colorCache.getColorId(r, g, b);
+        return mColorCache.getColorId(r, g, b);
     }
 }
 
@@ -96,15 +96,15 @@ short NCursesInterface::getColorPairId(const short colorId1, const short colorId
     assert(colorId1 >= 0 && "Color IDs must be non-negative");
     assert(colorId2 >= 0 && "Color IDs must be non-negative");
 
-    if(!colorCache.hasColorPairId(colorId1, colorId2))
+    if(!mColorCache.hasColorPairId(colorId1, colorId2))
     {
-        short pairId = colorCache.getColorPairId(colorId1, colorId2);
+        short pairId = mColorCache.getColorPairId(colorId1, colorId2);
         init_pair(pairId, colorId1, colorId2);
         return pairId;
     } 
     else
     {
-        return colorCache.getColorPairId(colorId1, colorId2);
+        return mColorCache.getColorPairId(colorId1, colorId2);
     }
 }
 // LCOV_EXCL_STOP

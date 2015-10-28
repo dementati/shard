@@ -8,10 +8,10 @@ World::~World()
 
 std::vector<std::unique_ptr<Entity>>& World::getEntities()
 {
-    return entities;
+    return mEntities;
 }
 
 void World::add(std::unique_ptr<Entity> entity)
 {
-    entities.push_back(std::move(entity));
+    mEntities.push_back(std::move(entity));
 }

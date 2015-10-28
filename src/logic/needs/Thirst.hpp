@@ -10,7 +10,7 @@
 // LCOV_EXCL_START
 class Thirst : public Need
 {
-    unsigned int thirst;
+    unsigned int mThirst;
     World &mWorld;
     Entity &mOwner;
 

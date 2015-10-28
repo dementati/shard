@@ -18,33 +18,33 @@ using MockJobType = ::testing::NiceMock<MockJob>;
 class WorldUpdaterTest : public ::testing::Test
 {
 protected:
-    MockWorldType world;
-    std::vector<std::unique_ptr<Entity>> entities;
-    MockNeedType need;
-    MockJobType job;
-    WorldUpdater updater;
+    MockWorldType mWorld;
+    std::vector<std::unique_ptr<Entity>> mEntities;
+    MockNeedType mNeed;
+    MockJobType mJob;
+    WorldUpdater mUpdater;
 
     WorldUpdaterTest()
     :
-        updater(world)
+        mUpdater(mWorld)
     {
-        ON_CALL(need, getJob())
-            .WillByDefault(ReturnRef(job));
+        ON_CALL(mNeed, getJob())
+            .WillByDefault(ReturnRef(mJob));
 
         auto entity = std::make_unique<MockEntityType>();
         ON_CALL(*entity, selectNeed())
-            .WillByDefault(ReturnRef(need));
-        entities.push_back(std::move(entity));
+            .WillByDefault(ReturnRef(mNeed));
+        mEntities.push_back(std::move(entity));
 
-        ON_CALL(world, getEntities())
-            .WillByDefault(ReturnRef(entities));
+        ON_CALL(mWorld, getEntities())
+            .WillByDefault(ReturnRef(mEntities));
     }
 };
 
 TEST_F(WorldUpdaterTest, SelectedNeedJobGetsExecuted)
 {
-    EXPECT_CALL(job, execute(0))
+    EXPECT_CALL(mJob, execute(0))
         .Times(1);
 
-    updater.update(0);
+    mUpdater.update(0);
 }

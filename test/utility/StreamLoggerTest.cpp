@@ -18,12 +18,12 @@
 
 class TestUnit : public Object
 {
-    StreamLogger defaultLogger;
+    StreamLogger mDefaultLogger;
 
 public:
-    TestUnit() : defaultLogger(*this) {}
+    TestUnit() : mDefaultLogger(*this) {}
 
-    const Logger& logger() const { return defaultLogger; }
+    const Logger& logger() const { return mDefaultLogger; }
 
     const std::string unitName() const { return std::string(DEFAULT_TEST_UNIT_NAME); }
 };
@@ -31,28 +31,28 @@ public:
 class StreamLoggerTest : public ::testing::Test
 {
 protected:
-    std::streambuf *stdoutBuffer;
-    const TestUnit unit;
-    const StreamLogger logger;
-    const std::stringstream stdoutStream;
+    std::streambuf *mStdoutBuffer;
+    const TestUnit mUnit;
+    const StreamLogger mLogger;
+    const std::stringstream mStdoutStream;
 
     StreamLoggerTest()
-        : logger(unit)
+        : mLogger(mUnit)
     {
         // Capture stdout
-        stdoutBuffer = std::cout.rdbuf();
-        std::cout.rdbuf(stdoutStream.rdbuf());    
+        mStdoutBuffer = std::cout.rdbuf();
+        std::cout.rdbuf(mStdoutStream.rdbuf());    
     }
 
     ~StreamLoggerTest()
     {
         // Release stdout
-        std::cout.rdbuf(stdoutBuffer);
+        std::cout.rdbuf(mStdoutBuffer);
     }
 
     void testLog(const Severity &severity)
     {
-        logger.log(severity, DEFAULT_TIMESTAMP, DEFAULT_MESSAGE);
+        mLogger.log(severity, DEFAULT_TIMESTAMP, DEFAULT_MESSAGE);
     }
 
     void testLog(const std::string &expectedSeverityString, const Severity &severity)
@@ -61,14 +61,14 @@ protected:
 
         testLog(severity);
 
-        EXPECT_EQ(expectedLogEntry, stdoutStream.str());   
+        EXPECT_EQ(expectedLogEntry, mStdoutStream.str());   
     }
 
-    static const std::string buildExpectedEntry(const std::string &timestamp, const std::string &unit, const std::string &severity, const std::string &message)
+    static const std::string buildExpectedEntry(const std::string &timestamp, const std::string &mUnit, const std::string &severity, const std::string &message)
     {
         std::stringstream expectedMessageStream;
         expectedMessageStream << timestamp << "|" 
-            << unit << "|" 
+            << mUnit << "|" 
             << severity << ": " 
             << message << std::endl;
         return expectedMessageStream.str();
@@ -102,7 +102,7 @@ TEST_F(StreamLoggerTest, LogError)
 
 TEST_F(StreamLoggerTest, GetTimestampString)
 {
-    EXPECT_EQ(DEFAULT_TIMESTAMP_STRING, logger.getTimestampString(DEFAULT_TIMESTAMP));
+    EXPECT_EQ(DEFAULT_TIMESTAMP_STRING, mLogger.getTimestampString(DEFAULT_TIMESTAMP));
 }
 
 TEST_F(StreamLoggerTest, DebugSeverityToString)
@@ -127,12 +127,12 @@ TEST_F(StreamLoggerTest, ErrorSeverityToString)
 
 TEST_F(StreamLoggerTest, ManualLogPrint)
 {
-    std::cout.rdbuf(stdoutBuffer);
+    std::cout.rdbuf(mStdoutBuffer);
 
-    logger.debug(DEFAULT_MESSAGE);
-    logger.info(DEFAULT_MESSAGE);
-    logger.warn(DEFAULT_MESSAGE);
-    logger.error(DEFAULT_MESSAGE);
+    mLogger.debug(DEFAULT_MESSAGE);
+    mLogger.info(DEFAULT_MESSAGE);
+    mLogger.warn(DEFAULT_MESSAGE);
+    mLogger.error(DEFAULT_MESSAGE);
 }
 
 TEST_F(StreamLoggerTest, LogToString)
@@ -140,7 +140,7 @@ TEST_F(StreamLoggerTest, LogToString)
     std::stringstream logStream;
     std::string expectedEntry(buildExpectedEntry("DEBUG"));
 
-    StreamLogger stringLogger(unit, logStream);
+    StreamLogger stringLogger(mUnit, logStream);
 
     stringLogger.log(Severity::DEBUG, DEFAULT_TIMESTAMP, DEFAULT_MESSAGE);
 
@@ -154,7 +154,7 @@ TEST_F(StreamLoggerTest, LogToFile)
     std::ofstream outFile;
     outFile.open("test.log");
 
-    StreamLogger fileLogger(unit, outFile);
+    StreamLogger fileLogger(mUnit, outFile);
 
     fileLogger.log(Severity::DEBUG, DEFAULT_TIMESTAMP, DEFAULT_MESSAGE);
 
