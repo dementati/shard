@@ -32,7 +32,8 @@ class MockNeedWrapper : public Need
 
 public:
     MockNeedWrapper()
-        : mNeed(std::make_shared<NeedType>())
+    : 
+        mNeed(std::make_shared<NeedType>())
     {
     }
 

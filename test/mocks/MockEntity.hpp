@@ -8,7 +8,9 @@ class MockEntity : public Entity
 {
 public:
     MockEntity()
-        : Entity(std::string("")) {}
+    : 
+        Entity(std::string("")) 
+    {}
 
     virtual void addNeed(std::unique_ptr<Need> need)
     {
@@ -34,7 +36,8 @@ class MockEntityWrapper : public Entity
 
 public:
     MockEntityWrapper()
-        : mEntity(std::make_shared<EntityType>())
+    : 
+        mEntity(std::make_shared<EntityType>())
     {
     }
 

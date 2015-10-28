@@ -21,7 +21,10 @@ class TestUnit : public Object
     StreamLogger mDefaultLogger;
 
 public:
-    TestUnit() : mDefaultLogger(*this) {}
+    TestUnit() 
+    : 
+        mDefaultLogger(*this) 
+    {}
 
     const Logger& logger() const { return mDefaultLogger; }
 
@@ -37,7 +40,8 @@ protected:
     const std::stringstream mStdoutStream;
 
     StreamLoggerTest()
-        : mLogger(mUnit)
+    : 
+        mLogger(mUnit)
     {
         // Capture stdout
         mStdoutBuffer = std::cout.rdbuf();

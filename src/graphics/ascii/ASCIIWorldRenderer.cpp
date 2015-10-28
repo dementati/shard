@@ -1,7 +1,9 @@
 #include "ASCIIWorldRenderer.hpp"
 
 ASCIIWorldRenderer::ASCIIWorldRenderer(RenderableStore<ASCIIRenderable> &store, World &world)
-    : mRenderableStore(store), mWorld(world)
+: 
+    mRenderableStore(store), 
+    mWorld(world)
 {
 }
 

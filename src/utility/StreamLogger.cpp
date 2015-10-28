@@ -1,12 +1,15 @@
 #include "StreamLogger.hpp"
 
 StreamLogger::StreamLogger(const Object &unit)
-    : StreamLogger(unit, std::cout)
+: 
+    StreamLogger(unit, std::cout)
 {
 }
 
 StreamLogger::StreamLogger(const Object &unit, std::ostream &logStream)
-    : mUnit(unit), mLogStream(logStream)
+: 
+    mUnit(unit), 
+    mLogStream(logStream)
 {
 }
 

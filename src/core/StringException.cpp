@@ -2,7 +2,8 @@
 
 // LCOV_EXCL_START
 StringException::StringException(const std::string message)
-    : mMessage(message)
+: 
+    mMessage(message)
 {
 }
 

@@ -1,7 +1,8 @@
 #include "WorldUpdater.hpp"
 
 WorldUpdater::WorldUpdater(World &world)
-    : mWorld(world)
+: 
+    mWorld(world)
 { 
 }
 
