@@ -3,7 +3,7 @@
 // LCOV_EXCL_START
 ASCIIRenderable::ASCIIRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem)
 : 
-    mLogger(*this, logStream), 
+    mLogger("ASCIIRenderable", logStream), 
     mRenderingSystem(renderingSystem)
 {
 }

@@ -1,12 +1,12 @@
 #include "StreamLogger.hpp"
 
-StreamLogger::StreamLogger(const Object &unit)
+StreamLogger::StreamLogger(const std::string unit)
 : 
     StreamLogger(unit, std::cout)
 {
 }
 
-StreamLogger::StreamLogger(const Object &unit, std::ostream &logStream)
+StreamLogger::StreamLogger(const std::string unit, std::ostream &logStream)
 : 
     mUnit(unit), 
     mLogStream(logStream)
@@ -52,7 +52,7 @@ void StreamLogger::log(const Severity &severity, const time_t timestamp,
     const std::string &message) const
 {
     mLogStream << getTimestampString(timestamp) << "|" 
-               << mUnit.unitName() << "|"
+               << mUnit << "|"
                << severityToString(severity) << ": "
                << message << std::endl;
 }

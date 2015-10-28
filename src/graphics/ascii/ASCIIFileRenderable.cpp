@@ -8,7 +8,7 @@ ASCIIFileRenderable::ASCIIFileRenderable(std::ostream &logStream,
     mBitmapLoader(logStream), 
     mBitmap(mBitmapLoader.load(filePath)),
     mPosition(glm::ivec2(0,0)),
-    mLogger(*this, logStream) 
+    mLogger("ASCIIFileRenderable", logStream) 
 {
     assert(filePath.length() > 0 && "File path cannot be empty");
 }

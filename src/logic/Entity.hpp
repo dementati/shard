@@ -8,12 +8,11 @@
 
 #include <glm/glm.hpp>
 
-#include "../core/Object.hpp"
 #include "Need.hpp"
 
 
 // LCOV_EXCL_START
-class Entity : public Object
+class Entity
 {
     std::vector<CopyableNeed> mNeeds;
     glm::ivec2 mPosition;
@@ -33,7 +32,5 @@ public:
     virtual void setPosition(glm::ivec2 position);
 
     virtual const std::string getRenderableId();
-
-    virtual const std::string unitName() const;
 };
 // LCOV_EXCL_STOP

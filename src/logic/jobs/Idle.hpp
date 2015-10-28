@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <string>
 
 #include "../Job.hpp"
 
@@ -11,7 +12,5 @@ public:
     virtual void execute(double dt);
 
     virtual bool hasSucceeded();
-
-    const std::string unitName() const;
 };
 // LCOV_EXCL_STOP

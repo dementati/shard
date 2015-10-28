@@ -4,12 +4,11 @@
 #include <map>
 #include <string>
 
-#include "../core/Object.hpp"
 #include "../utility/BitPattern.hpp"
 #include "../utility/StreamLogger.hpp"
 
 // LCOV_EXCL_START
-class ColorCache : public Object
+class ColorCache
 {
     short mColorIdCounter;
     short mColorPairIdCounter;
@@ -22,8 +21,6 @@ class ColorCache : public Object
 
 public:
     ColorCache();
-
-    const std::string unitName() const;
 
     short getColorId(const short r, const short g, const short b);
 

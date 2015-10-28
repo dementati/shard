@@ -8,7 +8,6 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/core/Object.hpp"
 #include "../../src/utility/StreamLogger.hpp"
 
 #define DEFAULT_TIMESTAMP 1445253011
@@ -16,31 +15,17 @@
 #define DEFAULT_TEST_UNIT_NAME "TestUnit"
 #define DEFAULT_MESSAGE "Test message"
 
-class TestUnit : public Object
-{
-    StreamLogger mDefaultLogger;
-
-public:
-    TestUnit() 
-    : 
-        mDefaultLogger(*this) 
-    {}
-
-    const Logger& logger() const { return mDefaultLogger; }
-
-    const std::string unitName() const { return std::string(DEFAULT_TEST_UNIT_NAME); }
-};
-
 class StreamLoggerTest : public ::testing::Test
 {
 protected:
-    std::streambuf *mStdoutBuffer;
-    const TestUnit mUnit;
+    const std::string mUnit;
     const StreamLogger mLogger;
+    std::streambuf *mStdoutBuffer;
     const std::stringstream mStdoutStream;
 
     StreamLoggerTest()
-    : 
+    :
+        mUnit("TestUnit"),
         mLogger(mUnit)
     {
         // Capture stdout

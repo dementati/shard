@@ -12,13 +12,8 @@ std::string CharBitmapLoader::trimCarriageReturn(std::string line) const
 
 CharBitmapLoader::CharBitmapLoader(std::ostream &logStream)
 : 
-    mLogger(*this, logStream)
+    mLogger("CharBitmapLoader", logStream)
 {
-}
-
-const std::string CharBitmapLoader::unitName() const
-{
-    return std::string("CharBitmapLoader");
 }
 
 CharBitmap CharBitmapLoader::load(std::string filePath) const

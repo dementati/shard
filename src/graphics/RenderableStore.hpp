@@ -4,11 +4,9 @@
 #include <memory>
 #include <string>
 
-#include "../core/Object.hpp"
-
 // LCOV_EXCL_START
 template <class R>
-class RenderableStore : public Object
+class RenderableStore
 {
     std::map<std::string, std::unique_ptr<R>> mStore = std::map<std::string, std::unique_ptr<R>>();
 
@@ -18,8 +16,6 @@ public:
     virtual void add(std::string key, std::unique_ptr<R> renderable);
 
     virtual R& get(const std::string key);
-
-    const std::string unitName() const;
 };
 // LCOV_EXCL_START
 
@@ -43,11 +39,3 @@ R& RenderableStore<R>::get(const std::string key)
 
     return *(mStore[key]);
 }
-
-// LCOV_EXCL_START
-template <class R>
-const std::string RenderableStore<R>::unitName() const
-{
-    return std::string("RenderableStore");
-}
-// LCOV_EXCL_STOP

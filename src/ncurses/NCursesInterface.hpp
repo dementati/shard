@@ -7,13 +7,12 @@
 
 #include <ncurses.h>
 
-#include "../core/Object.hpp"
 #include "../utility/BitPattern.hpp"
 #include "../utility/StreamLogger.hpp"
 #include "ColorCache.hpp"
 #include "NCursesException.hpp"
 
-class NCursesInterface : public Object
+class NCursesInterface
 {
 private:
     StreamLogger mLogger;
@@ -30,8 +29,6 @@ public:
     NCursesInterface(std::ostream &logStream);
 
     virtual ~NCursesInterface();
-
-    const std::string unitName() const;
 
     void refreshScreen();
 

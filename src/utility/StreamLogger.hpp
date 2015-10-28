@@ -7,7 +7,6 @@
 #include <sstream>
 #include <string>
 
-#include "../core/Object.hpp"
 #include "Logger.hpp"
 
 // LCOV_EXCL_START
@@ -22,16 +21,16 @@ enum class Severity
 class StreamLogger : public Logger
 {
 private:
-    const Object &mUnit;
+    const std::string mUnit;
 
     std::ostream &mLogStream;
     
     void log(const Severity &severity, const std::string &message) const;
 
 public:
-    StreamLogger(const Object &unit);
+    StreamLogger(const std::string unit);
 
-    StreamLogger(const Object &unit, std::ostream &logStream);
+    StreamLogger(const std::string unit, std::ostream &logStream);
 
     void debug(const std::string &message) const;
 

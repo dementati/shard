@@ -6,16 +6,9 @@ ColorCache::ColorCache()
     mColorPairIdCounter(0),
     mColorIdMap(std::map<uint64_t, short>()),
     mColorPairIdMap(std::map<uint32_t, short>()),
-    mLogger(*this)
+    mLogger("ColorCache")
 {
 }
-
-// LCOV_EXCL_START
-const std::string ColorCache::unitName() const
-{
-    return "ColorCache";
-}
-// LCOV_EXCL_STOP
 
 short ColorCache::getColorId(const short r, const short g, const short b)
 {

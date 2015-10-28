@@ -9,7 +9,7 @@ NCursesInterface::NCursesInterface()
 
 NCursesInterface::NCursesInterface(std::ostream &logStream)
 : 
-    mLogger(*this, logStream),
+    mLogger("NCursesInterface", logStream),
     mColorCache(ColorCache())
 {
     mLogger.info("Initializing NCurses engine");
@@ -33,11 +33,6 @@ NCursesInterface::~NCursesInterface()
 {
     mLogger.info("Destroying NCurses engine");
     endwin();
-}
-
-const std::string NCursesInterface::unitName() const
-{
-    return "NCursesInterface";
 }
 
 void NCursesInterface::refreshScreen()

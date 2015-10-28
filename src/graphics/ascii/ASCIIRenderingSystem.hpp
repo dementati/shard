@@ -5,11 +5,10 @@
 
 #include <glm/glm.hpp>
 
-#include "../../core/object.hpp"
 #include "../CharBitmap.hpp"
 
 // LCOV_EXCL_START
-class ASCIIRenderingSystem : public Object
+class ASCIIRenderingSystem
 {
     glm::ivec2 mScreenPosition = glm::ivec2(0,0);
 
@@ -17,7 +16,7 @@ protected:
     glm::ivec2 getScreenCoordinates(glm::ivec2 worldCoordinates);
 
 public:
-    const std::string unitName() const;
+    virtual ~ASCIIRenderingSystem();
 
     virtual void drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position) = 0;
 

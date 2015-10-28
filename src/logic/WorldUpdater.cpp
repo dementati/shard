@@ -15,10 +15,3 @@ void WorldUpdater::update(double dt)
         job.execute(dt);
     }
 }
-
-// LCOV_EXCL_START
-const std::string WorldUpdater::unitName() const
-{
-    return std::string("WorldUpdater");
-}
-// LCOV_EXCL_STOP

@@ -10,9 +10,4 @@ bool Idle::hasSucceeded()
 {
     return true;
 }
-
-const std::string Idle::unitName() const 
-{
-    return std::string("Idle");
-}
 // LCOV_EXCL_START

@@ -2,7 +2,6 @@
 
 #include <memory>
 
-#include "../core/Object.hpp"
 #include "../utility/CopyablePolymorphic.hpp"
 #include "Job.hpp"
 
@@ -12,7 +11,7 @@ class Need;
 
 using CopyableNeed = CopyablePolymorphic<Need>;
 
-class Need : public Object
+class Need
 {
 public:
     virtual ~Need() {};

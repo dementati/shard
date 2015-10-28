@@ -4,7 +4,7 @@
 NCursesRenderingSystem::NCursesRenderingSystem(std::ostream& logStream, 
     NCursesInterface& ncurses)
 : 
-    mLogger(*this, logStream), 
+    mLogger("NCursesRenderingSystem", logStream), 
     mNcurses(ncurses)
 {
 }

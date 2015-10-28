@@ -46,9 +46,4 @@ const std::string Entity::getRenderableId()
 {
     return mRenderableId;
 }
-
-const std::string Entity::unitName() const
-{
-    return std::string("Entity");
-}
 // LCOV_EXCL_STOP
