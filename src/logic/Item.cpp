@@ -6,3 +6,13 @@ Item::Item(std::string renderableId, ItemType type)
     mType(type)
 {    
 }
+
+const std::string Item::getRenderableId() const
+{
+    return mRenderableId;
+}
+
+const ItemType Item::getType() const
+{
+    return mType;
+}

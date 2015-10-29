@@ -17,7 +17,5 @@ protected:
 public:
     ASCIIRenderable(ASCIIRenderingSystem &renderingSystem);
 
-    const std::string unitName() const;
-
     virtual void setPosition(glm::ivec2 position) = 0;
 };

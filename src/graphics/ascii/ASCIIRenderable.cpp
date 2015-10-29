@@ -7,9 +7,4 @@ ASCIIRenderable::ASCIIRenderable(ASCIIRenderingSystem &renderingSystem)
     mRenderingSystem(renderingSystem)
 {
 }
-
-const std::string ASCIIRenderable::unitName() const
-{
-    return std::string("ASCIIRenderable");
-}
 // LCOV_EXCL_STOP

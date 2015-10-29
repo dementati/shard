@@ -7,9 +7,13 @@
 
 class Item : public Object
 {
-public:
     const std::string mRenderableId;
     const ItemType mType;
 
+public:
     Item(std::string renderableId, ItemType type);
+
+    const std::string getRenderableId();
+
+    const ItemType getType();
 };

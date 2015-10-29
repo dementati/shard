@@ -15,6 +15,11 @@ CharBitmap::CharBitmap(const char *bitmap, const glm::uvec2 dimensions)
     }
 }
 
+const glm::uvec2 CharBitmap::getDimensions() const
+{
+    return mDimensions;
+}
+
 char CharBitmap::get(const glm::uvec2 position) const
 {
     assert(position.x < mDimensions.x && "x must be within bounds");

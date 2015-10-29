@@ -18,8 +18,6 @@ class NCursesRenderingSystem : public ASCIIRenderingSystem
 public:
     NCursesRenderingSystem(NCursesInterface& ncurses);
 
-    const std::string unitName() const;
-
     void drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position);
 };
 // LCOV_EXCL_STOP
