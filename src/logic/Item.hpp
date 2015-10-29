@@ -13,7 +13,7 @@ class Item : public Object
 public:
     Item(std::string renderableId, ItemType type);
 
-    const std::string getRenderableId();
+    const std::string getRenderableId() const;
 
-    const ItemType getType();
+    const ItemType getType() const;
 };

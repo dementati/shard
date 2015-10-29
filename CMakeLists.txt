@@ -116,6 +116,7 @@ set(TEST_SRC
     test/utility/BitPatternTest.cpp
     test/utility/DateTimeTest.cpp
     test/utility/StreamLoggerTest.cpp
+    test/utility/VariantTest.cpp
 )
 
 # Libraries
