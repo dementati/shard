@@ -40,14 +40,14 @@ void NCursesInterface::draw(const char character, const int x, const int y,
                          const short br, const short bg, const short bb)
 {
     
-    assert(false && "This method hasn't been properly tested.");
+    ASSERT(false, "This method hasn't been properly tested.");
 
-    assert(fr >= 0 && fr <= 1000 && "NCurses color values must be in the range [0, 1000]");
-    assert(fg >= 0 && fg <= 1000 && "NCurses color values must be in the range [0, 1000]");
-    assert(fb >= 0 && fb <= 1000 && "NCurses color values must be in the range [0, 1000]");
-    assert(br >= 0 && br <= 1000 && "NCurses color values must be in the range [0, 1000]");
-    assert(bg >= 0 && bg <= 1000 && "NCurses color values must be in the range [0, 1000]");
-    assert(bb >= 0 && bb <= 1000 && "NCurses color values must be in the range [0, 1000]");
+    ASSERT(fr >= 0 && fr <= 1000, "NCurses color values must be in the range [0, 1000]");
+    ASSERT(fg >= 0 && fg <= 1000, "NCurses color values must be in the range [0, 1000]");
+    ASSERT(fb >= 0 && fb <= 1000, "NCurses color values must be in the range [0, 1000]");
+    ASSERT(br >= 0 && br <= 1000, "NCurses color values must be in the range [0, 1000]");
+    ASSERT(bg >= 0 && bg <= 1000, "NCurses color values must be in the range [0, 1000]");
+    ASSERT(bb >= 0 && bb <= 1000, "NCurses color values must be in the range [0, 1000]");
 
     short frontColorId = getColorId(fr, fg, fb);
     short backColorId = getColorId(br, bg, bb);
@@ -64,9 +64,9 @@ void NCursesInterface::draw(const char character, const int x, const int y)
 
 short NCursesInterface::getColorId(const short r, const short g, const short b)
 {
-    assert(r >= 0 && r <= 1000 && "NCurses color values must be in the range [0, 1000]");
-    assert(g >= 0 && g <= 1000 && "NCurses color values must be in the range [0, 1000]");
-    assert(b >= 0 && b <= 1000 && "NCurses color values must be in the range [0, 1000]");
+    ASSERT(r >= 0 && r <= 1000, "NCurses color values must be in the range [0, 1000]");
+    ASSERT(g >= 0 && g <= 1000, "NCurses color values must be in the range [0, 1000]");
+    ASSERT(b >= 0 && b <= 1000, "NCurses color values must be in the range [0, 1000]");
 
     if(!mColorCache.hasColorId(r, g, b))
     {
@@ -82,8 +82,8 @@ short NCursesInterface::getColorId(const short r, const short g, const short b)
 
 short NCursesInterface::getColorPairId(const short colorId1, const short colorId2)
 {
-    assert(colorId1 >= 0 && "Color IDs must be non-negative");
-    assert(colorId2 >= 0 && "Color IDs must be non-negative");
+    ASSERT(colorId1 >= 0, "Color IDs must be non-negative");
+    ASSERT(colorId2 >= 0, "Color IDs must be non-negative");
 
     if(!mColorCache.hasColorPairId(colorId1, colorId2))
     {

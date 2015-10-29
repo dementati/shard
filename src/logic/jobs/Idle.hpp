@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cassert>
 #include <string>
 
+#include "../../utility/Assert.hpp"
 #include "../Job.hpp"
 
 // LCOV_EXCL_START

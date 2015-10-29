@@ -10,7 +10,7 @@ ASCIIFileRenderable::ASCIIFileRenderable(ASCIIRenderingSystem &renderingSystem,
     mPosition(glm::ivec2(0,0)),
     mLogger(LoggerFactory::createLogger("ASCIIFileRenderable", Severity::DEBUG)) 
 {
-    assert(filePath.length() > 0 && "File path cannot be empty");
+    ASSERT(filePath.length() > 0, "File path cannot be empty");
 }
 
 void ASCIIFileRenderable::draw()

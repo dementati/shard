@@ -18,7 +18,7 @@ CharBitmapLoader::CharBitmapLoader()
 
 CharBitmap CharBitmapLoader::load(std::string filePath) const
 {
-    assert(filePath.length() > 0 && "File path cannot be empty");
+    ASSERT(filePath.length() > 0, "File path cannot be empty");
 
     mLogger->info(std::string("Loading ") + filePath);
 

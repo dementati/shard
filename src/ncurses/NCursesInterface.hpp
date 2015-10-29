@@ -1,12 +1,12 @@
 #pragma once
 
-#include <cassert>
 #include <iostream>
 #include <ostream>
 #include <string>
 
 #include <ncurses.h>
 
+#include "../utility/Assert.hpp"
 #include "../utility/BitPattern.hpp"
 #include "../utility/LoggerFactory.hpp"
 #include "ColorCache.hpp"

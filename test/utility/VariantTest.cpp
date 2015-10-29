@@ -6,6 +6,8 @@ class VariantTest : public ::testing::Test
 {
 };
 
-TEST_F(VariantTest, Test)
+TEST_F(VariantTest, TestInt)
 {
+    Variant v = 1;
+    EXPECT_EQ(1, v.get<int>());
 }

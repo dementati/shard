@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cassert>
 #include <map>
 #include <string>
 
+#include "../utility/Assert.hpp"
 #include "../utility/BitPattern.hpp"
 #include "../utility/LoggerFactory.hpp"
 

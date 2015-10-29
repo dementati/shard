@@ -1,9 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include <glm/glm.hpp>
 
-#include <cassert> 
-#include <vector>
+#include "../utility/Assert.hpp"
 
 class CharBitmap
 {

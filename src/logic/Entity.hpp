@@ -8,6 +8,7 @@
 
 #include <glm/glm.hpp>
 
+#include "../utility/Assert.hpp"
 #include "Need.hpp"
 
 

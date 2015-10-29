@@ -21,7 +21,7 @@ void Entity::add(CopyableNeed need)
 
 Need& Entity::selectNeed()
 {
-    assert(mNeeds.size() != 0 && "Can't select a need from an entity that has no needs.");
+    ASSERT(mNeeds.size() != 0, "Can't select a need from an entity that has no needs.");
 
     std::sort(mNeeds.begin(), mNeeds.end(), [](auto &a, auto &b)
     {

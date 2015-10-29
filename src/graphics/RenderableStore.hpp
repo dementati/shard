@@ -4,6 +4,8 @@
 #include <memory>
 #include <string>
 
+#include "../utility/Assert.hpp"
+
 // LCOV_EXCL_START
 template <class R>
 class RenderableStore
@@ -27,7 +29,7 @@ RenderableStore<R>::~RenderableStore()
 template <class R>
 void RenderableStore<R>::add(std::string key, std::unique_ptr<R> renderable)
 {
-    assert(renderable && "Renderable must not be null.");
+    ASSERT(renderable, "Renderable must not be null.");
 
     mStore[key] = std::move(renderable);
 }
@@ -35,7 +37,7 @@ void RenderableStore<R>::add(std::string key, std::unique_ptr<R> renderable)
 template <class R>
 R& RenderableStore<R>::get(const std::string key)
 {
-    assert(mStore.find(key) != mStore.end() && "Key does not exist");
+    ASSERT(mStore.find(key) != mStore.end(), "Key does not exist");
 
     return *(mStore[key]);
 }

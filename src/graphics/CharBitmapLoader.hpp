@@ -7,6 +7,7 @@
 
 #include "../core/InvalidArgumentException.hpp"
 #include "../core/InvalidFormatException.hpp"
+#include "../utility/Assert.hpp"
 #include "../utility/LoggerFactory.hpp"
 #include "CharBitmap.hpp"
 
