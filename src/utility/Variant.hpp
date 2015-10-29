@@ -41,8 +41,6 @@ class Variant
         std::function<std::shared_ptr<void>(std::shared_ptr<void>)> mCopier;
 };
 
-#pragma once
-    
 template<typename Type>
 Variant::Variant(const Type& data) :
     mStoredType(typeid(data))

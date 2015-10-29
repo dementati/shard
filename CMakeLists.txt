@@ -95,10 +95,13 @@ set(PRODUCTION_SRC
     src/ncurses/ColorCache.cpp
     src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
+    src/utility/algorithm/pathfinding/AStar.cpp
+    src/utility/math/geometry/Box.cpp
     src/utility/BitPattern.cpp
     src/utility/DateTime.cpp
     src/utility/LoggerFactory.cpp
     src/utility/StreamLogger.cpp
+    src/utility/VectorHash.cpp
 )
 
 # Test code
@@ -113,10 +116,13 @@ set(TEST_SRC
     test/logic/WorldTest.cpp
     test/logic/WorldUpdaterTest.cpp
     test/ncurses/ColorCacheTest.cpp
+    test/utility/algorithm/pathfinding/AStarTest.cpp
+    test/utility/math/geometry/BoxTest.cpp
     test/utility/BitPatternTest.cpp
     test/utility/DateTimeTest.cpp
     test/utility/StreamLoggerTest.cpp
     test/utility/VariantTest.cpp
+    test/utility/VectorHashTest.cpp
 )
 
 # Libraries

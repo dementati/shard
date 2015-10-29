@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -9,6 +10,7 @@
 #include <glm/glm.hpp>
 
 #include "../utility/Assert.hpp"
+#include "../utility/Variant.hpp"
 #include "Need.hpp"
 
 
@@ -18,6 +20,7 @@ class Entity
     std::vector<CopyableNeed> mNeeds;
     glm::ivec2 mPosition;
     const std::string mRenderableId;
+    std::map<std::string, Variant> mAttributes;
 
 public:
     Entity(const std::string renderableId);
