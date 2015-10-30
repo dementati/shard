@@ -22,8 +22,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     std::function<bool(glm::ivec2)> isBlocked, Box boundingBox)
 {
     ASSERT(startPosition != stopPosition, "Start and stop positions cannot be the same");
-    ASSERT(boundingBox.getVolume() > 1, 
-        "Bounding box must have room for both a start and a stop position");
+    ASSERT(boundingBox.getVolume() > 1, "Bounding box must have room for both a start and a stop position");
     ASSERT(boundingBox.contains(startPosition), "Bounding box must contain start position");
     ASSERT(boundingBox.contains(stopPosition), "Bounding box must contain stop position");
 
@@ -126,7 +125,9 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
 					break;
 
                 default:
+                    // LCOV_EXCL_START
                     ASSERT(false, "This shouldn't happen");
+                    // LCOV_EXCL_STOP
                     break;
 			}
 
