@@ -101,6 +101,7 @@ set(PRODUCTION_SRC
     src/utility/DateTime.cpp
     src/utility/LoggerFactory.cpp
     src/utility/StreamLogger.cpp
+    src/utility/Variant.cpp
     src/utility/VectorHash.cpp
 )
 
