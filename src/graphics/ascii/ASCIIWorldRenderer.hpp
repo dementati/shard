@@ -6,8 +6,8 @@
 
 class ASCIIWorldRenderer
 {
-    RenderableStore<ASCIIRenderable> &store;
-    World& world;
+    RenderableStore<ASCIIRenderable> &mRenderableStore;
+    World& mWorld;
 
 public:
     ASCIIWorldRenderer(RenderableStore<ASCIIRenderable> &store, World& world);

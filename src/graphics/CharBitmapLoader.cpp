@@ -10,21 +10,17 @@ std::string CharBitmapLoader::trimCarriageReturn(std::string line) const
     return line;
 }
 
-CharBitmapLoader::CharBitmapLoader(std::ostream &logStream)
-    : logger(*this, logStream)
+CharBitmapLoader::CharBitmapLoader()
+: 
+    mLogger(LoggerFactory::createLogger("CharBitmapLoader", Severity::DEBUG))
 {
-}
-
-const std::string CharBitmapLoader::unitName() const
-{
-    return std::string("CharBitmapLoader");
 }
 
 CharBitmap CharBitmapLoader::load(std::string filePath) const
 {
-    assert(filePath.length() > 0 && "File path cannot be empty");
+    ASSERT(filePath.length() > 0, "File path cannot be empty");
 
-    logger.info(std::string("Loading ") + filePath);
+    mLogger->info(std::string("Loading ") + filePath);
 
     std::ifstream file(filePath);
     if(!file.good())
@@ -44,7 +40,7 @@ CharBitmap CharBitmapLoader::load(std::string filePath) const
     int rowCount = 1;
     ss << line;
     
-    int lastLineLength = line.length();
+    auto lastLineLength = line.length();
     while(std::getline(file, line))
     {
         line = trimCarriageReturn(line);

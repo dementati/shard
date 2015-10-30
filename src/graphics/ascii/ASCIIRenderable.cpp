@@ -1,13 +1,10 @@
 #include "ASCIIRenderable.hpp"
 
 // LCOV_EXCL_START
-ASCIIRenderable::ASCIIRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem)
-    : logger(*this, logStream), renderingSystem(renderingSystem)
+ASCIIRenderable::ASCIIRenderable(ASCIIRenderingSystem &renderingSystem)
+: 
+    mLogger(LoggerFactory::createLogger("ASCIIRenderable", Severity::DEBUG)), 
+    mRenderingSystem(renderingSystem)
 {
-}
-
-const std::string ASCIIRenderable::unitName() const
-{
-    return std::string("ASCIIRenderable");
 }
 // LCOV_EXCL_STOP

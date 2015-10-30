@@ -7,6 +7,10 @@
 class Game 
 {
 public:
+    // LCOV_EXCL_START
+    virtual ~Game() {}
+    // LCOV_EXCL_STOP
+
     virtual void update(const double dt) = 0;
 
     virtual void render() const = 0;

@@ -4,41 +4,40 @@
 #include <memory>
 #include <string>
 
-#include "../core/Object.hpp"
+#include "../utility/Assert.hpp"
 
+// LCOV_EXCL_START
 template <class R>
-class RenderableStore : public Object
+class RenderableStore
 {
-    std::map<std::string, std::unique_ptr<R>> store;
+    std::map<std::string, std::unique_ptr<R>> mStore = std::map<std::string, std::unique_ptr<R>>();
 
 public:
-    void add(std::string key, std::unique_ptr<R> renderable);
+    virtual ~RenderableStore();
 
-    R& get(const std::string key);
+    virtual void add(std::string key, std::unique_ptr<R> renderable);
 
-    const std::string unitName() const;
+    virtual R& get(const std::string key);
 };
+// LCOV_EXCL_START
+
+template <class R>
+RenderableStore<R>::~RenderableStore()
+{
+}
 
 template <class R>
 void RenderableStore<R>::add(std::string key, std::unique_ptr<R> renderable)
 {
-    assert(renderable && "Renderable must not be null.");
+    ASSERT(renderable, "Renderable must not be null.");
 
-    store[key] = std::move(renderable);
+    mStore[key] = std::move(renderable);
 }
 
 template <class R>
 R& RenderableStore<R>::get(const std::string key)
 {
-    assert(store.find(key) != store.end() && "Key does not exist");
+    ASSERT(mStore.find(key) != mStore.end(), "Key does not exist");
 
-    return *(store[key]);
+    return *(mStore[key]);
 }
-
-// LCOV_EXCL_START
-template <class R>
-const std::string RenderableStore<R>::unitName() const
-{
-    return std::string("RenderableStore");
-}
-// LCOV_EXCL_STOP

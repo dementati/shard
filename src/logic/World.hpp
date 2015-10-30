@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -7,9 +8,12 @@
 
 class World
 {
+    std::vector<std::unique_ptr<Entity>> mEntities = std::vector<std::unique_ptr<Entity>>();
 
 public:
-    std::vector<Entity> entities;
+    virtual ~World();
 
-    void add(Entity entity);
+    virtual std::vector<std::unique_ptr<Entity>>& getEntities();
+
+    virtual void add(std::unique_ptr<Entity> entity);
 };

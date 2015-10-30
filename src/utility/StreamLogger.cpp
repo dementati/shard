@@ -1,12 +1,10 @@
 #include "StreamLogger.hpp"
 
-StreamLogger::StreamLogger(const Object &unit)
-    : StreamLogger(unit, std::cout)
-{
-}
-
-StreamLogger::StreamLogger(const Object &unit, std::ostream &logStream)
-    : unit(unit), logStream(logStream)
+StreamLogger::StreamLogger(const std::string unit, std::ostream &logStream, const Severity minSeverity)
+: 
+    mUnit(unit), 
+    mLogStream(logStream),
+    mMinSeverity(minSeverity)
 {
 }
 
@@ -48,29 +46,13 @@ void StreamLogger::error(const std::string &message) const
 void StreamLogger::log(const Severity &severity, const time_t timestamp, 
     const std::string &message) const
 {
-    logStream << getTimestampString(timestamp) << "|" 
-              << unit.unitName() << "|"
-              << severityToString(severity) << ": "
-              << message << std::endl;
-}
-
-const std::string StreamLogger::getTimestampString(const time_t time) const
-{
-    struct tm *timeStruct = localtime(&time);
-    std::stringstream ss;
-    ss << (timeStruct->tm_year + 1900) 
-       << "-" 
-       << (timeStruct->tm_mon + 1)
-       << "-" 
-       << (timeStruct->tm_mday)
-       << " "
-       << (timeStruct->tm_hour)
-       << ":"
-       << (timeStruct->tm_min)
-       << ":"
-       << (timeStruct->tm_sec);
-
-    return ss.str();
+    if(severity >= mMinSeverity)
+    {
+        mLogStream << DateTime::getTimestampString(timestamp) << "|" 
+                   << mUnit << "|"
+                   << severityToString(severity) << ": "
+                   << message << std::endl;
+    }
 }
 
 std::string StreamLogger::severityToString(const Severity &severity)
@@ -81,5 +63,9 @@ std::string StreamLogger::severityToString(const Severity &severity)
         case Severity::INFO: return std::string("INFO");
         case Severity::WARN: return std::string("WARN");
         case Severity::ERROR: return std::string("ERROR");
+
+        // LCOV_EXCL_START
+        default: assert(false && "Severity not handled");
+        // LCOV_EXCL_STOP
     }
 }

@@ -1,12 +1,17 @@
 #pragma once
 
-#include "../core/Object.hpp"
+#include <memory>
+
+#include "../utility/CopyablePolymorphic.hpp"
 #include "Job.hpp"
 
 class World;
 class Entity;
+class Need;
 
-class Need : public Object
+using CopyableNeed = CopyablePolymorphic<Need>;
+
+class Need
 {
 public:
     virtual ~Need() {};

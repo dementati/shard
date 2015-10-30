@@ -6,8 +6,15 @@ set (Shard_VERSION_MAJOR 0)
 set (Shard_VERSION_MINOR 0)
 set (Shard_VERSION_PATCH 1)
 
+# Set compiler
+set(CMAKE_CXX_COMPILER /usr/bin/g++.exe)
+set(CMAKE_C_COMPILER /usr/bin/gcc.exe)
+
 # Set custom CMake modules path
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
+
+# C++ compile features
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -Dgtest_disable_pthreads=ON")
 
 # Google mock
 set (GMOCK_ROOT "" CACHE PATH "Path to Google Mock")
@@ -15,13 +22,13 @@ set (GMOCK_INCLUDE_DIRS "${GMOCK_ROOT}/include")
 set (GMOCK_LIB ${GMOCK_ROOT}/libgmock.a)
 set (GMOCK_MAIN_LIB ${GMOCK_ROOT/libgmock_main.a})
 set (GMOCK_BOTH_LIBRARIES ${GMOCK_ROOT}/libgmock.a ${GMOCK_ROOT}/libgmock_main.a)
-include_directories(${GMOCK_INCLUDE_DIRS})
+include_directories(SYSTEM ${GMOCK_INCLUDE_DIRS})
 
 # Google testing framework
 set (GTEST_ROOT ${GMOCK_ROOT}/gtest)
 enable_testing()
 find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 
 # NCurses
 find_package(Curses REQUIRED)
@@ -29,14 +36,38 @@ include_directories(${CURSES_INCLUDE_DIRS})
 
 # Code coverage
 include(CodeCoverage)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
+set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
 
 # GLM
 set(GLM_ROOT "" CACHE PATH "Path to GLM")
-include_directories(${GLM_ROOT})
+include_directories(SYSTEM ${GLM_ROOT})
 
-# Compiler flags
-set(CMAKE_CXX_FLAGS_DEBUG "-g --coverage")
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "--coverage")
+# Debug symbols 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
+# Warning flags
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O -Wall -Weffc++ -pedantic  \
+    -pedantic-errors -Wextra -Wcast-align \
+    -Wcast-qual  -Wchar-subscripts  -Wcomment -Wconversion \
+    -Wdisabled-optimization \
+    -Werror -Wfloat-equal  -Wformat  -Wformat=2 \
+    -Wformat-nonliteral -Wformat-security  \
+    -Wformat-y2k \
+    -Wimport  -Winit-self \
+    -Winvalid-pch   \
+    -Wlong-long -Wmissing-braces \
+    -Wmissing-field-initializers -Wmissing-format-attribute   \
+    -Wmissing-include-dirs -Wmissing-noreturn \
+    -Wpacked -Wparentheses  -Wpointer-arith \
+    -Wredundant-decls -Wreturn-type \
+    -Wsequence-point  -Wshadow -Wsign-compare  -Wstack-protector \
+    -Wstrict-aliasing -Wstrict-aliasing=2 -Wswitch  -Wswitch-default \
+    -Wswitch-enum -Wtrigraphs  -Wuninitialized \
+    -Wunknown-pragmas  -Wunreachable-code -Wunused \
+    -Wunused-function  -Wunused-label  -Wunused-parameter \
+    -Wunused-value  -Wunused-variable  -Wvariadic-macros \
+    -Wvolatile-register-var  -Wwrite-strings")
 
 # Log level
 add_definitions(-DLOG_LEVEL_DEBUG)
@@ -56,6 +87,7 @@ set(PRODUCTION_SRC
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
+    src/logic/jobs/Idle.cpp
     src/logic/needs/Thirst.cpp
     src/logic/Entity.cpp
     src/logic/World.cpp
@@ -63,8 +95,14 @@ set(PRODUCTION_SRC
     src/ncurses/ColorCache.cpp
     src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
+    src/utility/algorithm/pathfinding/AStar.cpp
+    src/utility/math/geometry/Box.cpp
     src/utility/BitPattern.cpp
+    src/utility/DateTime.cpp
+    src/utility/LoggerFactory.cpp
     src/utility/StreamLogger.cpp
+    src/utility/Variant.cpp
+    src/utility/VectorHash.cpp
 )
 
 # Test code
@@ -75,18 +113,23 @@ set(TEST_SRC
     test/graphics/CharBitmapLoaderTest.cpp
     test/graphics/RenderableStoreTest.cpp
     test/logic/EntityTest.cpp
+    test/logic/ThirstTest.cpp
+    test/logic/WorldTest.cpp
+    test/logic/WorldUpdaterTest.cpp
     test/ncurses/ColorCacheTest.cpp
+    test/utility/algorithm/pathfinding/AStarTest.cpp
+    test/utility/math/geometry/BoxTest.cpp
     test/utility/BitPatternTest.cpp
+    test/utility/DateTimeTest.cpp
     test/utility/StreamLoggerTest.cpp
+    test/utility/VariantTest.cpp
+    test/utility/VectorHashTest.cpp
 )
 
 # Libraries
 set(PRODUCTION_LIBRARIES ${CURSES_LIBRARIES})
 set(TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} ${GMOCK_BOTH_LIBRARIES} ${CURSES_LIBRARIES})
 
-# C++ compile features
-# set(CXX_COMPILE_FEATURES cxx_nullptr)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -Dgtest_disable_pthreads=ON")
 
 # Main target
 add_executable(Shard ${MAIN_SRC} ${PRODUCTION_SRC})
@@ -105,3 +148,6 @@ setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR
 add_executable(NCursesTestApp test/manual/NCursesTestApp.cpp ${PRODUCTION_SRC})
 target_link_libraries(NCursesTestApp ${CURSES_LIBRARIES})
 target_compile_features(NCursesTestApp PRIVATE ${CXX_COMPILE_FEATURES})
+
+# Build test app
+add_executable(BuildTestApp test/manual/BuildTestApp.cpp)

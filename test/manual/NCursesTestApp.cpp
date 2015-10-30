@@ -34,11 +34,12 @@ int main()
             renderableStore.add("test", std::make_unique<ASCIIFileRenderable>(logFile, system, SIZE_2x2_FILE_PATH));
             */
 
-            Entity testEntity("test");
-            testEntity.position = glm::ivec2(10, 30);
+            /*
+            std::shared_ptr<Entity> testEntity = std::make_shared<Entity>("test");
+            testEntity->setPosition(glm::ivec2(10, 30));
 
             World world;
-            world.add(std::move(testEntity));
+            world.add(testEntity);
 
             testEntity.addNeed(std::make_unique<Thirst>(world, testEntity));
 
@@ -47,6 +48,7 @@ int main()
             //ASCIIWorldRenderer worldRenderer(renderableStore, world);
 
             worldUpdater.update(1);
+            */
             /*
             worldRenderer.render();
 

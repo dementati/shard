@@ -2,9 +2,19 @@
 
 #include <string>
 
+enum class Severity
+{
+    DEBUG = 0,
+    INFO = 1,
+    WARN = 2,
+    ERROR = 3
+};
+
 class Logger
 {
 public:
+    virtual ~Logger() {};
+
     virtual void debug(const std::string &message) const = 0;
 
     virtual void info(const std::string &message) const = 0;

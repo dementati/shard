@@ -3,21 +3,19 @@
 #include <ostream>
 #include <string>
 
-#include "../../utility/StreamLogger.hpp"
+#include "../../utility/LoggerFactory.hpp"
 #include "../Renderable.hpp"
 #include "ASCIIRenderingSystem.hpp"
 
 class ASCIIRenderable : public Renderable
 {
-    StreamLogger logger;
+    std::unique_ptr<Logger> mLogger;
 
 protected:
-    ASCIIRenderingSystem &renderingSystem;
+    ASCIIRenderingSystem &mRenderingSystem;
 
 public:
-    ASCIIRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem);
-
-    const std::string unitName() const;
+    ASCIIRenderable(ASCIIRenderingSystem &renderingSystem);
 
     virtual void setPosition(glm::ivec2 position) = 0;
 };

@@ -1,25 +1,23 @@
 #include "NCursesRenderingSystem.hpp"
 
 // LCOV_EXCL_START <- Manual testing required
-NCursesRenderingSystem::NCursesRenderingSystem(std::ostream& logStream, NCursesInterface& ncurses)
-    : logger(*this, logStream), ncurses(ncurses)
+NCursesRenderingSystem::NCursesRenderingSystem(NCursesInterface& ncurses)
+: 
+    mLogger(LoggerFactory::createLogger("NCursesRenderingSystem", Severity::DEBUG)), 
+    mNcurses(ncurses)
 {
-}
-
-const std::string NCursesRenderingSystem::unitName() const
-{
-    return std::string("NCursesRenderingSystem");
 }
 
 void NCursesRenderingSystem::drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position)
 {
     glm::ivec2 screenPosition = getScreenCoordinates(position);
 
-    for(int ry = 0; ry < bitmap.dimensions.y; ry++)
+    for(unsigned int ry = 0; ry < bitmap.getDimensions().y; ry++)
     {
-        for(int rx = 0; rx < bitmap.dimensions.x; rx++)
+        for(unsigned int rx = 0; rx < bitmap.getDimensions().x; rx++)
         {
-            ncurses.draw(bitmap.get(glm::uvec2(rx, ry)), screenPosition.x + rx, screenPosition.y + ry); 
+            mNcurses.draw(bitmap.get(glm::uvec2(rx, ry)), 
+                screenPosition.x + rx, screenPosition.y + ry); 
         }
     }
 }

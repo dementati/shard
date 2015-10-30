@@ -7,20 +7,20 @@
 
 #include "../core/InvalidArgumentException.hpp"
 #include "../core/InvalidFormatException.hpp"
-#include "../core/Object.hpp"
-#include "../utility/StreamLogger.hpp"
+#include "../utility/Assert.hpp"
+#include "../utility/LoggerFactory.hpp"
 #include "CharBitmap.hpp"
 
-class CharBitmapLoader : public Object
+// LCOV_EXCL_START
+class CharBitmapLoader
 {
-    StreamLogger logger;
+    std::unique_ptr<Logger> mLogger;
 
     std::string trimCarriageReturn(std::string line) const;
 
 public:
-    CharBitmapLoader(std::ostream &logStream);
-
-    const std::string unitName() const;
+    CharBitmapLoader();
 
     CharBitmap load(const std::string filePath) const;
 };
+// LCOV_EXCL_STOP

@@ -2,32 +2,39 @@
 
 #include <algorithm>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include <glm/glm.hpp>
 
-#include "../core/Object.hpp"
+#include "../utility/Assert.hpp"
+#include "../utility/Variant.hpp"
 #include "Need.hpp"
 
+
 // LCOV_EXCL_START
-class Entity : public Object
+class Entity
 {
-    std::vector<std::unique_ptr<Need>> needs;
+    std::vector<CopyableNeed> mNeeds;
+    glm::ivec2 mPosition;
+    const std::string mRenderableId;
+    std::map<std::string, Variant> mAttributes;
 
 public:
-    glm::ivec2 position;
-    const std::string renderableId;
-
     Entity(const std::string renderableId);
 
-    Entity(Entity&& entity);
+    virtual ~Entity();
 
-    void addNeed(std::unique_ptr<Need>);
+    virtual void add(CopyableNeed need);
 
-    Need& selectNeed();
+    virtual Need& selectNeed();
 
-    const std::string unitName() const;
+    virtual glm::ivec2 getPosition();
+
+    virtual void setPosition(glm::ivec2 position);
+
+    virtual const std::string getRenderableId();
 };
 // LCOV_EXCL_STOP

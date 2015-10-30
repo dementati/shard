@@ -1,65 +1,63 @@
 #include "ColorCache.hpp"
 
 ColorCache::ColorCache()
-    : logger(*this), colorIdCounter(0), colorPairIdCounter(0)
+: 
+    mColorIdCounter(0), 
+    mColorPairIdCounter(0),
+    mColorIdMap(std::map<uint64_t, short>()),
+    mColorPairIdMap(std::map<uint32_t, short>()),
+    mLogger(LoggerFactory::createLogger("ColorCache", Severity::DEBUG))
 {
 }
 
-// LCOV_EXCL_START
-const std::string ColorCache::unitName() const
+short ColorCache::getColorId(const short r, const short g, const short b)
 {
-    return "ColorCache";
-}
-// LCOV_EXCL_STOP
-
-const short ColorCache::getColorId(const short r, const short g, const short b)
-{
-    assert(sizeof(r) == 2 && "r must be a 16-bit integer");
-    assert(sizeof(g) == 2 && "g must be a 16-bit integer");
-    assert(sizeof(b) == 2 && "b must be a 16-bit integer");
+    ASSERT(sizeof(r) == 2, "r must be a 16-bit integer");
+    ASSERT(sizeof(g) == 2, "g must be a 16-bit integer");
+    ASSERT(sizeof(b) == 2, "b must be a 16-bit integer");
 
     uint64_t hash = BitPattern::concatenate(r, g, b);
-    if(colorIdMap.find(hash) == colorIdMap.end())
+    if(mColorIdMap.find(hash) == mColorIdMap.end())
     {
-        colorIdMap[hash] = colorIdCounter;
-        colorIdCounter++;
+        mColorIdMap[hash] = mColorIdCounter;
+        mColorIdCounter++;
     }
 
-    return colorIdMap[hash];
+    return mColorIdMap[hash];
 }
 
-const bool ColorCache::hasColorId(const short r, const short g, const short b)
+bool ColorCache::hasColorId(const short r, const short g, const short b)
 {
-    assert(sizeof(r) == 2 && "r must be a 16-bit integer");
-    assert(sizeof(g) == 2 && "g must be a 16-bit integer");
-    assert(sizeof(b) == 2 && "b must be a 16-bit integer");
+    ASSERT(sizeof(r) == 2, "r must be a 16-bit integer");
+    ASSERT(sizeof(g) == 2, "g must be a 16-bit integer");
+    ASSERT(sizeof(b) == 2, "b must be a 16-bit integer");
 
     uint64_t hash = BitPattern::concatenate(r, g, b);
-    return colorIdMap.find(hash) != colorIdMap.end();
+    return mColorIdMap.find(hash) != mColorIdMap.end();
 }
 
-const short ColorCache::getColorPairId(const short colorId1, const short colorId2)
+short ColorCache::getColorPairId(const short colorId1, const short colorId2)
 {
-    assert(sizeof(colorId1) == 2 && "colorId1 must be a 16-bit integer");
-    assert(sizeof(colorId2) == 2 && "colorId2 must be a 16-bit integer");
-    assert(colorId1 != colorId2 && "A pair must consist of distinct colors");
+    ASSERT(sizeof(colorId1) == 2, "colorId1 must be a 16-bit integer");
+    ASSERT(sizeof(colorId2) == 2, "colorId2 must be a 16-bit integer");
+    ASSERT(colorId1 != colorId2, "A pair must consist of distinct colors");
 
     uint32_t hash = BitPattern::concatenate(colorId1, colorId2);
-    if(colorPairIdMap.find(hash) == colorPairIdMap.end())
+    if(mColorPairIdMap.find(hash) == mColorPairIdMap.end())
     {
-        colorPairIdMap[hash] = colorPairIdCounter;
-        colorPairIdCounter++;
+        mColorPairIdMap[hash] = mColorPairIdCounter;
+        mColorPairIdCounter++;
     }
 
-    return colorPairIdMap[hash];
+    return mColorPairIdMap[hash];
 }
 
-const bool ColorCache::hasColorPairId(const short colorId1, const short colorId2)
+bool ColorCache::hasColorPairId(const short colorId1, const short colorId2)
 {
-    assert(sizeof(colorId1) == 2 && "colorId1 must be a 16-bit integer");
-    assert(sizeof(colorId2) == 2 && "colorId2 must be a 16-bit integer");
-    assert(colorId1 != colorId2 && "A pair must consist of distinct colors");
+    ASSERT(sizeof(colorId1) == 2, "colorId1 must be a 16-bit integer");
+    ASSERT(sizeof(colorId2) == 2, "colorId2 must be a 16-bit integer");
+    ASSERT(colorId1 != colorId2, "A pair must consist of distinct colors");
 
     uint32_t hash = BitPattern::concatenate(colorId1, colorId2);
-    return colorPairIdMap.find(hash) != colorPairIdMap.end();
+    return mColorPairIdMap.find(hash) != mColorPairIdMap.end();
 }

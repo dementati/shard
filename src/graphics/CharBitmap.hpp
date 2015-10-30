@@ -1,18 +1,21 @@
 #pragma once
 
+#include <vector>
+
 #include <glm/glm.hpp>
 
-#include <cassert> 
-#include <vector>
+#include "../utility/Assert.hpp"
 
 class CharBitmap
 {
-    std::vector<char> buffer;
+    std::vector<char> mBuffer;
+
+    const glm::uvec2 mDimensions;
 
 public:
-    const glm::uvec2 dimensions;
-
     CharBitmap(const char *bitmap, const glm::uvec2 dimensions);
 
-    const char get(const glm::uvec2 position) const;
+    const glm::uvec2 getDimensions() const;
+
+    char get(const glm::uvec2 position) const;
 };

@@ -2,17 +2,16 @@
 
 #include <string>
 
-#include "../core/Object.hpp"
 #include "World.hpp"
 
-class WorldUpdater : public Object
+// LCOV_EXCL_START
+class WorldUpdater
 {
-    World &world;
+    World &mWorld;
 
 public:
     WorldUpdater(World &world);
 
     void update(double dt);
-
-    const std::string unitName() const;
 };
+// LCOV_EXCL_STOP

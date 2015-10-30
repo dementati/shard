@@ -4,6 +4,7 @@
 
 #include "Game.hpp"
 
+// LCOV_EXCL_START
 class SimpleGame : public Game 
 {
 public:
@@ -11,3 +12,4 @@ public:
 
     void render() const;
 };
+// LCOV_EXCL_STOP

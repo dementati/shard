@@ -7,26 +7,29 @@
 
 #include "../../core/InvalidArgumentException.hpp"
 #include "../../core/InvalidFormatException.hpp"
-#include "../../utility/StreamLogger.hpp"
+#include "../../utility/Assert.hpp"
+#include "../../utility/LoggerFactory.hpp"
 #include "../CharBitmap.hpp"
 #include "../CharBitmapLoader.hpp"
 #include "ASCIIRenderingSystem.hpp"
 #include "ASCIIRenderable.hpp"
 
+// LCOV_EXCL_START
 class ASCIIFileRenderable : public ASCIIRenderable
 {
-    CharBitmapLoader bitmapLoader;
+    CharBitmapLoader mBitmapLoader;
 
-    CharBitmap bitmap;
+    CharBitmap mBitmap;
 
-    glm::ivec2 position;
+    glm::ivec2 mPosition;
 
-    StreamLogger logger;
+    std::unique_ptr<Logger> mLogger;
 
 public:
-    ASCIIFileRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem, std::string filePath);
+    ASCIIFileRenderable(ASCIIRenderingSystem &renderingSystem, std::string filePath);
 
     void draw();
 
     void setPosition(glm::ivec2 position);
 };
+// LCOV_EXCL_START

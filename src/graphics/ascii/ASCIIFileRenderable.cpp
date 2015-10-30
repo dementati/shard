@@ -1,23 +1,26 @@
 #include "ASCIIFileRenderable.hpp"
 
 // LCOV_EXCL_START
-ASCIIFileRenderable::ASCIIFileRenderable(std::ostream &logStream, ASCIIRenderingSystem &renderingSystem, std::string filePath)
-    : ASCIIRenderable(logStream, renderingSystem), 
-      bitmapLoader(logStream), 
-      logger(*this, logStream), 
-      bitmap(bitmapLoader.load(filePath))
+ASCIIFileRenderable::ASCIIFileRenderable(ASCIIRenderingSystem &renderingSystem, 
+    std::string filePath)
+: 
+    ASCIIRenderable(renderingSystem), 
+    mBitmapLoader(), 
+    mBitmap(mBitmapLoader.load(filePath)),
+    mPosition(glm::ivec2(0,0)),
+    mLogger(LoggerFactory::createLogger("ASCIIFileRenderable", Severity::DEBUG)) 
 {
-    assert(filePath.length() > 0 && "File path cannot be empty");
+    ASSERT(filePath.length() > 0, "File path cannot be empty");
 }
 
 void ASCIIFileRenderable::draw()
 {
-    renderingSystem.drawBitmap(bitmap, position);
+    mRenderingSystem.drawBitmap(mBitmap, mPosition);
 }
 
 void ASCIIFileRenderable::setPosition(glm::ivec2 position)
 {
-    this->position = position;
+    mPosition = position;
 }
 // LCOV_EXCL_STOP
 
