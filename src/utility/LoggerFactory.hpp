@@ -1,8 +1,12 @@
 #pragma once
 
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <string>
+
+#define GLM_FORCE_RADIANS
+#include <glm/gtx/string_cast.hpp>
 
 #include "Logger.hpp"
 #include "StreamLogger.hpp"

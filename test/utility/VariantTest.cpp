@@ -11,8 +11,5 @@ class VariantTest : public ::testing::Test
 TEST_F(VariantTest, TestInt)
 {
     Variant v = 1;
-    Variant v2 = v;
-    v.set(2);
-    EXPECT_EQ(2, v.get<int>());
     EXPECT_EQ(1, v2.get<int>());
 }
