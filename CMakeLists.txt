@@ -78,6 +78,7 @@ set(MAIN_SRC src/core/main.cpp)
 set(PRODUCTION_SRC 
     src/core/InvalidArgumentException.cpp
     src/core/InvalidFormatException.cpp
+    src/core/RNG.cpp
     src/core/SimpleGame.cpp
     src/core/StringException.cpp
     src/graphics/ascii/ncurses/NCursesRenderingSystem.cpp
@@ -87,16 +88,22 @@ set(PRODUCTION_SRC
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
+    src/logic/jobs/FindWater.cpp
     src/logic/jobs/Idle.cpp
+    src/logic/jobs/Move.cpp
+    src/logic/jobs/Wander.cpp
     src/logic/needs/Thirst.cpp
     src/logic/Entity.cpp
+    src/logic/GameObject.cpp
     src/logic/World.cpp
     src/logic/WorldUpdater.cpp
     src/ncurses/ColorCache.cpp
     src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
     src/utility/algorithm/pathfinding/AStar.cpp
+    src/utility/algorithm/Pathfinding.cpp
     src/utility/math/geometry/Box.cpp
+    src/utility/math/Math.cpp
     src/utility/BitPattern.cpp
     src/utility/DateTime.cpp
     src/utility/LoggerFactory.cpp
@@ -112,13 +119,16 @@ set(TEST_SRC
     test/graphics/CharBitmapTest.cpp
     test/graphics/CharBitmapLoaderTest.cpp
     test/graphics/RenderableStoreTest.cpp
+    test/logic/jobs/MoveTest.cpp
+    test/logic/jobs/WanderTest.cpp
+    test/logic/needs/ThirstTest.cpp
     test/logic/EntityTest.cpp
-    test/logic/ThirstTest.cpp
     test/logic/WorldTest.cpp
     test/logic/WorldUpdaterTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/algorithm/pathfinding/AStarTest.cpp
     test/utility/math/geometry/BoxTest.cpp
+    test/utility/math/MathTest.cpp
     test/utility/BitPatternTest.cpp
     test/utility/DateTimeTest.cpp
     test/utility/StreamLoggerTest.cpp

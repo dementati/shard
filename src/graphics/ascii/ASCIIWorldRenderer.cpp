@@ -9,10 +9,15 @@ ASCIIWorldRenderer::ASCIIWorldRenderer(RenderableStore<ASCIIRenderable> &store, 
 
 void ASCIIWorldRenderer::render() const
 {
-    for(std::unique_ptr<Entity> &entity : mWorld.getEntities())
+    for(std::unique_ptr<Entity> &entityPtr : mWorld.getEntities())
     {
-        ASCIIRenderable& renderable = mRenderableStore.get(entity->getRenderableId());
-        renderable.setPosition(entity->getPosition());
+        Entity &entity = *entityPtr;
+        ASSERT(entity.hasAttribute("renderableId"), "Entity lacks renderableId");
+        ASSERT(entity.hasAttribute("position"), "Entity lacks position");
+
+        ASCIIRenderable& renderable = 
+            mRenderableStore.get(entity["renderableId"].get<std::string>());
+        renderable.setPosition(entity["position"].get<glm::ivec2>());
         renderable.draw();
     }
 }

@@ -29,21 +29,29 @@ protected:
     MockRenderableType mRenderable;
     MockRenderableStoreType mStore;
     MockWorldType mWorld;
+    Variant mTestRenderableId;
+    Variant mTestPosition;
     std::vector<std::unique_ptr<Entity>> mEntities;
     ASCIIWorldRenderer mRenderer;
 
     ASCIIWorldRendererTest()
     : 
+        mTestRenderableId(std::string("test")),
+        mTestPosition(glm::ivec2(1, 1)),
         mRenderer(mStore, mWorld)
     {
         ON_CALL(mStore, get(StrEq("test")))
             .WillByDefault(ReturnRef(mRenderable));
 
         auto entity = std::make_unique<MockEntityType>();
-        ON_CALL(*entity, getRenderableId())
-            .WillByDefault(Return(std::string("test")));
-        ON_CALL(*entity, getPosition())
-            .WillByDefault(Return(glm::ivec2(1, 1)));
+        ON_CALL(*entity, hasAttribute(StrEq("renderableId")))
+            .WillByDefault(Return(true));
+        ON_CALL(*entity, getAttribute(StrEq("renderableId")))
+            .WillByDefault(ReturnRef(mTestRenderableId));
+        ON_CALL(*entity, hasAttribute(StrEq("position")))
+            .WillByDefault(Return(true));
+        ON_CALL(*entity, getAttribute(StrEq("position")))
+            .WillByDefault(ReturnRef(mTestPosition));
         mEntities.push_back(std::move(entity));
 
         ON_CALL(mWorld, getEntities())

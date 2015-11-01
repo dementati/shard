@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "../../utility/Assert.hpp"
+#include "../jobs/FindWater.hpp"
 #include "../jobs/Idle.hpp"
 #include "../Job.hpp"
 #include "../Need.hpp"
@@ -10,24 +12,14 @@
 // LCOV_EXCL_START
 class Thirst : public Need
 {
-    unsigned int mThirst;
     World &mWorld;
     Entity &mOwner;
-
-    // Jobs
-    Idle mIdle;
 
 public:
     Thirst(World &world, Entity &owner);
 
-    const std::string unitName() const;
+    virtual int getIntensity();
 
-    int getIntensity();
-
-    Job& getJob();
-
-    World& getWorld();
-
-    Entity& getOwner();
+    virtual void execute(unsigned int dt);
 };
 // LCOV_EXCL_STOP

@@ -76,6 +76,13 @@ TEST_F(BoxTest, DoesNotContain_T2x0_P0x0_D2x1)
     EXPECT_FALSE(box.contains(glm::ivec2(2, 0)));
 }
 
+TEST_F(BoxTest, DoesNotContain_T1x0_PMinus1xMinus1_D2x2)
+{
+    Box box(glm::ivec2(-1, -1), glm::uvec2(2, 2));
+
+    EXPECT_FALSE(box.contains(glm::ivec2(1, 0)));
+}
+
 TEST_F(BoxTest, GetVolume_D1x1)
 {
     Box box(glm::ivec2(0, 0), glm::uvec2(1, 1));
@@ -96,3 +103,5 @@ TEST_F(BoxTest, GetVolume_D2x2)
 
     EXPECT_EQ(4, box.getVolume());
 }
+
+

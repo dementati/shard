@@ -1,17 +1,31 @@
 #pragma once
 
+#include <functional>
 #include <string>
 
+#include "../../utility/math/Math.hpp"
+#include "../Entity.hpp"
 #include "../Job.hpp"
+#include "../World.hpp"
+#include "Move.hpp"
+#include "Wander.hpp"
 
 class FindWater : public Job
 {
-    Need &mNeed;
+    World &mWorld;
+    Entity &mOwner;
+    RNG mRng;
 
 public:
-    FindWater(Need &need);
+    FindWater(World &world, Entity &owner);
 
-    void execute(double dt);
+    virtual void execute(unsigned int dt);
 
-    bool hasSucceeded();
+    virtual GameObject* getClosestWaterInRange();
+
+    virtual unsigned int getDistance(GameObject &item);
+
+    virtual unsigned int getPerception();
+
+    virtual void consume(GameObject &item);
 };

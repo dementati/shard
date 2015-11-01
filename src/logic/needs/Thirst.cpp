@@ -2,36 +2,29 @@
 
 Thirst::Thirst(World &world, Entity &owner)
 : 
-    mThirst(0), 
     mWorld(world), 
-    mOwner(owner),
-    mIdle(Idle())
+    mOwner(owner)
 {
+    ASSERT(owner.hasAttribute("thirst"), "Owner must have the thirst attribute");
+    ASSERT(owner.getAttribute("thirst").isOfType<int>(), "Owner thirst attribute must be an int");
 }
 
-// LCOV_EXCL_START
-const std::string Thirst::unitName() const
+void Thirst::execute(unsigned int dt)
 {
-    return std::string("Thirst");
+    if(getIntensity() == 0)
+    {
+        Idle idle;
+        idle.execute(dt);
+    } 
+    else 
+    {
+        FindWater findWater(mWorld, mOwner);
+        findWater.execute(dt);
+    }
 }
-// LCOV_EXCL_STOP
 
 int Thirst::getIntensity()
 {
-    return 0;
-}
-
-Job& Thirst::getJob()
-{
-    return mIdle;
-}
-
-World& Thirst::getWorld()
-{
-    return mWorld;
-}
-
-Entity& Thirst::getOwner()
-{
-    return mOwner;
+    Variant thirst = mOwner.getAttribute("thirst");
+    return thirst.get<int>();
 }

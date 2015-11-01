@@ -9,7 +9,7 @@ class MockEntity : public Entity
 public:
     MockEntity()
     : 
-        Entity(std::string("")) 
+        Entity() 
     {}
 
     virtual void addNeed(std::unique_ptr<Need> need)
@@ -20,13 +20,11 @@ public:
 
     MOCK_METHOD0(selectNeed, Need&());
 
-    MOCK_METHOD0(getPosition, glm::ivec2());
+    MOCK_METHOD1(hasAttribute, bool(std::string));
 
-    MOCK_METHOD1(setPosition, void(glm::ivec2));
+    MOCK_METHOD1(getAttribute, Variant&(std::string));
 
-    MOCK_METHOD0(getRenderableId, const std::string());
-
-    MOCK_CONST_METHOD0(unitName, const std::string());
+    virtual Variant& operator[](const std::string attributeId) { return getAttribute(attributeId); };
 };
 
 template<class EntityType>
@@ -45,12 +43,6 @@ public:
     void add(CopyableNeed need) { return mEntity->add(need); }
 
     Need& selectNeed() { return mEntity->selectNeed(); }
-
-    void setPosition(glm::ivec2 position) { mEntity->setPosition(position); }
-
-    const std::string getRenderableId() { return mEntity->getRenderableId(); }
-
-    const std::string unitName() const { return mEntity->unitName(); }
 
     EntityType& get()
     {

@@ -1,13 +1,8 @@
 #include "Idle.hpp"
 
 // LCOV_EXCL_START
-void Idle::execute(double dt)
+void Idle::execute(unsigned int dt)
 {
-    ASSERT(dt >= 0, "Delta time must be non-negative");
-}
-
-bool Idle::hasSucceeded() 
-{
-    return true;
+    ASSERT(dt == dt, "");
 }
 // LCOV_EXCL_START

@@ -12,6 +12,6 @@ class WorldUpdater
 public:
     WorldUpdater(World &world);
 
-    void update(double dt);
+    void update(unsigned int dt);
 };
 // LCOV_EXCL_STOP

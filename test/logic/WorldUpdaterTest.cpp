@@ -21,16 +21,12 @@ protected:
     MockWorldType mWorld;
     std::vector<std::unique_ptr<Entity>> mEntities;
     MockNeedType mNeed;
-    MockJobType mJob;
     WorldUpdater mUpdater;
 
     WorldUpdaterTest()
     :
         mUpdater(mWorld)
     {
-        ON_CALL(mNeed, getJob())
-            .WillByDefault(ReturnRef(mJob));
-
         auto entity = std::make_unique<MockEntityType>();
         ON_CALL(*entity, selectNeed())
             .WillByDefault(ReturnRef(mNeed));
@@ -43,7 +39,7 @@ protected:
 
 TEST_F(WorldUpdaterTest, SelectedNeedJobGetsExecuted)
 {
-    EXPECT_CALL(mJob, execute(0))
+    EXPECT_CALL(mNeed, execute(0))
         .Times(1);
 
     mUpdater.update(0);

@@ -12,8 +12,8 @@ bool Box::contains(glm::ivec2 position)
 {
     return position.x >= mPosition.x 
         && position.y >= mPosition.y
-        && mPosition.x + (int)mDimensions.x > position.x
-        && mPosition.y + (int)mDimensions.y > position.y; 
+        && (unsigned int)(position.x - mPosition.x) < mDimensions.x
+        && (unsigned int)(position.y - mPosition.y) < mDimensions.y;
 }
 
 unsigned int Box::getVolume() const

@@ -9,8 +9,6 @@
 class Idle : public Job
 {
 public:
-    virtual void execute(double dt);
-
-    virtual bool hasSucceeded();
+    virtual void execute(unsigned int dt);
 };
 // LCOV_EXCL_STOP

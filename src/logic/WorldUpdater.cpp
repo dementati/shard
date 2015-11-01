@@ -6,12 +6,11 @@ WorldUpdater::WorldUpdater(World &world)
 { 
 }
 
-void WorldUpdater::update(double dt)
+void WorldUpdater::update(unsigned int dt)
 {
     for(std::unique_ptr<Entity>& entity : mWorld.getEntities())
     {
         Need& need = entity->selectNeed();
-        Job& job = need.getJob();
-        job.execute(dt);
+        need.execute(dt);
     }
 }
