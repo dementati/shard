@@ -13,6 +13,8 @@ public:
 
     virtual Variant& getAttribute(const std::string attributeId);
 
+    virtual void addAttribute(const std::string key, Variant value);
+
     virtual bool hasAttribute(const std::string attributeId);
 
     virtual Variant& operator[](const std::string attributeId);

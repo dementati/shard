@@ -123,6 +123,7 @@ set(TEST_SRC
     test/logic/jobs/WanderTest.cpp
     test/logic/needs/ThirstTest.cpp
     test/logic/EntityTest.cpp
+    test/logic/GameObjectTest.cpp
     test/logic/WorldTest.cpp
     test/logic/WorldUpdaterTest.cpp
     test/ncurses/ColorCacheTest.cpp
