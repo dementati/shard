@@ -22,23 +22,23 @@ protected:
     MockRNG mRng;
 
     Variant mOwnerPosition;
-    Variant mDefaultPerception;
+    Variant mOwnerPerception;
     glm::ivec2 mDefaultTarget;
-    Variant mDefaultTimeSinceLastStep;
-    Variant mDefaultSpeed;
+    Variant mOwnerTimeSinceLastStep;
+    Variant mOwnerSpeed;
 
     WanderTest()
     :
         mOwnerPosition(glm::ivec2(0, 0)),
-        mDefaultPerception((unsigned int)1),
+        mOwnerPerception((unsigned int)1),
         mDefaultTarget(glm::ivec2(0, 1)),
-        mDefaultTimeSinceLastStep((unsigned int)0),
-        mDefaultSpeed(1.0f)
+        mOwnerTimeSinceLastStep((unsigned int)0),
+        mOwnerSpeed(1.0f)
     {
         ON_CALL(mOwner, hasAttribute(StrEq("perception")))
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("perception")))
-            .WillByDefault(ReturnRef(mDefaultPerception));
+            .WillByDefault(ReturnRef(mOwnerPerception));
         ON_CALL(mOwner, hasAttribute(StrEq("position")))
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("position")))
@@ -46,21 +46,26 @@ protected:
         ON_CALL(mOwner, hasAttribute(StrEq("timeSinceLastStep")))
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("timeSinceLastStep")))
-            .WillByDefault(ReturnRef(mDefaultTimeSinceLastStep));
+            .WillByDefault(ReturnRef(mOwnerTimeSinceLastStep));
         ON_CALL(mOwner, hasAttribute(StrEq("speed")))
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("speed")))
-            .WillByDefault(ReturnRef(mDefaultSpeed));
+            .WillByDefault(ReturnRef(mOwnerSpeed));
     }
 
     void setOwnerSpeed(float speed)
     {
-        mDefaultSpeed.set<float>(speed);
+        mOwnerSpeed.set<float>(speed);
     }
 
     void setOwnerPerception(unsigned int perception)
     {
-        mDefaultPerception.set<unsigned int>(perception);
+        mOwnerPerception.set<unsigned int>(perception);
+    }
+
+    void setOwnerPosition(glm::ivec2 position)
+    {
+        mOwnerPosition.set<glm::ivec2>(position);
     }
 };
 
@@ -94,7 +99,7 @@ TEST_F(WanderTest, CanMove_HalfSpeed_OneSecond)
     EXPECT_TRUE(wander.canMove(2000));
 }
 
-TEST_F(WanderTest, FindTarget)
+TEST_F(WanderTest, FindTargetUp)
 {
     Wander wander(mWorld, mOwner, mRng);
 
@@ -104,4 +109,88 @@ TEST_F(WanderTest, FindTarget)
     auto target = wander.findTarget();
     ASSERT_NE(nullptr, target);
     EXPECT_EQ(glm::ivec2(0, -1), *target);
+}
+
+TEST_F(WanderTest, FindTargetDown)
+{
+    Wander wander(mWorld, mOwner, mRng);
+
+    EXPECT_CALL(mRng, random(0, 3))
+        .WillOnce(Return(1));
+
+    auto target = wander.findTarget();
+    ASSERT_NE(nullptr, target);
+    EXPECT_EQ(glm::ivec2(0, 1), *target);
+}
+
+TEST_F(WanderTest, FindTargetLeft)
+{
+    Wander wander(mWorld, mOwner, mRng);
+
+    EXPECT_CALL(mRng, random(0, 3))
+        .WillOnce(Return(2));
+
+    auto target = wander.findTarget();
+    ASSERT_NE(nullptr, target);
+    EXPECT_EQ(glm::ivec2(-1, 0), *target);
+}
+
+TEST_F(WanderTest, FindTargetRight)
+{
+    Wander wander(mWorld, mOwner, mRng);
+
+    EXPECT_CALL(mRng, random(0, 3))
+        .WillOnce(Return(3));
+
+    auto target = wander.findTarget();
+    ASSERT_NE(nullptr, target);
+    EXPECT_EQ(glm::ivec2(1, 0), *target);
+}
+
+TEST_F(WanderTest, Execute_OneSecond_Up)
+{
+    Wander wander(mWorld, mOwner, mRng);
+
+    EXPECT_CALL(mRng, random(0, 3))
+        .WillOnce(Return(0));
+
+    wander.execute(1000);
+
+    EXPECT_EQ(glm::ivec2(0, -1), mOwnerPosition.get<glm::ivec2>());
+}
+
+TEST_F(WanderTest, Execute_HalfSecond_DoubleSpeed_Down)
+{
+    Wander wander(mWorld, mOwner, mRng);
+
+    EXPECT_CALL(mRng, random(0, 3))
+        .WillOnce(Return(1));
+
+    setOwnerSpeed(2.0f);
+
+    wander.execute(500);
+
+    EXPECT_EQ(glm::ivec2(0, 1), mOwnerPosition.get<glm::ivec2>());
+}
+
+TEST_F(WanderTest, Execute_Start1x1_OneSecond_Left)
+{
+    Wander wander(mWorld, mOwner, mRng);
+
+    EXPECT_CALL(mRng, random(0, 3))
+        .WillOnce(Return(2));
+
+    setOwnerPosition(glm::ivec2(1, 1));
+
+    wander.execute(1000);
+
+    EXPECT_EQ(glm::ivec2(0, 1), mOwnerPosition.get<glm::ivec2>());
+}
+
+TEST_F(WanderTest, Execute_StartMinus1xMinus1_HalfSecond)
+{
+    Wander wander(mWorld, mOwner, mRng);
+    setOwnerPosition(glm::ivec2(-1, -1));
+    wander.execute(500);
+    EXPECT_EQ(glm::ivec2(-1, -1), mOwnerPosition.get<glm::ivec2>());
 }

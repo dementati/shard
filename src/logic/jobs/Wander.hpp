@@ -7,6 +7,14 @@
 #include "../Job.hpp"
 #include "../World.hpp"
 
+enum class Direction
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
 class Wander : public Job
 {
     World &mWorld;

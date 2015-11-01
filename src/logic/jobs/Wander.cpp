@@ -31,5 +31,26 @@ bool Wander::canMove(unsigned int dt)
 
 std::shared_ptr<glm::ivec2> Wander::findTarget()
 {
-    return nullptr;
+    std::vector<Direction> directions({ 
+        Direction::UP, Direction::DOWN, Direction::LEFT, Direction::RIGHT 
+    });
+
+    auto index = mRng.random(0, 3);
+    auto direction = directions[index];
+
+    glm::ivec2 moveDelta;
+    switch(direction)
+    {
+        case Direction::UP: moveDelta = glm::ivec2(0, -1); break;
+        case Direction::DOWN: moveDelta = glm::ivec2(0, 1); break;
+        case Direction::LEFT: moveDelta = glm::ivec2(-1, 0); break;
+        case Direction::RIGHT: moveDelta = glm::ivec2(1, 0); break;
+        // LCOV_EXCL_START
+        default: ASSERT(false, "This shouldn't happen");
+        // LCOV_EXCL_STOP
+    };
+
+    auto position = mOwner["position"].get<glm::ivec2>();
+    
+    return std::make_shared<glm::ivec2>(position + moveDelta);
 }
