@@ -1,65 +1,8 @@
-#include <glm/glm.hpp>
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-
 #include "../../../src/logic/jobs/Move.hpp"
-#include "../../mocks/MockEntity.hpp"
-#include "../../mocks/MockWorld.hpp"
+#include "JobTestBase.hpp"
 
-using ::testing::Return; 
-using ::testing::ReturnRef; 
-using ::testing::StrEq; 
-
-using MockEntityType = ::testing::NiceMock<MockEntity>;
-using MockWorldType = ::testing::NiceMock<MockWorld>;
-
-class MoveTest : public ::testing::Test
+class MoveTest : public JobTestBase
 {
-protected:
-    MockWorldType mWorld;
-    MockEntityType mOwner;
-
-    Variant mOwnerPosition;
-    Variant mOwnerPerception;
-    glm::ivec2 mDefaultTarget;
-    Variant mOwnerTimeSinceLastStep;
-    Variant mOwnerSpeed;
-
-    MoveTest()
-    :
-        mOwnerPosition(glm::ivec2(0, 0)),
-        mOwnerPerception((unsigned int)1),
-        mDefaultTarget(glm::ivec2(0, 1)),
-        mOwnerTimeSinceLastStep((unsigned int)0),
-        mOwnerSpeed(1.0f)
-    {
-        ON_CALL(mOwner, hasAttribute(StrEq("perception")))
-            .WillByDefault(Return(true));
-        ON_CALL(mOwner, getAttribute(StrEq("perception")))
-            .WillByDefault(ReturnRef(mOwnerPerception));
-        ON_CALL(mOwner, hasAttribute(StrEq("position")))
-            .WillByDefault(Return(true));
-        ON_CALL(mOwner, getAttribute(StrEq("position")))
-            .WillByDefault(ReturnRef(mOwnerPosition));
-        ON_CALL(mOwner, hasAttribute(StrEq("timeSinceLastStep")))
-            .WillByDefault(Return(true));
-        ON_CALL(mOwner, getAttribute(StrEq("timeSinceLastStep")))
-            .WillByDefault(ReturnRef(mOwnerTimeSinceLastStep));
-        ON_CALL(mOwner, hasAttribute(StrEq("speed")))
-            .WillByDefault(Return(true));
-        ON_CALL(mOwner, getAttribute(StrEq("speed")))
-            .WillByDefault(ReturnRef(mOwnerSpeed));
-    }
-
-    void setOwnerSpeed(float speed)
-    {
-        mOwnerSpeed.set<float>(speed);
-    }
-
-    void setOwnerPerception(unsigned int perception)
-    {
-        mOwnerPerception.set<unsigned int>(perception);
-    }
 };
 
 TEST_F(MoveTest, GetStepCount_TimeZero)
