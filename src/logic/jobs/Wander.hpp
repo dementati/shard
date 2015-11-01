@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "../../core/RNG.hpp"
+#include "../../utility/LoggerFactory.hpp"
 #include "../Entity.hpp"
 #include "../Job.hpp"
 #include "../World.hpp"
@@ -21,6 +22,8 @@ class Wander : public Job
     World &mWorld;
     Entity &mOwner;
     RNG &mRng;
+
+    std::unique_ptr<Logger> mLogger;
 
 public:
     Wander(World &world, Entity &owner, RNG &rng);

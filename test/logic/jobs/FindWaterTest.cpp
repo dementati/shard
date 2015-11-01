@@ -5,16 +5,18 @@
 #include "../../../src/logic/jobs/FindWater.hpp"
 #include "../../mocks/MockEntity.hpp"
 #include "../../mocks/MockGameObject.hpp"
+#include "../../mocks/MockRNG.hpp"
 #include "../../mocks/MockWorld.hpp"
 
-using ::testing::_;
 using ::testing::Return; 
 using ::testing::ReturnRef; 
 using ::testing::StrEq; 
+using ::testing::Ref; 
 
 using MockEntityType = ::testing::NiceMock<MockEntity>;
 using MockGameObjectType = ::testing::NiceMock<MockGameObject>;
 using MockWorldType = ::testing::NiceMock<MockWorld>;
+using MockRNGType = ::testing::NiceMock<MockRNG>;
 
 class FindWaterTest : public ::testing::Test
 {
@@ -22,6 +24,7 @@ protected:
     MockWorldType mWorld;
     MockEntityType mOwner;
     MockGameObjectType mWater;
+    MockRNGType mRng;
 
     Variant mOwnerPosition;
     Variant mOwnerPerception;
@@ -149,6 +152,18 @@ TEST_F(FindWaterTest, Consume_ThirstOne_ReductionOne)
     EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
 }
 
+TEST_F(FindWaterTest, Consume_ThirstTwo_ReductionOne)
+{
+    setOwnerThirst(2);
+    setWaterThirstReduction(1);
+
+    FindWater findWater(mWorld, mOwner);
+
+    findWater.consume(mWater);
+
+    EXPECT_EQ(1, mOwnerThirst.get<unsigned int>());
+}
+
 TEST_F(FindWaterTest, Consume_ThirstOne_ReductionTwo)
 {
     setOwnerThirst(1);
@@ -247,6 +262,29 @@ TEST_F(FindWaterTest, GetClosestWaterInRange_ObjectAt1x0)
     EXPECT_EQ(objects[0].get(), findWater.getClosestWaterInRange());
 }
 
+TEST_F(FindWaterTest, GetClosestWaterInRange_ObjectAt1x1)
+{
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant objectPosition = glm::ivec2(1, 1);
+
+    auto object = std::make_unique<MockGameObjectType>();
+    ON_CALL(*object, hasAttribute("thirstReduction"))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, hasAttribute("position"))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, getAttribute("position"))
+        .WillByDefault(ReturnRef(objectPosition));
+    objects.push_back(std::move(object));
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+        
+    FindWater findWater(mWorld, mOwner);
+
+    EXPECT_EQ(objects[0].get(), findWater.getClosestWaterInRange());
+}
+
 TEST_F(FindWaterTest, GetClosestWaterInRange_ObjectsAt0x0And1x0)
 {
     std::vector<std::unique_ptr<GameObject>> objects;
@@ -307,7 +345,77 @@ TEST_F(FindWaterTest, GetClosestWaterInRange_ObjectOutOfPerception)
     EXPECT_EQ(nullptr, findWater.getClosestWaterInRange());
 }
 
-TEST_F(FindWaterTest, Execute)
+// Two consumable water objects, one out of range, collect one, wander, then collect other
+// _____
+//|SC 
+//|   C
+//
+TEST_F(FindWaterTest, TwoConsumables_OneOutOFRange_CollectOneWanderCollectOther)
 {
-    FAIL();
+    setOwnerPerception(2);
+    setOwnerThirst(3);
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant object1Position = glm::ivec2(1, 0);
+    Variant object1Reduction = (unsigned int)1;
+    {
+        auto object = std::make_unique<MockGameObjectType>();
+        ON_CALL(*object, hasAttribute("thirstReduction"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("thirstReduction"))
+            .WillByDefault(ReturnRef(object1Reduction));
+        ON_CALL(*object, hasAttribute("position"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("position"))
+            .WillByDefault(ReturnRef(object1Position));
+        ON_CALL(*object, hasAttribute("consumable"))
+            .WillByDefault(Return(true));
+        objects.push_back(std::move(object));
+    }
+
+    Variant object2Position = glm::ivec2(3, 1);
+    Variant object2Reduction = (unsigned int)2;
+    {
+        auto object = std::make_unique<MockGameObjectType>();
+        ON_CALL(*object, hasAttribute("thirstReduction"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("thirstReduction"))
+            .WillByDefault(ReturnRef(object2Reduction));
+        ON_CALL(*object, hasAttribute("position"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("position"))
+            .WillByDefault(ReturnRef(object2Position));
+        ON_CALL(*object, hasAttribute("consumable"))
+            .WillByDefault(Return(true));
+        objects.push_back(std::move(object));
+    }
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+       
+    FindWater findWater(mWorld, mOwner, mRng);
+
+    // Collect first object
+    EXPECT_CALL(mWorld, removeObject(Ref(*objects[0]))); 
+    findWater.execute(1000);
+    EXPECT_EQ(2, mOwnerThirst.get<unsigned int>());
+    objects.erase(objects.begin());
+
+    // Wander right
+    EXPECT_CALL(mRng, random(0, 3))
+        .WillOnce(Return(3));
+    findWater.execute(1000);
+    EXPECT_EQ(glm::ivec2(1, 0), mOwnerPosition.get<glm::ivec2>());
+
+    // Detect second object and move towards it
+    findWater.execute(1000);
+
+    // Keep moving towards it
+    findWater.execute(1000);
+
+    // Collect it
+    EXPECT_CALL(mWorld, removeObject(Ref(*objects[0]))); 
+    findWater.execute(1000);
+    EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
 }

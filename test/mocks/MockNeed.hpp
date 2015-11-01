@@ -14,7 +14,7 @@ class MockNeed : public Need
 public:
     MockNeed() {}
 
-    MOCK_METHOD0(getIntensity, int());
+    MOCK_METHOD0(getIntensity, unsigned int());
 
     MOCK_METHOD1(execute, void(unsigned int));
 };
@@ -31,7 +31,7 @@ public:
     {
     }
 
-    int getIntensity() { return mNeed->getIntensity(); }
+    unsigned int getIntensity() { return mNeed->getIntensity(); }
 
     void execute(unsigned int dt) { mNeed->execute(dt); }
 

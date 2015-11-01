@@ -20,23 +20,23 @@ protected:
     MockEntityType mOwner;
 
     Variant mOwnerPosition;
-    Variant mDefaultPerception;
+    Variant mOwnerPerception;
     glm::ivec2 mDefaultTarget;
-    Variant mDefaultTimeSinceLastStep;
-    Variant mDefaultSpeed;
+    Variant mOwnerTimeSinceLastStep;
+    Variant mOwnerSpeed;
 
     MoveTest()
     :
         mOwnerPosition(glm::ivec2(0, 0)),
-        mDefaultPerception((unsigned int)1),
+        mOwnerPerception((unsigned int)1),
         mDefaultTarget(glm::ivec2(0, 1)),
-        mDefaultTimeSinceLastStep((unsigned int)0),
-        mDefaultSpeed(1.0f)
+        mOwnerTimeSinceLastStep((unsigned int)0),
+        mOwnerSpeed(1.0f)
     {
         ON_CALL(mOwner, hasAttribute(StrEq("perception")))
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("perception")))
-            .WillByDefault(ReturnRef(mDefaultPerception));
+            .WillByDefault(ReturnRef(mOwnerPerception));
         ON_CALL(mOwner, hasAttribute(StrEq("position")))
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("position")))
@@ -44,49 +44,30 @@ protected:
         ON_CALL(mOwner, hasAttribute(StrEq("timeSinceLastStep")))
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("timeSinceLastStep")))
-            .WillByDefault(ReturnRef(mDefaultTimeSinceLastStep));
+            .WillByDefault(ReturnRef(mOwnerTimeSinceLastStep));
         ON_CALL(mOwner, hasAttribute(StrEq("speed")))
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("speed")))
-            .WillByDefault(ReturnRef(mDefaultSpeed));
+            .WillByDefault(ReturnRef(mOwnerSpeed));
     }
 
     void setOwnerSpeed(float speed)
     {
-        mDefaultSpeed.set<float>(speed);
+        mOwnerSpeed.set<float>(speed);
     }
 
     void setOwnerPerception(unsigned int perception)
     {
-        mDefaultPerception.set<unsigned int>(perception);
+        mOwnerPerception.set<unsigned int>(perception);
     }
 };
-
-TEST_F(MoveTest, GetPerceptionBox_Perception1)
-{
-    Move move(mWorld, mOwner, mDefaultTarget);
-    Box box = move.getPerceptionBox();
-
-    EXPECT_EQ(glm::ivec2(-1, -1), box.getPosition());
-    EXPECT_EQ(glm::uvec2(3, 3), box.getDimensions());
-}
-
-TEST_F(MoveTest, GetPerceptionBox_Perception2)
-{
-    Move move(mWorld, mOwner, mDefaultTarget);
-    setOwnerPerception(2);
-
-    Box box = move.getPerceptionBox();
-
-    EXPECT_EQ(glm::ivec2(-2, -2), box.getPosition());
-    EXPECT_EQ(glm::uvec2(5, 5), box.getDimensions());
-}
 
 TEST_F(MoveTest, GetStepCount_TimeZero)
 {
     Move move(mWorld, mOwner, mDefaultTarget);
    
     EXPECT_EQ(0, move.getStepCount(0));
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, GetStepCount_TimeOneSecond)
@@ -94,6 +75,7 @@ TEST_F(MoveTest, GetStepCount_TimeOneSecond)
     Move move(mWorld, mOwner, mDefaultTarget);
    
     EXPECT_EQ(1, move.getStepCount(1000));
+    EXPECT_EQ(1000, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, GetStepCount_SpeedTwo_TimeHalfSecond)
@@ -102,6 +84,7 @@ TEST_F(MoveTest, GetStepCount_SpeedTwo_TimeHalfSecond)
     setOwnerSpeed(2);
    
     EXPECT_EQ(1, move.getStepCount(500));
+    EXPECT_EQ(500, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, GetStepCount_SpeedHalf_TimeTwoSeconds)
@@ -110,6 +93,7 @@ TEST_F(MoveTest, GetStepCount_SpeedHalf_TimeTwoSeconds)
     setOwnerSpeed(0.5);
    
     EXPECT_EQ(1, move.getStepCount(2000));
+    EXPECT_EQ(2000, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, GetStepCount_SpeedHalf_TimeTwoSecondsMinusOneMs)
@@ -118,6 +102,7 @@ TEST_F(MoveTest, GetStepCount_SpeedHalf_TimeTwoSecondsMinusOneMs)
     setOwnerSpeed(0.5);
    
     EXPECT_EQ(0, move.getStepCount(1999));
+    EXPECT_EQ(1999, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, IsBlocked)
@@ -136,6 +121,7 @@ TEST_F(MoveTest, Execute_TimeOneSecond_Target1x0)
     Move move(mWorld, mOwner, glm::ivec2(1, 0));
     move.execute(1000);
     EXPECT_EQ(glm::ivec2(1, 0), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, Execute_TimeOneSecondMinusOneMs_Target1x0)
@@ -143,14 +129,17 @@ TEST_F(MoveTest, Execute_TimeOneSecondMinusOneMs_Target1x0)
     Move move(mWorld, mOwner, glm::ivec2(1, 0));
     move.execute(999);
     EXPECT_EQ(glm::ivec2(0, 0), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(999, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, ExecuteTwice_Time500MsEach_Target1x0)
 {
     Move move(mWorld, mOwner, glm::ivec2(1, 0));
     move.execute(500);
+    EXPECT_EQ(500, mOwnerTimeSinceLastStep.get<unsigned int>());
     move.execute(500);
     EXPECT_EQ(glm::ivec2(1, 0), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, Execute_TimeOneSecond_Target2x0)
@@ -159,6 +148,7 @@ TEST_F(MoveTest, Execute_TimeOneSecond_Target2x0)
     Move move(mWorld, mOwner, glm::ivec2(2, 0));
     move.execute(1000);
     EXPECT_EQ(glm::ivec2(1, 0), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, ExecuteTwice_TimeOneSecond_Target2x0)
@@ -167,8 +157,10 @@ TEST_F(MoveTest, ExecuteTwice_TimeOneSecond_Target2x0)
     Move move(mWorld, mOwner, glm::ivec2(2, 0));
     move.execute(1000);
     EXPECT_EQ(glm::ivec2(1, 0), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
     move.execute(1000);
     EXPECT_EQ(glm::ivec2(2, 0), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, Execute_TimeTwoSeconds_Target2x0)
@@ -177,6 +169,7 @@ TEST_F(MoveTest, Execute_TimeTwoSeconds_Target2x0)
     Move move(mWorld, mOwner, glm::ivec2(2, 0));
     move.execute(2000);
     EXPECT_EQ(glm::ivec2(2, 0), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(MoveTest, Execute_TimeTwoSeconds_TargetMinus1xMinus1)
@@ -184,4 +177,5 @@ TEST_F(MoveTest, Execute_TimeTwoSeconds_TargetMinus1xMinus1)
     Move move(mWorld, mOwner, glm::ivec2(-1, -1));
     move.execute(2000);
     EXPECT_EQ(glm::ivec2(-1, -1), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }

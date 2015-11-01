@@ -93,6 +93,7 @@ set(PRODUCTION_SRC
     src/logic/jobs/Move.cpp
     src/logic/jobs/Wander.cpp
     src/logic/needs/Thirst.cpp
+    src/logic/utility/GameObjectUtils.cpp
     src/logic/Entity.cpp
     src/logic/GameObject.cpp
     src/logic/World.cpp
@@ -123,6 +124,7 @@ set(TEST_SRC
     test/logic/jobs/MoveTest.cpp
     test/logic/jobs/WanderTest.cpp
     test/logic/needs/ThirstTest.cpp
+    test/logic/utility/GameObjectUtilsTest.cpp
     test/logic/EntityTest.cpp
     test/logic/GameObjectTest.cpp
     test/logic/WorldTest.cpp

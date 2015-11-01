@@ -16,5 +16,5 @@ class Need : public Job
 public:
     virtual ~Need() {};
 
-    virtual int getIntensity() = 0;
+    virtual unsigned int getIntensity() = 0;
 };

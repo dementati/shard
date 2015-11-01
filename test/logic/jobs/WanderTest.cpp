@@ -74,6 +74,7 @@ TEST_F(WanderTest, CanMove_OneSecondMinusOneMs)
     Wander wander(mWorld, mOwner, mRng);
 
     EXPECT_FALSE(wander.canMove(999));
+    EXPECT_EQ(999, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(WanderTest, CanMove_OneSecond)
@@ -81,6 +82,7 @@ TEST_F(WanderTest, CanMove_OneSecond)
     Wander wander(mWorld, mOwner, mRng);
 
     EXPECT_TRUE(wander.canMove(1000));
+    EXPECT_EQ(1000, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(WanderTest, CanMove_HalfSpeed_OneSecondMinusOneMs)
@@ -89,6 +91,7 @@ TEST_F(WanderTest, CanMove_HalfSpeed_OneSecondMinusOneMs)
     setOwnerSpeed(0.5f);
 
     EXPECT_FALSE(wander.canMove(1999));
+    EXPECT_EQ(1999, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(WanderTest, CanMove_HalfSpeed_OneSecond)
@@ -97,6 +100,7 @@ TEST_F(WanderTest, CanMove_HalfSpeed_OneSecond)
     setOwnerSpeed(0.5f);
 
     EXPECT_TRUE(wander.canMove(2000));
+    EXPECT_EQ(2000, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(WanderTest, FindTargetUp)
@@ -157,6 +161,7 @@ TEST_F(WanderTest, Execute_OneSecond_Up)
     wander.execute(1000);
 
     EXPECT_EQ(glm::ivec2(0, -1), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(WanderTest, Execute_HalfSecond_DoubleSpeed_Down)
@@ -171,6 +176,7 @@ TEST_F(WanderTest, Execute_HalfSecond_DoubleSpeed_Down)
     wander.execute(500);
 
     EXPECT_EQ(glm::ivec2(0, 1), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(WanderTest, Execute_Start1x1_OneSecond_Left)
@@ -185,6 +191,7 @@ TEST_F(WanderTest, Execute_Start1x1_OneSecond_Left)
     wander.execute(1000);
 
     EXPECT_EQ(glm::ivec2(0, 1), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
 
 TEST_F(WanderTest, Execute_StartMinus1xMinus1_HalfSecond)
@@ -193,4 +200,5 @@ TEST_F(WanderTest, Execute_StartMinus1xMinus1_HalfSecond)
     setOwnerPosition(glm::ivec2(-1, -1));
     wander.execute(500);
     EXPECT_EQ(glm::ivec2(-1, -1), mOwnerPosition.get<glm::ivec2>());
+    EXPECT_EQ(500, mOwnerTimeSinceLastStep.get<unsigned int>());
 }

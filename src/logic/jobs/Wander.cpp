@@ -4,18 +4,32 @@ Wander::Wander(World &world, Entity &owner, RNG &rng)
 :
     mWorld(world),
     mOwner(owner),
-    mRng(rng)
+    mRng(rng),
+    mLogger(LoggerFactory::createLogger("Wander", Severity::DEBUG))
 {
 }
 
 void Wander::execute(unsigned int dt)
 {
+    mLogger->debug("Executing.");
+
     if(canMove(dt))
     {
+        mLogger->debug("Can move.");
+
         auto target = findTarget();
         if(target != nullptr)
         {
+            mLogger->debug(std::string("Moving to ") + glm::to_string(*target));
             mOwner["position"].set<glm::ivec2>(*target);
+            mOwner["timeSinceLastStep"].set<unsigned int>(0);
+        } 
+        else
+        {
+            // TODO: Test this branch when collision detection is in place
+            // LCOV_EXCL_START
+            mLogger->debug("No viable target location found.");
+            // LCOV_EXCL_STOP
         }
     }
 }

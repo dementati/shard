@@ -4,7 +4,8 @@ Move::Move(World &world, Entity &owner, glm::ivec2 target)
 :
     mWorld(world),
     mOwner(owner),
-    mTarget(target)
+    mTarget(target),
+    mLogger(LoggerFactory::createLogger("Move", Severity::DEBUG))
 {
     ASSERT(owner.hasAttribute("position"), "Owner must have a position");
     ASSERT(owner["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
@@ -15,25 +16,31 @@ Move::Move(World &world, Entity &owner, glm::ivec2 target)
     ASSERT(owner["timeSinceLastStep"].isOfType<unsigned int>(), "timeSinceLastStep must be an unsigned int");
     ASSERT(owner.hasAttribute("speed"), "Owner must have speed");
     ASSERT(owner["speed"].isOfType<float>(), "speed must be a float");
-    ASSERT(getPerceptionBox().contains(target), "Target must be in perceptive range of the owner");
+    ASSERT(GameObjectUtils::getPerceptionBox(owner).contains(target), "Target must be in perceptive range of the owner");
 }
 
 void Move::execute(unsigned int dt)
 {
+    mLogger->debug("Executing.");
+
     auto stepCount = getStepCount(dt);
     if(stepCount > 0)
     {
+        mLogger->debug(std::string("Max nr of steps is ") + glm::to_string(stepCount));
+
         auto path = 
             Pathfinding::findPath(
                 mOwner["position"].get<glm::ivec2>(), 
                 mTarget, 
                 [&] (auto p) { return this->isBlocked(p); }, 
-                getPerceptionBox());
+                GameObjectUtils::getPerceptionBox(mOwner));
 
         auto pathIndex = path.size() - 1 >= stepCount ? path.size() - 1 - stepCount : 0;
         mOwner["position"].set<glm::ivec2>(path[pathIndex]);
         mOwner["timeSinceLastStep"].set<unsigned int>(0);
-    }
+
+        mLogger->debug(std::string("Moving to ") + glm::to_string(path[pathIndex]));
+    } 
 }
 
 bool Move::isBlocked(glm::ivec2 position)
@@ -41,16 +48,6 @@ bool Move::isBlocked(glm::ivec2 position)
     ASSERT(position == position, "");
 
     return false;
-}
-
-Box Move::getPerceptionBox()
-{
-    int perception = mOwner["perception"].get<unsigned int>();
-    ASSERT(perception > 0, "Cannot navigate with 0 perception");
-
-    glm::ivec2 position = mOwner["position"].get<glm::ivec2>();
-
-    return Box(position - perception*glm::ivec2(1, 1), (2*perception + 1)*glm::ivec2(1, 1));
 }
 
 unsigned int Move::getStepCount(unsigned int dt)

@@ -18,4 +18,5 @@ std::unique_ptr<Logger> LoggerFactory::createLogger(const std::string unit,
     const Severity minSeverity)
 {
     return std::make_unique<StreamLogger>(unit, cInstance.mLogStream, minSeverity);
+    //return std::make_unique<StreamLogger>(unit, std::cout, minSeverity);
 }

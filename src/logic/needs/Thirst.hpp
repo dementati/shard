@@ -18,8 +18,10 @@ class Thirst : public Need
 public:
     Thirst(World &world, Entity &owner);
 
-    virtual int getIntensity();
-
     virtual void execute(unsigned int dt);
+
+    virtual unsigned int getIntensity();
+
+    virtual std::unique_ptr<Job> getJob();
 };
 // LCOV_EXCL_STOP

@@ -1,8 +1,10 @@
 #include "GameObject.hpp"
 
+// LCOV_EXCL_START
 GameObject::~GameObject()
 {
 }
+// LCOV_EXCL_STOP
 
 Variant& GameObject::getAttribute(const std::string attributeId)
 {
