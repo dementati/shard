@@ -20,30 +20,30 @@ void World::removeEntity(Entity &entity)
 {
     mEntities.erase(
         std::remove_if(mEntities.begin(), mEntities.end(), 
-            [&] (auto &entityPtr) {
-                return entityPtr.get() == &entity;
-            }
+            // LCOV_EXCL_START
+            [&] (auto &entityPtr) { return entityPtr.get() == &entity; }
+            // LCOV_EXCL_STOP
         ), 
         mEntities.end());
 }
 
-std::vector<std::unique_ptr<GameObject>>& World::getItems()
+std::vector<std::unique_ptr<GameObject>>& World::getObjects()
 {
-    return mItems;
+    return mObjects;
 }
 
-void World::addItem(std::unique_ptr<GameObject> item)
+void World::addObject(std::unique_ptr<GameObject> object)
 {
-    mItems.push_back(std::move(item));
+    mObjects.push_back(std::move(object));
 }
 
-void World::removeItem(GameObject &item)
+void World::removeObject(GameObject &object)
 {
-    mItems.erase(
-        std::remove_if(mItems.begin(), mItems.end(), 
-            [&] (auto &itemPtr) {
-                return itemPtr.get() == &item;
-            }
+    mObjects.erase(
+        std::remove_if(mObjects.begin(), mObjects.end(),
+            // LCOV_EXCL_START
+            [&] (auto &objectPtr) { return objectPtr.get() == &object; }
+            // LCOV_EXCL_STOP
         ), 
-        mItems.end());
+        mObjects.end());
 }

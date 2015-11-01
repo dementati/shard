@@ -15,6 +15,7 @@ enum class Direction
     RIGHT
 };
 
+// LCOV_EXCL_START
 class Wander : public Job
 {
     World &mWorld;
@@ -30,3 +31,4 @@ public:
 
     virtual std::shared_ptr<glm::ivec2> findTarget();
 };
+// LCOV_EXCL_STOP

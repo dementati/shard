@@ -34,31 +34,31 @@ void FindWater::execute(unsigned int dt)
 
 GameObject* FindWater::getClosestWaterInRange()
 {
-    std::vector<std::reference_wrapper<GameObject>> waterItemsInRange;
-    for(auto &item : mWorld.getItems())
+    std::vector<std::reference_wrapper<GameObject>> waterObjectsInRange;
+    for(auto &object : mWorld.getObjects())
     {
-        if(item->hasAttribute("thirstReduction") && getDistance(*item) <= getPerception()) 
+        if(object->hasAttribute("thirstReduction") && getDistance(*object) <= getPerception()) 
         {
-            waterItemsInRange.push_back(std::ref(*item));
+            waterObjectsInRange.push_back(std::ref(*object));
         }
     }
 
-    if(waterItemsInRange.empty())
+    if(waterObjectsInRange.empty())
     {
         return nullptr;
     }
 
-    return &(*std::min_element(waterItemsInRange.begin(), waterItemsInRange.end(), 
-        [&] (auto &itemA, auto &itemB) {
-            return this->getDistance(itemA) < this->getDistance(itemB);
+    return &(*std::min_element(waterObjectsInRange.begin(), waterObjectsInRange.end(), 
+        [&] (auto &objectA, auto &objectB) {
+            return this->getDistance(objectA) < this->getDistance(objectB);
         })).get(); 
 }
 
-unsigned int FindWater::getDistance(GameObject &item)
+unsigned int FindWater::getDistance(GameObject &object)
 {
-    ASSERT(item.hasAttribute("position"), "Item must have position");
+    ASSERT(object.hasAttribute("position"), "Object must have position");
 
-    return Math::manhattanDistance(mOwner["position"].get<glm::ivec2>(), item["position"].get<glm::ivec2>());
+    return Math::manhattanDistance(mOwner["position"].get<glm::ivec2>(), object["position"].get<glm::ivec2>());
 }
 
 unsigned int FindWater::getPerception()
@@ -66,11 +66,11 @@ unsigned int FindWater::getPerception()
     return mOwner.getAttribute("perception").get<unsigned int>();
 }
 
-void FindWater::consume(GameObject &item)
+void FindWater::consume(GameObject &object)
 {
-    ASSERT(item.hasAttribute("thirstReduction"), "Item must have the attribute thirstReduction");
+    ASSERT(object.hasAttribute("thirstReduction"), "Object must have the attribute thirstReduction");
 
-    auto thirstReduction = item.getAttribute("thirstReduction").get<unsigned int>();
+    auto thirstReduction = object.getAttribute("thirstReduction").get<unsigned int>();
     auto thirst = mOwner.getAttribute("thirst").get<unsigned int>();
     if(thirst <= thirstReduction)
     {
@@ -81,8 +81,8 @@ void FindWater::consume(GameObject &item)
         mOwner.getAttribute("thirst").set<unsigned int>(thirst);
     }
 
-    if(item.hasAttribute("consumable"))
+    if(object.hasAttribute("consumable"))
     {
-        mWorld.removeItem(item);
+        mWorld.removeObject(object);
     }
 }
