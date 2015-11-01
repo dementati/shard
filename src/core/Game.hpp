@@ -11,7 +11,7 @@ public:
     virtual ~Game() {}
     // LCOV_EXCL_STOP
 
-    virtual void update(const double dt) = 0;
+    virtual void update(const unsigned int dt) = 0;
 
     virtual void render() const = 0;
 };

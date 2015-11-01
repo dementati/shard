@@ -19,5 +19,7 @@ public:
     NCursesRenderingSystem(NCursesInterface& ncurses);
 
     void drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position);
+
+    void drawCharacter(const char character, const glm::ivec2 position);
 };
 // LCOV_EXCL_STOP

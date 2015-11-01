@@ -15,6 +15,11 @@ public:
     {
     }
 
+
+    void drawCharacter(const char character, const glm::ivec2 position) 
+    {
+    }
+
     glm::ivec2 getScreenCoordinates(glm::ivec2 worldCoordinates)
     {
         return ASCIIRenderingSystem::getScreenCoordinates(worldCoordinates);

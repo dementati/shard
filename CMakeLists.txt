@@ -85,6 +85,7 @@ set(PRODUCTION_SRC
     src/graphics/ascii/ASCIIRenderable.cpp
     src/graphics/ascii/ASCIIRenderingSystem.cpp
     src/graphics/ascii/ASCIIFileRenderable.cpp
+    src/graphics/ascii/ASCIISingleCharacterRenderable.cpp
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
@@ -93,6 +94,7 @@ set(PRODUCTION_SRC
     src/logic/jobs/Move.cpp
     src/logic/jobs/Wander.cpp
     src/logic/needs/Thirst.cpp
+    src/logic/utility/GameObjectFactory.cpp
     src/logic/utility/GameObjectUtils.cpp
     src/logic/Entity.cpp
     src/logic/GameObject.cpp
