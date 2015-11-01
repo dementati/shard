@@ -23,9 +23,7 @@ public:
 
     virtual GameObject* getClosestWaterInRange();
 
-    virtual unsigned int getDistance(GameObject &item);
+    virtual unsigned int getDistance(GameObject &object);
 
-    virtual unsigned int getPerception();
-
-    virtual void consume(GameObject &item);
+    virtual void consume(GameObject &water);
 };

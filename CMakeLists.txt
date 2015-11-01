@@ -119,6 +119,7 @@ set(TEST_SRC
     test/graphics/CharBitmapTest.cpp
     test/graphics/CharBitmapLoaderTest.cpp
     test/graphics/RenderableStoreTest.cpp
+    test/logic/jobs/FindWaterTest.cpp
     test/logic/jobs/MoveTest.cpp
     test/logic/jobs/WanderTest.cpp
     test/logic/needs/ThirstTest.cpp
