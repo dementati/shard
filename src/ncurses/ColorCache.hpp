@@ -16,7 +16,7 @@ class ColorCache
     std::map<uint64_t, short> mColorIdMap;
     std::map<uint32_t, short> mColorPairIdMap;
 
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
 
 public:

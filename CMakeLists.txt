@@ -89,6 +89,7 @@ set(PRODUCTION_SRC
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
+    src/logic/jobs/background/IncreaseThirst.cpp
     src/logic/jobs/FindWater.cpp
     src/logic/jobs/Idle.cpp
     src/logic/jobs/Move.cpp
@@ -122,6 +123,7 @@ set(TEST_SRC
     test/graphics/CharBitmapTest.cpp
     test/graphics/CharBitmapLoaderTest.cpp
     test/graphics/RenderableStoreTest.cpp
+    test/logic/jobs/background/IncreaseThirstTest.cpp
     test/logic/jobs/FindWaterTest.cpp
     test/logic/jobs/MoveTest.cpp
     test/logic/jobs/WanderTest.cpp

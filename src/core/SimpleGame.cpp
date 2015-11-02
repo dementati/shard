@@ -2,30 +2,61 @@
 
 SimpleGame::SimpleGame()
 :
+    mLogger(LoggerFactory::createLogger("SimpleGame", Severity::DEBUG)),
+    mRng(RNG::createTrueRandomRNG()),
     mNcurses(),
     mRenderingSystem(mNcurses),
     mWorldUpdater(mWorld),
     mRenderableStore(),
-    mWorldRenderer(mRenderableStore, mWorld)
+    mWorldRenderer(mRenderingSystem, mRenderableStore, mWorld),
+    mHumanSpawnTimer(0),
+    mWaterSpawnTimer(0)
 {
     mRenderableStore.add("human", 
         std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '@'));
     mRenderableStore.add("water", 
-        std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '@'));
+        std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '~'));
 
-    GameObjectFactory::createHuman(mWorld, glm::ivec2(10, 10));
+    
+    for(int i = 0; i < 5; i++)
+    {
+        GameObjectFactory::createHuman(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
+    }
+
+    for(int i = 0; i < 20; i++)
+    {
+        GameObjectFactory::createWater(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
+    }
+
+    mLogger->info("Finished construction");
 }
 
 // LCOV_EXCL_START <- This method causes side effects that can't be tested automatically.
 void SimpleGame::update(const unsigned int dt) 
 {
+    mLogger->debug("Updating...");
     mWorldUpdater.update(dt);
+
+    mHumanSpawnTimer += dt;
+    mWaterSpawnTimer += dt;
+    if(mWaterSpawnTimer >= 2000)
+    {
+        GameObjectFactory::createWater(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
+        mWaterSpawnTimer = 0;
+    }
+
+    if(mHumanSpawnTimer >= 5000)
+    {
+        GameObjectFactory::createHuman(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
+        mHumanSpawnTimer = 0;
+    }
 }
 // LCOV_EXCL_STOP
 
 // LCOV_EXCL_START <- This method causes side effects that can't be tested automatically.
 void SimpleGame::render() const 
 {
+    mLogger->debug("Rendering...");
     mWorldRenderer.render();
 }
 // LCOV_EXCL_STOP

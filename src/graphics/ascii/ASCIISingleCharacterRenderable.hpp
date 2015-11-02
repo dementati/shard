@@ -19,7 +19,7 @@ class ASCIISingleCharacterRenderable : public ASCIIRenderable
 
     glm::ivec2 mPosition;
 
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
 public:
     ASCIISingleCharacterRenderable(ASCIIRenderingSystem &renderingSystem, char character);

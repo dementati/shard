@@ -9,7 +9,7 @@
 
 class ASCIIRenderable : public Renderable
 {
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
 protected:
     ASCIIRenderingSystem &mRenderingSystem;

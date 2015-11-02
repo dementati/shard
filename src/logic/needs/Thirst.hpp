@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../../utility/Assert.hpp"
+#include "../../utility/LoggerFactory.hpp"
 #include "../jobs/FindWater.hpp"
 #include "../jobs/Idle.hpp"
 #include "../Job.hpp"
@@ -12,6 +13,7 @@
 // LCOV_EXCL_START
 class Thirst : public Need
 {
+    LoggerPtr mLogger;
     World &mWorld;
     Entity &mOwner;
 

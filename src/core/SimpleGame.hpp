@@ -13,11 +13,18 @@
 #include "../logic/World.hpp"
 #include "../logic/WorldUpdater.hpp"
 #include "../ncurses/NCursesInterface.hpp"
+#include "../ncurses/NCursesInterface.hpp"
+#include "../utility/LoggerFactory.hpp"
 #include "Game.hpp"
+#include "RNG.hpp"
 
 // LCOV_EXCL_START
 class SimpleGame : public Game 
 {
+    LoggerPtr mLogger;
+
+    RNG mRng;
+
     NCursesInterface mNcurses;
     NCursesRenderingSystem mRenderingSystem;
 
@@ -26,6 +33,9 @@ class SimpleGame : public Game
 
     RenderableStore<ASCIIRenderable> mRenderableStore;
     ASCIIWorldRenderer mWorldRenderer;
+
+    unsigned int mHumanSpawnTimer;
+    unsigned int mWaterSpawnTimer;
 
 public:
     SimpleGame();

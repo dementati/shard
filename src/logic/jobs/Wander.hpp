@@ -23,7 +23,7 @@ class Wander : public Job
     Entity &mOwner;
     RNG &mRng;
 
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
 public:
     Wander(World &world, Entity &owner, RNG &rng);

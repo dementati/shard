@@ -7,6 +7,12 @@ Wander::Wander(World &world, Entity &owner, RNG &rng)
     mRng(rng),
     mLogger(LoggerFactory::createLogger("Wander", Severity::DEBUG))
 {
+    ASSERT(owner.hasAttribute("position"), "Owner must have a position");
+    ASSERT(owner["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
+    ASSERT(owner.hasAttribute("timeSinceLastStep"), "Owner must have timeSinceLastStep");
+    ASSERT(owner["timeSinceLastStep"].isOfType<unsigned int>(), "timeSinceLastStep must be an unsigned int");
+    ASSERT(owner.hasAttribute("speed"), "Owner must have speed");
+    ASSERT(owner["speed"].isOfType<float>(), "speed must be a float");
 }
 
 void Wander::execute(unsigned int dt)

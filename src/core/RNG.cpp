@@ -18,6 +18,15 @@ unsigned int RNG::random(unsigned int lowerBoundInclusive, unsigned int upperBou
     return uniform_dist(mRng); 
 }
 
+glm::ivec2 RNG::random(glm::ivec2 lowerBoundInclusive, glm::ivec2 upperBoundInclusive)
+{
+    std::uniform_int_distribution<unsigned int> 
+        xDist(lowerBoundInclusive.x, upperBoundInclusive.x);
+    std::uniform_int_distribution<unsigned int> 
+        yDist(lowerBoundInclusive.y, upperBoundInclusive.y);
+    return glm::ivec2(xDist(mRng), yDist(mRng)); 
+}
+
 RNG RNG::createTrueRandomRNG()
 {
     std::random_device rd;

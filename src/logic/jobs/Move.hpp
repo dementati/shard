@@ -16,7 +16,7 @@ class Move : public Job
     Entity &mOwner;
     glm::ivec2 mTarget;
 
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
 public:
     Move(World &world, Entity &owner, glm::ivec2 target);

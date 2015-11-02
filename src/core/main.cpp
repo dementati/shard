@@ -1,10 +1,15 @@
 #include <chrono>
 
+#include "../utility/LoggerFactory.hpp"
 #include "Game.hpp"
 #include "SimpleGame.hpp"
 
 int main() 
 {
+    LoggerPtr logger(LoggerFactory::createLogger("main", Severity::DEBUG));
+
+    logger->info("Initializing...");
+
     // Create game object
     SimpleGame simpleGame;
     Game *game = &simpleGame;
@@ -14,6 +19,7 @@ int main()
     ).count();
 
     // Start main loop
+    logger->info("Starting main game loop");
     while(true) {
         // Compute delta time
         uint64_t currentTime = std::chrono::duration_cast< std::chrono::milliseconds >(
@@ -27,11 +33,21 @@ int main()
             lastTime = currentTime;
         }
 
+        logger->debug(std::string("Computed delta time: ") + glm::to_string(dt));
+
         // Call update method 
         game->update(dt);
 
         // Call render method
         game->render();
+
+        /*
+        if(getch() == 'q') 
+        {
+            logger->info("Quit requested, exiting.");
+            break;
+        }
+        */
     }
 
     return 0;

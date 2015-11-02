@@ -34,6 +34,7 @@ void NCursesInterface::refreshScreen()
     refresh();
 }
 
+
 /*
 void NCursesInterface::draw(const char character, const int x, const int y, 
                          const short fr, const short fg, const short fb, 
@@ -60,6 +61,11 @@ void NCursesInterface::draw(const char character, const int x, const int y,
 void NCursesInterface::draw(const char character, const int x, const int y)
 {
     mvaddch(y, x, character);
+}
+
+void NCursesInterface::clearScreen()
+{
+    erase();
 }
 
 short NCursesInterface::getColorId(const short r, const short g, const short b)

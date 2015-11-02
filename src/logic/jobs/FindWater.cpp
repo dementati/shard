@@ -31,7 +31,7 @@ void FindWater::execute(unsigned int dt)
     auto water = getClosestWaterInRange();
     if(water != nullptr) {
         mLogger->debug("Water detected.");
-        if(getDistance(*water) == 1)
+        if(getDistance(*water) <= 1)
         {
             mLogger->debug("Water is close.");
             consume(*water);

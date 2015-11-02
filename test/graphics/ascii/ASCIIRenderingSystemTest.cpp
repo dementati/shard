@@ -20,6 +20,14 @@ public:
     {
     }
 
+    void clear()
+    {
+    }
+
+    void refresh()
+    {
+    }
+
     glm::ivec2 getScreenCoordinates(glm::ivec2 worldCoordinates)
     {
         return ASCIIRenderingSystem::getScreenCoordinates(worldCoordinates);

@@ -24,6 +24,8 @@ public:
 
     MOCK_METHOD1(getAttribute, Variant&(std::string));
 
+    MOCK_METHOD2(addAttribute, void(const std::string, Variant value));
+
     virtual Variant& operator[](const std::string attributeId) { return getAttribute(attributeId); };
 };
 

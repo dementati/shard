@@ -10,6 +10,7 @@
 #include "../../../src/logic/Entity.hpp"
 #include "../../../src/logic/World.hpp"
 #include "../../mocks/MockASCIIRenderable.hpp"
+#include "../../mocks/MockASCIIRenderingSystem.hpp"
 #include "../../mocks/MockEntity.hpp"
 #include "../../mocks/MockRenderableStore.hpp"
 #include "../../mocks/MockWorld.hpp"
@@ -20,6 +21,7 @@ using ::testing::StrEq;
 
 using MockRenderableType = ::testing::NiceMock<MockASCIIRenderable>;
 using MockRenderableStoreType = ::testing::NiceMock<MockRenderableStore<ASCIIRenderable>>;
+using MockRenderingSystemType = ::testing::NiceMock<MockASCIIRenderingSystem>;
 using MockWorldType = ::testing::NiceMock<MockWorld>;
 using MockEntityType = ::testing::NiceMock<MockEntity>;
 
@@ -27,18 +29,20 @@ class ASCIIWorldRendererTest : public ::testing::Test
 {
 protected:
     MockRenderableType mRenderable;
+    MockRenderingSystemType mRenderingSystem;
     MockRenderableStoreType mStore;
     MockWorldType mWorld;
     Variant mTestRenderableId;
     Variant mTestPosition;
     std::vector<std::unique_ptr<Entity>> mEntities;
+    std::vector<std::unique_ptr<GameObject>> mObjects;
     ASCIIWorldRenderer mRenderer;
 
     ASCIIWorldRendererTest()
     : 
         mTestRenderableId(std::string("test")),
         mTestPosition(glm::ivec2(1, 1)),
-        mRenderer(mStore, mWorld)
+        mRenderer(mRenderingSystem, mStore, mWorld)
     {
         ON_CALL(mStore, get(StrEq("test")))
             .WillByDefault(ReturnRef(mRenderable));
@@ -56,6 +60,9 @@ protected:
 
         ON_CALL(mWorld, getEntities())
             .WillByDefault(ReturnRef(mEntities));
+
+        ON_CALL(mWorld, getObjects())
+            .WillByDefault(ReturnRef(mObjects));
     }
 };
 

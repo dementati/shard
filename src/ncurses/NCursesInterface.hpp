@@ -14,14 +14,9 @@
 
 class NCursesInterface
 {
-private:
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
     ColorCache mColorCache;    
-
-    short getColorId(const short r, const short g, const short b);
-
-    short getColorPairId(const short colorId1, const short colorId2);
 
 public:
     NCursesInterface();
@@ -37,4 +32,11 @@ public:
     */
 
     void draw(const char character, const int x, const int y);
+
+    void clearScreen();
+
+private:
+    short getColorId(const short r, const short g, const short b);
+
+    short getColorPairId(const short colorId1, const short colorId2);
 };

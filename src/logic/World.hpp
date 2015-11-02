@@ -19,7 +19,7 @@ public:
 
     virtual void addEntity(std::unique_ptr<Entity> entity);
 
-    virtual void removeEntity(Entity &entity);
+    virtual void removeDeadEntities();
 
     virtual std::vector<std::unique_ptr<GameObject>>& getObjects();
 

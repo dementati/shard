@@ -22,6 +22,10 @@ public:
 
     virtual void drawCharacter(const char character, const glm::ivec2 position) = 0;
 
+    virtual void clear() = 0;
+
+    virtual void refresh() = 0;
+
     void setScreenPosition(const glm::ivec2 position);
 
 };

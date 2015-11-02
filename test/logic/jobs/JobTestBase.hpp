@@ -13,6 +13,7 @@ using ::testing::Return;
 using ::testing::ReturnRef; 
 using ::testing::StrEq; 
 using ::testing::Ref; 
+using ::testing::_; 
 
 using MockEntityType = ::testing::NiceMock<MockEntity>;
 using MockGameObjectType = ::testing::NiceMock<MockGameObject>;

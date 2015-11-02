@@ -16,12 +16,12 @@ void World::addEntity(std::unique_ptr<Entity> entity)
     mEntities.push_back(std::move(entity));
 }
 
-void World::removeEntity(Entity &entity)
+void World::removeDeadEntities()
 {
     mEntities.erase(
         std::remove_if(mEntities.begin(), mEntities.end(), 
             // LCOV_EXCL_START
-            [&] (auto &entityPtr) { return entityPtr.get() == &entity; }
+            [&] (auto &entityPtr) { return entityPtr->hasAttribute("dead"); }
             // LCOV_EXCL_STOP
         ), 
         mEntities.end());

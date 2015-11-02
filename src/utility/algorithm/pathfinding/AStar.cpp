@@ -21,7 +21,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     ASSERT(boundingBox.contains(startPosition), "Bounding box must contain start position");
     ASSERT(boundingBox.contains(stopPosition), "Bounding box must contain stop position");
 
-    std::unique_ptr<Logger> logger = LoggerFactory::createLogger("AStar", Severity::DEBUG);
+    LoggerPtr logger = LoggerFactory::createLogger("AStar", Severity::DEBUG);
     
     // Translate the search area to the positive quadrant originating at 0,0
     glm::ivec2 offset = -boundingBox.getPosition();

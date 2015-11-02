@@ -17,7 +17,7 @@ class FindWater : public Job
 {
     static RNG cTrueRng; 
 
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
     World &mWorld;
     Entity &mOwner;
