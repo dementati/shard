@@ -1,6 +1,24 @@
 #include "GameObjectFactory.hpp"
 
 // LCOV_EXCL_START <- This class is constantly in flux, too much work to keep updated tests
+void GameObjectFactory::createPlayer(World &world, InputSystem &input, glm::ivec2 position)
+{
+    auto player = std::make_unique<Entity>();
+
+    // Add attributes
+    player->addAttribute("position", position);
+    player->addAttribute("renderableId", std::string("player"));
+    player->addAttribute("timeSinceLastStep", (unsigned int)0);
+    player->addAttribute("speed", 1000.0f);
+
+    // Add background jobs
+    player->addAttribute("backgroundJobs", std::vector<std::shared_ptr<Job>>({
+        std::make_shared<PlayerControl>(input, world, *player)
+    }));
+
+    world.addEntity(std::move(player));
+}
+
 void GameObjectFactory::createHuman(World &world, glm::ivec2 position)
 {
     auto human = std::make_unique<Entity>();

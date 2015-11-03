@@ -1,5 +1,7 @@
 #include "NCursesInterface.hpp"
 
+char NCursesInterface::NoInput = ERR;
+
 // LCOV_EXCL_START
 NCursesInterface::NCursesInterface()
 : 
@@ -21,6 +23,7 @@ NCursesInterface::NCursesInterface()
     noecho();
     keypad(stdscr, TRUE);
     curs_set(0);
+    timeout(0);
 }
 
 NCursesInterface::~NCursesInterface()
@@ -66,6 +69,11 @@ void NCursesInterface::draw(const char character, const int x, const int y)
 void NCursesInterface::clearScreen()
 {
     erase();
+}
+
+int NCursesInterface::getInput()
+{
+    return getch();
 }
 
 short NCursesInterface::getColorId(const short r, const short g, const short b)

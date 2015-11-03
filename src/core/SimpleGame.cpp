@@ -8,18 +8,23 @@ SimpleGame::SimpleGame()
     mRng(RNG::createTrueRandomRNG()),
     mNcurses(),
     mRenderingSystem(mNcurses),
+    mInput(mNcurses),
     mWorldUpdater(mWorld),
     mRenderableStore(),
     mWorldRenderer(mRenderingSystem, mRenderableStore, mWorld),
     mHumanSpawnTimer(0),
     mWaterSpawnTimer(0)
 {
-    mRenderableStore.add("human", 
+    mRenderableStore.add("player", 
         std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '@'));
+    mRenderableStore.add("human", 
+        std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '&'));
     mRenderableStore.add("water", 
         std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '~'));
 
-    
+   
+    GameObjectFactory::createPlayer(mWorld, mInput, glm::ivec2(50, 50));
+
     for(int i = 0; i < 5; i++)
     {
         GameObjectFactory::createHuman(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
@@ -36,6 +41,7 @@ SimpleGame::SimpleGame()
 void SimpleGame::update(const unsigned int dt) 
 {
     mLogger->debug("Updating...");
+    mInput.update();
     mWorldUpdater.update(dt);
 
     mHumanSpawnTimer += dt;
@@ -51,6 +57,7 @@ void SimpleGame::update(const unsigned int dt)
         GameObjectFactory::createHuman(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
         mHumanSpawnTimer = 0;
     }
+
 }
 
 void SimpleGame::render() const 

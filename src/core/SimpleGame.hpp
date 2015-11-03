@@ -9,6 +9,7 @@
 #include "../graphics/ascii/ASCIIRenderable.hpp"
 #include "../graphics/ascii/ASCIIWorldRenderer.hpp"
 #include "../graphics/RenderableStore.hpp"
+#include "../input/NCursesInputSystem.hpp"
 #include "../logic/utility/GameObjectFactory.hpp"
 #include "../logic/World.hpp"
 #include "../logic/WorldUpdater.hpp"
@@ -27,6 +28,7 @@ class SimpleGame : public Game
 
     NCursesInterface mNcurses;
     NCursesRenderingSystem mRenderingSystem;
+    NCursesInputSystem mInput;
 
     World mWorld;
     WorldUpdater mWorldUpdater;

@@ -28,5 +28,7 @@ public:
     virtual void add(CopyableNeed need);
 
     virtual Need& selectNeed();
+
+    virtual bool hasNeeds();
 };
 // LCOV_EXCL_STOP

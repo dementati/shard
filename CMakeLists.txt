@@ -89,7 +89,9 @@ set(PRODUCTION_SRC
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
+    src/input/NCursesInputSystem.cpp
     src/logic/jobs/background/IncreaseThirst.cpp
+    src/logic/jobs/background/PlayerControl.cpp
     src/logic/jobs/FindWater.cpp
     src/logic/jobs/Idle.cpp
     src/logic/jobs/Move.cpp

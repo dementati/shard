@@ -40,9 +40,12 @@ void WorldUpdater::update(unsigned int dt)
             mLogger->debug("No background jobs");
         }
 
-        mLogger->debug("Selecting needs");
-        Need& need = entity->selectNeed();
-        need.execute(dt);
+        if(entity->hasNeeds())
+        {
+            mLogger->debug("Selecting needs");
+            Need& need = entity->selectNeed();
+            need.execute(dt);
+        }
     }
 
     mWorld.removeDeadEntities();

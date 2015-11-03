@@ -28,3 +28,8 @@ Need& Entity::selectNeed()
 
     return *mNeeds.back();
 }
+
+bool Entity::hasNeeds()
+{
+    return !mNeeds.empty();
+}

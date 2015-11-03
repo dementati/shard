@@ -19,6 +19,8 @@ class NCursesInterface
     ColorCache mColorCache;    
 
 public:
+    static char NoInput;
+
     NCursesInterface();
 
     virtual ~NCursesInterface();
@@ -34,6 +36,8 @@ public:
     void draw(const char character, const int x, const int y);
 
     void clearScreen();
+
+    int getInput();
 
 private:
     short getColorId(const short r, const short g, const short b);

@@ -1,6 +1,5 @@
 #include "NCursesRenderingSystem.hpp"
 
-// LCOV_EXCL_START <- Manual testing required
 NCursesRenderingSystem::NCursesRenderingSystem(NCursesInterface& ncurses)
 : 
     mLogger(LoggerFactory::createLogger("NCursesRenderingSystem", Severity::DEBUG)), 
@@ -37,4 +36,3 @@ void NCursesRenderingSystem::refresh()
 {
     mNcurses.refreshScreen();
 }
-// LCOV_EXCL_STOP

@@ -41,13 +41,11 @@ int main()
         // Call render method
         game->render();
 
-        /*
         if(getch() == 'q') 
         {
             logger->info("Quit requested, exiting.");
             break;
         }
-        */
     }
 
     return 0;
