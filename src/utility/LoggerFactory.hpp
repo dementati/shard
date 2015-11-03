@@ -11,6 +11,8 @@
 #include "Logger.hpp"
 #include "StreamLogger.hpp"
 
+using LoggerPtr = std::shared_ptr<Logger>;
+
 class LoggerFactory
 {
     static LoggerFactory cInstance;
@@ -19,5 +21,5 @@ class LoggerFactory
 
     std::ofstream mLogStream;
 public:
-    static std::unique_ptr<Logger> createLogger(const std::string unit, const Severity severity);
+    static LoggerPtr createLogger(const std::string unit, const Severity severity);
 };

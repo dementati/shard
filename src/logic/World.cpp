@@ -11,7 +11,39 @@ std::vector<std::unique_ptr<Entity>>& World::getEntities()
     return mEntities;
 }
 
-void World::add(std::unique_ptr<Entity> entity)
+void World::addEntity(std::unique_ptr<Entity> entity)
 {
     mEntities.push_back(std::move(entity));
+}
+
+void World::removeDeadEntities()
+{
+    mEntities.erase(
+        std::remove_if(mEntities.begin(), mEntities.end(), 
+            // LCOV_EXCL_START
+            [&] (auto &entityPtr) { return entityPtr->hasAttribute("dead"); }
+            // LCOV_EXCL_STOP
+        ), 
+        mEntities.end());
+}
+
+std::vector<std::unique_ptr<GameObject>>& World::getObjects()
+{
+    return mObjects;
+}
+
+void World::addObject(std::unique_ptr<GameObject> object)
+{
+    mObjects.push_back(std::move(object));
+}
+
+void World::removeObject(GameObject &object)
+{
+    mObjects.erase(
+        std::remove_if(mObjects.begin(), mObjects.end(),
+            // LCOV_EXCL_START
+            [&] (auto &objectPtr) { return objectPtr.get() == &object; }
+            // LCOV_EXCL_STOP
+        ), 
+        mObjects.end());
 }

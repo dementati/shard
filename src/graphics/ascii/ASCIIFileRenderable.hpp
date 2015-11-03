@@ -23,7 +23,7 @@ class ASCIIFileRenderable : public ASCIIRenderable
 
     glm::ivec2 mPosition;
 
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
 public:
     ASCIIFileRenderable(ASCIIRenderingSystem &renderingSystem, std::string filePath);

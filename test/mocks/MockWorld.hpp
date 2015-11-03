@@ -9,9 +9,21 @@ class MockWorld : public World
 public:
     MOCK_METHOD0(getEntities, std::vector<std::unique_ptr<Entity>>&());
 
-    virtual void add(std::unique_ptr<Entity> entity)
+    virtual void addEntity(std::unique_ptr<Entity> entity)
     {
-        addProxy(entity.get());
+        addEntityProxy(entity.get());
     }
-    MOCK_METHOD1(addProxy, void(Entity*));
+    MOCK_METHOD1(addEntityProxy, void(Entity*));
+
+    MOCK_METHOD1(removeEntity, void(Entity&));
+
+    MOCK_METHOD0(getObjects, std::vector<std::unique_ptr<GameObject>>&());
+
+    virtual void addObject(std::unique_ptr<GameObject> object)
+    {
+        addObjectProxy(object.get());
+    }
+    MOCK_METHOD1(addObjectProxy, void(GameObject*));
+
+    MOCK_METHOD1(removeObject, void(GameObject&));
 };

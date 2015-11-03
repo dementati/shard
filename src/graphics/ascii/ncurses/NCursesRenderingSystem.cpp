@@ -21,4 +21,20 @@ void NCursesRenderingSystem::drawBitmap(const CharBitmap &bitmap, const glm::ive
         }
     }
 }
+
+void NCursesRenderingSystem::drawCharacter(const char character, const glm::ivec2 position)
+{
+    glm::ivec2 screenPosition = getScreenCoordinates(position);
+    mNcurses.draw(character, screenPosition.x, screenPosition.y); 
+}
+
+void NCursesRenderingSystem::clear()
+{
+    mNcurses.clearScreen();
+}
+
+void NCursesRenderingSystem::refresh()
+{
+    mNcurses.refreshScreen();
+}
 // LCOV_EXCL_STOP

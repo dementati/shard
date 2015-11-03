@@ -14,15 +14,9 @@ class MockNeed : public Need
 public:
     MockNeed() {}
 
-    MOCK_CONST_METHOD0(unitName, const std::string());
+    MOCK_METHOD0(getIntensity, unsigned int());
 
-    MOCK_METHOD0(getIntensity, int());
-
-    MOCK_METHOD0(getJob, Job&());
-
-    MOCK_METHOD0(getWorld, World&());
-
-    MOCK_METHOD0(getOwner, Entity&());
+    MOCK_METHOD1(execute, void(unsigned int));
 };
 
 template<class NeedType>
@@ -37,15 +31,9 @@ public:
     {
     }
 
-    const std::string unitName() const { return mNeed->unitName(); }
+    unsigned int getIntensity() { return mNeed->getIntensity(); }
 
-    int getIntensity() { return mNeed->getIntensity(); }
-
-    Job& getJob() { return mNeed->getJob(); }
-
-    World& getWorld() { return mNeed->getWorld(); }
-
-    Entity& getOwner() { return mNeed->getOwner(); }
+    void execute(unsigned int dt) { mNeed->execute(dt); }
 
     NeedType& get()
     {

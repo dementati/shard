@@ -2,36 +2,42 @@
 
 Thirst::Thirst(World &world, Entity &owner)
 : 
-    mThirst(0), 
+    mLogger(LoggerFactory::createLogger("Thirst", Severity::DEBUG)),
     mWorld(world), 
-    mOwner(owner),
-    mIdle(Idle())
+    mOwner(owner)
 {
+    ASSERT(owner.hasAttribute("thirst"), "Owner must have the thirst attribute");
+    ASSERT(owner.getAttribute("thirst").isOfType<unsigned int>(), "Owner thirst attribute must be an unsigned int");
+
+    mLogger->info("Finished construction");
 }
 
 // LCOV_EXCL_START
-const std::string Thirst::unitName() const
+void Thirst::execute(unsigned int dt)
 {
-    return std::string("Thirst");
+    mLogger->debug("Executing...");
+    auto job = getJob();
+    job->execute(dt);
+    mLogger->debug("Finished executing");
 }
 // LCOV_EXCL_STOP
 
-int Thirst::getIntensity()
+unsigned int Thirst::getIntensity()
 {
-    return 0;
+    Variant thirst = mOwner.getAttribute("thirst");
+    return thirst.get<unsigned int>();
 }
 
-Job& Thirst::getJob()
+std::unique_ptr<Job> Thirst::getJob()
 {
-    return mIdle;
-}
-
-World& Thirst::getWorld()
-{
-    return mWorld;
-}
-
-Entity& Thirst::getOwner()
-{
-    return mOwner;
+    if(getIntensity() == 0)
+    {
+        mLogger->debug("Thirst is zero, idling...");
+        return std::make_unique<Idle>();
+    } 
+    else 
+    {
+        mLogger->debug("Thirst is non-zero, finding water...");
+        return std::make_unique<FindWater>(mWorld, mOwner);
+    }
 }

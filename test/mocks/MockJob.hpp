@@ -8,9 +8,5 @@
 class MockJob : public Job
 {
 public:
-    MOCK_CONST_METHOD0(unitName, const std::string());
-
-    MOCK_METHOD1(execute, void(double));
-
-    MOCK_METHOD0(hasSucceeded, bool());
+    MOCK_METHOD1(execute, void(unsigned int));
 };

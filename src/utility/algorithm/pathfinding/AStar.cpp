@@ -13,11 +13,6 @@ public:
 	}
 };
 
-int AStar::dist(int x1, int y1, int x2, int y2)
-{
-    return abs(x1 - x2) + abs(y1 - y2);
-}
-
 std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 stopPosition,
     std::function<bool(glm::ivec2)> isBlocked, Box boundingBox)
 {
@@ -26,7 +21,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     ASSERT(boundingBox.contains(startPosition), "Bounding box must contain start position");
     ASSERT(boundingBox.contains(stopPosition), "Bounding box must contain stop position");
 
-    std::unique_ptr<Logger> logger = LoggerFactory::createLogger("AStar", Severity::DEBUG);
+    LoggerPtr logger = LoggerFactory::createLogger("AStar", Severity::DEBUG);
     
     // Translate the search area to the positive quadrant originating at 0,0
     glm::ivec2 offset = -boundingBox.getPosition();
@@ -57,7 +52,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     y.push_back(startPosition.y);
     index.push_back(y[start]*boundingBox.getDimensions().x + x[start]);
 	g.push_back(0);
-    f.push_back(dist(startPosition.x, startPosition.y, stopPosition.x, stopPosition.y));
+    f.push_back(Math::manhattanDistance(startPosition, stopPosition));
     inOpen.push_back(true);
     closed.push_back(false);
     parent.push_back(start);
@@ -172,7 +167,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
 			{
                 parent[neighbour] = current;
 				g[neighbour] = tentative_g;
-				f[neighbour] = g[neighbour] + dist(x[neighbour], y[neighbour], x[target], y[target]);
+				f[neighbour] = g[neighbour] + Math::manhattanDistance(x[neighbour], y[neighbour], x[target], y[target]);
 				if(!inOpen[neighbour]) 
 				{
 					open.push_back(neighbour);

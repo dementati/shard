@@ -14,7 +14,7 @@
 // LCOV_EXCL_START
 class CharBitmapLoader
 {
-    std::unique_ptr<Logger> mLogger;
+    LoggerPtr mLogger;
 
     std::string trimCarriageReturn(std::string line) const;
 

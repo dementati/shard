@@ -78,25 +78,36 @@ set(MAIN_SRC src/core/main.cpp)
 set(PRODUCTION_SRC 
     src/core/InvalidArgumentException.cpp
     src/core/InvalidFormatException.cpp
+    src/core/RNG.cpp
     src/core/SimpleGame.cpp
     src/core/StringException.cpp
     src/graphics/ascii/ncurses/NCursesRenderingSystem.cpp
     src/graphics/ascii/ASCIIRenderable.cpp
     src/graphics/ascii/ASCIIRenderingSystem.cpp
     src/graphics/ascii/ASCIIFileRenderable.cpp
+    src/graphics/ascii/ASCIISingleCharacterRenderable.cpp
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
+    src/logic/jobs/background/IncreaseThirst.cpp
+    src/logic/jobs/FindWater.cpp
     src/logic/jobs/Idle.cpp
+    src/logic/jobs/Move.cpp
+    src/logic/jobs/Wander.cpp
     src/logic/needs/Thirst.cpp
+    src/logic/utility/GameObjectFactory.cpp
+    src/logic/utility/GameObjectUtils.cpp
     src/logic/Entity.cpp
+    src/logic/GameObject.cpp
     src/logic/World.cpp
     src/logic/WorldUpdater.cpp
     src/ncurses/ColorCache.cpp
     src/ncurses/NCursesInterface.cpp
     src/ncurses/NCursesException.cpp
     src/utility/algorithm/pathfinding/AStar.cpp
+    src/utility/algorithm/Pathfinding.cpp
     src/utility/math/geometry/Box.cpp
+    src/utility/math/Math.cpp
     src/utility/BitPattern.cpp
     src/utility/DateTime.cpp
     src/utility/LoggerFactory.cpp
@@ -112,13 +123,20 @@ set(TEST_SRC
     test/graphics/CharBitmapTest.cpp
     test/graphics/CharBitmapLoaderTest.cpp
     test/graphics/RenderableStoreTest.cpp
+    test/logic/jobs/background/IncreaseThirstTest.cpp
+    test/logic/jobs/FindWaterTest.cpp
+    test/logic/jobs/MoveTest.cpp
+    test/logic/jobs/WanderTest.cpp
+    test/logic/needs/ThirstTest.cpp
+    test/logic/utility/GameObjectUtilsTest.cpp
     test/logic/EntityTest.cpp
-    test/logic/ThirstTest.cpp
+    test/logic/GameObjectTest.cpp
     test/logic/WorldTest.cpp
     test/logic/WorldUpdaterTest.cpp
     test/ncurses/ColorCacheTest.cpp
     test/utility/algorithm/pathfinding/AStarTest.cpp
     test/utility/math/geometry/BoxTest.cpp
+    test/utility/math/MathTest.cpp
     test/utility/BitPatternTest.cpp
     test/utility/DateTimeTest.cpp
     test/utility/StreamLoggerTest.cpp
@@ -145,9 +163,9 @@ target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
 setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
 
 # NCurses test app
-add_executable(NCursesTestApp test/manual/NCursesTestApp.cpp ${PRODUCTION_SRC})
-target_link_libraries(NCursesTestApp ${CURSES_LIBRARIES})
-target_compile_features(NCursesTestApp PRIVATE ${CXX_COMPILE_FEATURES})
+# add_executable(NCursesTestApp test/manual/NCursesTestApp.cpp ${PRODUCTION_SRC})
+# target_link_libraries(NCursesTestApp ${CURSES_LIBRARIES})
+# target_compile_features(NCursesTestApp PRIVATE ${CXX_COMPILE_FEATURES})
 
 # Build test app
-add_executable(BuildTestApp test/manual/BuildTestApp.cpp)
+# add_executable(BuildTestApp test/manual/BuildTestApp.cpp)
