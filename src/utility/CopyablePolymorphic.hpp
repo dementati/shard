@@ -8,6 +8,7 @@
 template<typename BaseType>
 class CopyablePolymorphic
 {
+    // LCOV_EXCL_START
     public:
     template<typename DerivedType>
     CopyablePolymorphic(const DerivedType& need)
@@ -22,6 +23,7 @@ class CopyablePolymorphic
 
         mValue.reset(new DerivedType(need));
     }
+    // LCOV_EXCL_STOP
 
     CopyablePolymorphic(const CopyablePolymorphic& other)
     :

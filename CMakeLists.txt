@@ -163,9 +163,9 @@ target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
 setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
 
 # NCurses test app
-add_executable(NCursesTestApp test/manual/NCursesTestApp.cpp ${PRODUCTION_SRC})
-target_link_libraries(NCursesTestApp ${CURSES_LIBRARIES})
-target_compile_features(NCursesTestApp PRIVATE ${CXX_COMPILE_FEATURES})
+# add_executable(NCursesTestApp test/manual/NCursesTestApp.cpp ${PRODUCTION_SRC})
+# target_link_libraries(NCursesTestApp ${CURSES_LIBRARIES})
+# target_compile_features(NCursesTestApp PRIVATE ${CXX_COMPILE_FEATURES})
 
 # Build test app
-add_executable(BuildTestApp test/manual/BuildTestApp.cpp)
+# add_executable(BuildTestApp test/manual/BuildTestApp.cpp)

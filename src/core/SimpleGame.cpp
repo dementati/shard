@@ -1,5 +1,7 @@
 #include "SimpleGame.hpp"
 
+// LCOV_EXCL_START <- This class is constantly in flux and it'll be tedious to rewrite
+//                    the tests every time.
 SimpleGame::SimpleGame()
 :
     mLogger(LoggerFactory::createLogger("SimpleGame", Severity::DEBUG)),
@@ -31,7 +33,6 @@ SimpleGame::SimpleGame()
     mLogger->info("Finished construction");
 }
 
-// LCOV_EXCL_START <- This method causes side effects that can't be tested automatically.
 void SimpleGame::update(const unsigned int dt) 
 {
     mLogger->debug("Updating...");
@@ -51,9 +52,7 @@ void SimpleGame::update(const unsigned int dt)
         mHumanSpawnTimer = 0;
     }
 }
-// LCOV_EXCL_STOP
 
-// LCOV_EXCL_START <- This method causes side effects that can't be tested automatically.
 void SimpleGame::render() const 
 {
     mLogger->debug("Rendering...");

@@ -1,5 +1,6 @@
 #include "GameObjectFactory.hpp"
 
+// LCOV_EXCL_START <- This class is constantly in flux, too much work to keep updated tests
 void GameObjectFactory::createHuman(World &world, glm::ivec2 position)
 {
     auto human = std::make_unique<Entity>();
@@ -38,3 +39,4 @@ void GameObjectFactory::createWater(World &world, glm::ivec2 position)
 
     world.addObject(std::move(water));
 }
+// LCOV_EXCL_STOP

@@ -34,6 +34,7 @@ protected:
     Variant mOwnerTimeSinceLastStep;
     Variant mOwnerSpeed;
     Variant mOwnerThirst;
+    Variant mOwnerMaxThirst;
 
     Variant mWaterThirstReduction;
     Variant mWaterPosition;
@@ -46,6 +47,7 @@ protected:
         mOwnerTimeSinceLastStep((unsigned int)0),
         mOwnerSpeed(1.0f),
         mOwnerThirst((unsigned int)0),
+        mOwnerMaxThirst((unsigned int)0),
         mWaterThirstReduction((unsigned int)0),
         mWaterPosition(glm::ivec2(0, 0))
     {
@@ -69,6 +71,10 @@ protected:
             .WillByDefault(Return(true));
         ON_CALL(mOwner, getAttribute(StrEq("thirst")))
             .WillByDefault(ReturnRef(mOwnerThirst));
+        ON_CALL(mOwner, hasAttribute(StrEq("maxThirst")))
+            .WillByDefault(Return(true));
+        ON_CALL(mOwner, getAttribute(StrEq("maxThirst")))
+            .WillByDefault(ReturnRef(mOwnerMaxThirst));
 
         ON_CALL(mWater, hasAttribute(StrEq("thirstReduction")))
             .WillByDefault(Return(true));

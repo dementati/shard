@@ -90,3 +90,24 @@ TEST_F(IncreaseThirstTest, Execute_IncreaseTwo_TimeOneSecond)
     EXPECT_EQ(0, mTimer.get<unsigned int>());
     EXPECT_EQ(2, mOwnerThirst.get<unsigned int>());
 }
+
+TEST_F(IncreaseThirstTest, Execute_OwnerDies_MaxThirst0_ThirstBecomes1)
+{
+    IncreaseThirst increaseThirst(mWorld, mOwner, 1);
+
+    EXPECT_CALL(mOwner, addAttribute("dead", _));
+
+    increaseThirst.execute(1000);
+}
+
+TEST_F(IncreaseThirstTest, Execute_OwnerDoesntDie_MaxThirst1_ThirstBecomes1)
+{
+    mOwnerMaxThirst.set<unsigned int>(1);
+
+    IncreaseThirst increaseThirst(mWorld, mOwner, 1);
+
+    EXPECT_CALL(mOwner, addAttribute("dead", _))
+        .Times(0);
+
+    increaseThirst.execute(1000);
+}
