@@ -319,3 +319,38 @@ TEST_F(FindWaterTest, TwoConsumables_OneOutOFRange_CollectOneWanderCollectOther)
     findWater.execute(1000);
     EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
 }
+
+// Entity and consumable on top of each other
+TEST_F(FindWaterTest, OwnerAndConsumableOnTopOfEachOther)
+{
+    setOwnerThirst(1);
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant objectPosition = glm::ivec2(0, 0);
+    Variant objectReduction = (unsigned int)1;
+    {
+        auto object = std::make_unique<MockGameObjectType>();
+        ON_CALL(*object, hasAttribute("thirstReduction"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("thirstReduction"))
+            .WillByDefault(ReturnRef(objectReduction));
+        ON_CALL(*object, hasAttribute("position"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("position"))
+            .WillByDefault(ReturnRef(objectPosition));
+        ON_CALL(*object, hasAttribute("consumable"))
+            .WillByDefault(Return(true));
+        objects.push_back(std::move(object));
+    }
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+       
+    FindWater findWater(mWorld, mOwner, mRng);
+
+    // Collect it
+    EXPECT_CALL(mWorld, removeObject(Ref(*objects[0]))); 
+    findWater.execute(1000);
+    EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
+}
