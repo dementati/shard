@@ -1,6 +1,6 @@
 #include "IncreaseThirst.hpp"
 
-IncreaseThirst::IncreaseThirst(World &world, Entity &owner, unsigned int unitPerSecond)
+IncreaseThirst::IncreaseThirst(World &world, Entity &owner, float unitPerSecond)
 :
     mWorld(world),
     mOwner(owner),
@@ -10,7 +10,7 @@ IncreaseThirst::IncreaseThirst(World &world, Entity &owner, unsigned int unitPer
     ASSERT(owner["thirst"].isOfType<unsigned int>(), "Owner thirst must be an unsigned int");
     ASSERT(owner.hasAttribute("maxThirst"), "Owner must have maxThirst attribute");
     ASSERT(owner["maxThirst"].isOfType<unsigned int>(), "Owner maxThirst must be an unsigned int");
-    ASSERT(unitPerSecond > 0, "unitPerSecond == 0 is pointless");
+    ASSERT(unitPerSecond > 0, "unitPerSecond must be positive");
 }
 
 void IncreaseThirst::execute(unsigned int dt)
@@ -23,10 +23,15 @@ void IncreaseThirst::execute(unsigned int dt)
     auto timer = mOwner["IncreaseThirst.timer"].get<unsigned int>();
     timer += dt;
 
-    if(timer >= 1000)
+    if(timer >= (unsigned int)(1000.0f/mUnitPerSecond))
     {
-        mOwner["thirst"].set<unsigned int>(mOwner["thirst"].get<unsigned int>() + mUnitPerSecond);
-        timer = 0;
+        unsigned int wholeSeconds = (unsigned int)((float)timer/1000.0f);
+        unsigned int thirstDelta = (unsigned int)(mUnitPerSecond * (float)wholeSeconds);
+        mOwner["thirst"].set<unsigned int>(mOwner["thirst"].get<unsigned int>() + thirstDelta);
+        unsigned int wholeMilliseconds = wholeSeconds * 1000;
+
+        ASSERT(wholeMilliseconds <= timer, "This would cause timer to underflow");
+        timer -= wholeMilliseconds;
     }
 
     mOwner["IncreaseThirst.timer"].set<unsigned int>(timer);

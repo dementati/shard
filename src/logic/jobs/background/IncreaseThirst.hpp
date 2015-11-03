@@ -12,10 +12,10 @@ class IncreaseThirst : public Job
 {
     World &mWorld;
     Entity &mOwner;
-    unsigned int mUnitPerSecond;
+    float mUnitPerSecond;
 
 public:
-    IncreaseThirst(World &world, Entity &owner, unsigned int unitPerSecond);
+    IncreaseThirst(World &world, Entity &owner, float unitPerSecond);
 
     virtual void execute(unsigned int dt);
 };

@@ -16,7 +16,7 @@ void GameObjectFactory::createHuman(World &world, glm::ivec2 position)
 
     // Add background jobs
     human->addAttribute("backgroundJobs", std::vector<std::shared_ptr<Job>>({
-        std::make_shared<IncreaseThirst>(world, *human, 1)
+        std::make_shared<IncreaseThirst>(world, *human, 0.5f)
     }));
 
     // Add needs

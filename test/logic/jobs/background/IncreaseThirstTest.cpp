@@ -91,6 +91,26 @@ TEST_F(IncreaseThirstTest, Execute_IncreaseTwo_TimeOneSecond)
     EXPECT_EQ(2, mOwnerThirst.get<unsigned int>());
 }
 
+TEST_F(IncreaseThirstTest, Execute_IncreaseOneHalf_TimeOneSecond)
+{
+    IncreaseThirst increaseThirst(mWorld, mOwner, 0.5f);
+
+    increaseThirst.execute(1000);
+
+    EXPECT_EQ(1000, mTimer.get<unsigned int>());
+    EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
+}
+
+TEST_F(IncreaseThirstTest, Execute_IncreaseOne_TimeOneSecondPlusOneMs)
+{
+    IncreaseThirst increaseThirst(mWorld, mOwner, 1);
+
+    increaseThirst.execute(1001);
+
+    EXPECT_EQ(1, mTimer.get<unsigned int>());
+    EXPECT_EQ(1, mOwnerThirst.get<unsigned int>());
+}
+
 TEST_F(IncreaseThirstTest, Execute_OwnerDies_MaxThirst0_ThirstBecomes1)
 {
     IncreaseThirst increaseThirst(mWorld, mOwner, 1);
