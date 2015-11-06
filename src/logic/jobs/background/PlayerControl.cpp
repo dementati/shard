@@ -6,6 +6,9 @@ PlayerControl::PlayerControl(InputSystem &input, World &world, Entity &player)
     mWorld(world),
     mPlayer(player)
 {
+    ASSERT(world.hasAttribute("running"), "World must have running flag");
+    ASSERT(world["running"].isOfType<bool>(), "Running flag must be a bool");
+
     ASSERT(player.hasAttribute("position"), "Player must have a position");
     ASSERT(player["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
     ASSERT(player.hasAttribute("timeSinceLastStep"), "Player must have timeSinceLastStep");
@@ -36,6 +39,10 @@ void PlayerControl::execute(unsigned int dt)
         else if(mInput.isPressed(Key::Right))
         {
             move(glm::ivec2(1, 0));
+        }
+        else if(mInput.isPressed(Key::Quit))
+        {
+            mWorld["running"].set<bool>(false);
         }
     }
 }

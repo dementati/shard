@@ -44,5 +44,7 @@ public:
     void update(const unsigned int dt);
 
     void render() const;
+
+    bool isRunning();
 };
 // LCOV_EXCL_STOP

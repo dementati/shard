@@ -15,6 +15,8 @@ SimpleGame::SimpleGame()
     mHumanSpawnTimer(0),
     mWaterSpawnTimer(0)
 {
+    mWorld["running"] = true;
+
     mRenderableStore.add("player", 
         std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '@'));
     mRenderableStore.add("human", 
@@ -64,5 +66,10 @@ void SimpleGame::render() const
 {
     mLogger->debug("Rendering...");
     mWorldRenderer.render();
+}
+
+bool SimpleGame::isRunning()
+{
+    return mWorld["running"].get<bool>();
 }
 // LCOV_EXCL_STOP

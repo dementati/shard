@@ -20,7 +20,7 @@ int main()
 
     // Start main loop
     logger->info("Starting main game loop");
-    while(true) {
+    while(game->isRunning()) {
         // Compute delta time
         uint64_t currentTime = std::chrono::duration_cast< std::chrono::milliseconds >(
             std::chrono::system_clock::now().time_since_epoch()

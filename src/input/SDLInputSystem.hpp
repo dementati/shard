@@ -7,7 +7,6 @@
 #include "../utility/EnumClassHash.hpp"
 #include "../utility/LoggerFactory.hpp"
 #include "InputSystem.hpp"
-#include "Keymap.hpp"
 
 class SDLInputSystem : public InputSystem
 {
