@@ -2,9 +2,9 @@
 
 PlayerControl::PlayerControl(InputSystem &input, World &world, Entity &player)
 :
+    mInput(input),
     mWorld(world),
-    mPlayer(player),
-    mInput(input)
+    mPlayer(player)
 {
     ASSERT(player.hasAttribute("position"), "Player must have a position");
     ASSERT(player["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
@@ -16,7 +16,10 @@ PlayerControl::PlayerControl(InputSystem &input, World &world, Entity &player)
 
 void PlayerControl::execute(unsigned int dt)
 {
-    if(canMove(dt))
+    unsigned int timeSinceLastStep = mPlayer["timeSinceLastStep"].get<unsigned int>() + dt;
+    mPlayer["timeSinceLastStep"].set<unsigned int>(timeSinceLastStep);
+
+    if(canMove())
     {
         if(mInput.isPressed(Key::Up))
         {
@@ -37,12 +40,10 @@ void PlayerControl::execute(unsigned int dt)
     }
 }
 
-bool PlayerControl::canMove(unsigned int dt)
+bool PlayerControl::canMove()
 {
-    unsigned int timeSinceLastStep = mPlayer["timeSinceLastStep"].get<unsigned int>() + dt;
-    mPlayer["timeSinceLastStep"].set<unsigned int>(timeSinceLastStep);
+    unsigned int timeSinceLastStep = mPlayer["timeSinceLastStep"].get<unsigned int>();
     unsigned int stepLimit = (unsigned int)(1000.0f / mPlayer["speed"].get<float>());
-
     return timeSinceLastStep >= stepLimit;
 }
 

@@ -11,17 +11,17 @@
 // LCOV_EXCL_START
 class PlayerControl : public Job
 {
+    InputSystem &mInput;
     World &mWorld;
     Entity &mPlayer;
-    InputSystem &mInput;
 
 public:
     PlayerControl(InputSystem &input, World &world, Entity &player);
 
     virtual void execute(unsigned int dt);
 
-    bool canMove(unsigned int dt);
+    virtual bool canMove();
 
-    void move(glm::ivec2 deltaPosition);
+    virtual void move(glm::ivec2 deltaPosition);
 };
 // LCOV_EXCL_STOP

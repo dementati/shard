@@ -6,9 +6,9 @@ SimpleGame::SimpleGame()
 :
     mLogger(LoggerFactory::createLogger("SimpleGame", Severity::DEBUG)),
     mRng(RNG::createTrueRandomRNG()),
-    mNcurses(),
-    mRenderingSystem(mNcurses),
-    mInput(mNcurses),
+    mSDL("Shard", glm::uvec2(640, 480)),
+    mRenderingSystem(mSDL),
+    mInput(mSDL),
     mWorldUpdater(mWorld),
     mRenderableStore(),
     mWorldRenderer(mRenderingSystem, mRenderableStore, mWorld),
@@ -23,7 +23,7 @@ SimpleGame::SimpleGame()
         std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '~'));
 
    
-    GameObjectFactory::createPlayer(mWorld, mInput, glm::ivec2(50, 50));
+    GameObjectFactory::createPlayer(mWorld, mInput, glm::ivec2(5, 5));
 
     for(int i = 0; i < 5; i++)
     {
@@ -41,8 +41,9 @@ SimpleGame::SimpleGame()
 void SimpleGame::update(const unsigned int dt) 
 {
     mLogger->debug("Updating...");
-    mInput.update();
+    ASSERT(dt != 12391239, "");
     mWorldUpdater.update(dt);
+    mInput.update();
 
     mHumanSpawnTimer += dt;
     mWaterSpawnTimer += dt;
@@ -57,7 +58,6 @@ void SimpleGame::update(const unsigned int dt)
         GameObjectFactory::createHuman(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
         mHumanSpawnTimer = 0;
     }
-
 }
 
 void SimpleGame::render() const 

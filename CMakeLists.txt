@@ -7,7 +7,7 @@ set (Shard_VERSION_MINOR 0)
 set (Shard_VERSION_PATCH 1)
 
 # Set compiler
-set(CMAKE_CXX_COMPILER /usr/bin/g++.exe)
+set(CMAKE_CXX_COMPILER g++.exe)
 set(CMAKE_C_COMPILER /usr/bin/gcc.exe)
 
 # Set custom CMake modules path
@@ -33,6 +33,12 @@ include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 # NCurses
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIRS})
+
+# SDL
+find_package(SDL2 REQUIRED)
+include_directories(SYSTEM ${SDL2_INCLUDE_DIR})
+find_package(SDL2_ttf REQUIRED)
+include_directories(SYSTEM ${SDL2_TTF_INCLUDE_DIRS})
 
 # Code coverage
 include(CodeCoverage)
@@ -81,7 +87,7 @@ set(PRODUCTION_SRC
     src/core/RNG.cpp
     src/core/SimpleGame.cpp
     src/core/StringException.cpp
-    src/graphics/ascii/ncurses/NCursesRenderingSystem.cpp
+    src/graphics/ascii/sdl/SDLRenderingSystem.cpp
     src/graphics/ascii/ASCIIRenderable.cpp
     src/graphics/ascii/ASCIIRenderingSystem.cpp
     src/graphics/ascii/ASCIIFileRenderable.cpp
@@ -89,7 +95,7 @@ set(PRODUCTION_SRC
     src/graphics/ascii/ASCIIWorldRenderer.cpp
     src/graphics/CharBitmap.cpp
     src/graphics/CharBitmapLoader.cpp
-    src/input/NCursesInputSystem.cpp
+    src/input/SDLInputSystem.cpp
     src/logic/jobs/background/IncreaseThirst.cpp
     src/logic/jobs/background/PlayerControl.cpp
     src/logic/jobs/FindWater.cpp
@@ -103,9 +109,8 @@ set(PRODUCTION_SRC
     src/logic/GameObject.cpp
     src/logic/World.cpp
     src/logic/WorldUpdater.cpp
-    src/ncurses/ColorCache.cpp
-    src/ncurses/NCursesInterface.cpp
-    src/ncurses/NCursesException.cpp
+    src/sdl/SDLInterface.cpp
+    src/sdl/SDLTexture.cpp
     src/utility/algorithm/pathfinding/AStar.cpp
     src/utility/algorithm/Pathfinding.cpp
     src/utility/math/geometry/Box.cpp
@@ -135,7 +140,6 @@ set(TEST_SRC
     test/logic/GameObjectTest.cpp
     test/logic/WorldTest.cpp
     test/logic/WorldUpdaterTest.cpp
-    test/ncurses/ColorCacheTest.cpp
     test/utility/algorithm/pathfinding/AStarTest.cpp
     test/utility/math/geometry/BoxTest.cpp
     test/utility/math/MathTest.cpp
@@ -147,8 +151,19 @@ set(TEST_SRC
 )
 
 # Libraries
-set(PRODUCTION_LIBRARIES ${CURSES_LIBRARIES})
-set(TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} ${GMOCK_BOTH_LIBRARIES} ${CURSES_LIBRARIES})
+set(PRODUCTION_LIBRARIES 
+    ${CURSES_LIBRARIES} 
+    ${SDL2_LIBRARY}
+    ${SDL2_TTF_LIBRARIES}
+)
+
+set(TEST_LIBRARIES 
+    ${GTEST_BOTH_LIBRARIES} 
+    ${GMOCK_BOTH_LIBRARIES} 
+    ${CURSES_LIBRARIES} 
+    ${SDL2_LIBRARY}
+    ${SDL2_TTF_LIBRARIES}
+)
 
 
 # Main target
@@ -171,3 +186,7 @@ setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR
 
 # Build test app
 # add_executable(BuildTestApp test/manual/BuildTestApp.cpp)
+
+# Keyboard input test app
+add_executable(SDLApp test/manual/SDLApp.cpp)
+target_link_libraries(SDLApp ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES})
