@@ -15,8 +15,6 @@ SimpleGame::SimpleGame()
     mHumanSpawnTimer(0),
     mWaterSpawnTimer(0)
 {
-    mWorld["running"] = true;
-
     mRenderableStore.add("player", 
         std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '@'));
     mRenderableStore.add("human", 

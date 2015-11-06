@@ -14,6 +14,8 @@ class World : public GameObject
     std::vector<std::unique_ptr<GameObject>> mObjects = std::vector<std::unique_ptr<GameObject>>();
 
 public:
+    World();
+
     virtual ~World();
 
     virtual std::vector<std::unique_ptr<Entity>>& getEntities();

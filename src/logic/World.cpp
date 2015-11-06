@@ -1,5 +1,11 @@
 #include "World.hpp"
 
+World::World()
+{
+    (*this)["running"] = true;
+    (*this)["cameraPosition"] = glm::ivec2(0, 0);
+}
+
 // LCOV_EXCL_START
 World::~World()
 {

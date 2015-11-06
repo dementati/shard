@@ -19,7 +19,9 @@ void SDLRenderingSystem::drawBitmap(const CharBitmap &bitmap, const glm::ivec2 p
 
 void SDLRenderingSystem::drawCharacter(const char character, const glm::ivec2 position)
 {
-    mLogger->debug(std::string("Drawing ") + character + " at " + glm::to_string(position));
+    auto screenPosition = getScreenCoordinates(position);
+
+    mLogger->debug(std::string("Drawing ") + character + " at " + glm::to_string(screenPosition));
 
     // If character is not in character -> texture map
     if(mCharTextureMap.count(character) == 0)
@@ -30,7 +32,7 @@ void SDLRenderingSystem::drawCharacter(const char character, const glm::ivec2 po
 
     // Render texture the character maps to
     glm::ivec2 dimensions(10, 13);
-    mSDL.render(*mCharTextureMap[character], position * dimensions, dimensions);
+    mSDL.render(*mCharTextureMap[character], screenPosition * dimensions, dimensions);
 }
 
 void SDLRenderingSystem::clear()

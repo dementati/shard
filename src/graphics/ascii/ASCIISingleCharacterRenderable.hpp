@@ -17,15 +17,11 @@ class ASCIISingleCharacterRenderable : public ASCIIRenderable
 {
     char mCharacter;
 
-    glm::ivec2 mPosition;
-
     LoggerPtr mLogger;
 
 public:
     ASCIISingleCharacterRenderable(ASCIIRenderingSystem &renderingSystem, char character);
 
     void draw();
-
-    void setPosition(glm::ivec2 position);
 };
 // LCOV_EXCL_START

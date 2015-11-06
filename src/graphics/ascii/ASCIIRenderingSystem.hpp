@@ -5,17 +5,21 @@
 
 #include <glm/glm.hpp>
 
+#include "../../utility/LoggerFactory.hpp"
 #include "../CharBitmap.hpp"
 
 // LCOV_EXCL_START
 class ASCIIRenderingSystem
 {
-    glm::ivec2 mScreenPosition = glm::ivec2(0,0);
+    LoggerPtr mLogger;
+    glm::ivec2 mScreenPosition;
 
 protected:
     glm::ivec2 getScreenCoordinates(glm::ivec2 worldCoordinates);
 
 public:
+    ASCIIRenderingSystem();
+
     virtual ~ASCIIRenderingSystem();
 
     virtual void drawBitmap(const CharBitmap &bitmap, const glm::ivec2 position) = 0;
