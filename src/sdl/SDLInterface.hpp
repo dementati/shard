@@ -1,43 +1,46 @@
 #pragma once
 
 #include <memory>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
 #include <SDL.h>
 #include <SDL_ttf.h>
 
 #include "../utility/Assert.hpp"
+#include "../utility/EnumClassHash.hpp"
 #include "../utility/LoggerFactory.hpp"
 #include "SDLTexture.hpp"
 
-enum class SDLEvent
+enum class SDLKey
 {
-    NONE,
-    QUIT,
-    KEY_UP_PRESSED,
-    KEY_DOWN_PRESSED,
-    KEY_LEFT_PRESSED,
-    KEY_RIGHT_PRESSED,
-    KEY_UP_RELEASED,
-    KEY_DOWN_RELEASED,
-    KEY_LEFT_RELEASED,
-    KEY_RIGHT_RELEASED
+    W,
+    A,
+    S,
+    D,
+    E,
+    Escape
 };
 
 class SDLInterface
 {
+    static std::unordered_map<SDLKey, SDL_Scancode, EnumClassHash> cScanCodeMap;
+
     LoggerPtr mLogger;
     SDL_Event mEvent;
     SDL_Window* mWindow;
     SDL_Renderer* mRenderer;
     TTF_Font* mFont;
+    const Uint8* mKeyStates;
 
 public:
     SDLInterface(std::string windowTitle, glm::uvec2 windowSize);
 
     ~SDLInterface();
 
-    SDLEvent pollEvents();
+    void pollEvents();
+
+    bool isPressed(SDLKey key);
 
     std::shared_ptr<SDLTexture> createTextureFromString(std::string, glm::u8vec4 color);
 

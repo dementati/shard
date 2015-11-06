@@ -1,6 +1,15 @@
 #pragma once
 
-#include "Keymap.hpp"
+enum class Key
+{
+    None,
+    Up,
+    Down,
+    Left,
+    Right,
+    Use,
+    Quit
+};
 
 class InputSystem
 {

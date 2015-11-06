@@ -1,5 +1,15 @@
 #include "SDLInterface.hpp"
 
+std::unordered_map<SDLKey, SDL_Scancode, EnumClassHash> SDLInterface::cScanCodeMap =
+{
+    {SDLKey::W, SDL_SCANCODE_W},
+    {SDLKey::A, SDL_SCANCODE_A},
+    {SDLKey::S, SDL_SCANCODE_S},
+    {SDLKey::D, SDL_SCANCODE_D},
+    {SDLKey::E, SDL_SCANCODE_E},
+    {SDLKey::Escape, SDL_SCANCODE_ESCAPE}
+};
+
 SDLInterface::SDLInterface(std::string windowTitle, glm::uvec2 windowSize)
 :
     mLogger(LoggerFactory::createLogger("SDLInterface", Severity::DEBUG)),
@@ -79,41 +89,18 @@ SDLInterface::~SDLInterface()
     mLogger->info("Done.");
 }
 
-SDLEvent SDLInterface::pollEvents()
+void SDLInterface::pollEvents()
 {
-    while(SDL_PollEvent(&mEvent) != 0)
-    {
-        if(mEvent.type == SDL_QUIT)
-        {
-            return SDLEvent::QUIT;
-        }
+    while(SDL_PollEvent(&mEvent) != 0) {}
 
-        if(mEvent.type == SDL_KEYDOWN)
-        {
-            switch(mEvent.key.keysym.sym)
-            {
-                case SDLK_UP: return SDLEvent::KEY_UP_PRESSED; break;
-                case SDLK_DOWN: return SDLEvent::KEY_DOWN_PRESSED; break;
-                case SDLK_LEFT: return SDLEvent::KEY_LEFT_PRESSED; break;
-                case SDLK_RIGHT: return SDLEvent::KEY_RIGHT_PRESSED; break;
-                default: break;
-            }
-        }
+    mKeyStates = SDL_GetKeyboardState(NULL);
+}
 
-        if(mEvent.type == SDL_KEYUP)
-        {
-            switch(mEvent.key.keysym.sym)
-            {
-                case SDLK_UP: return SDLEvent::KEY_UP_RELEASED; break;
-                case SDLK_DOWN: return SDLEvent::KEY_DOWN_RELEASED; break;
-                case SDLK_LEFT: return SDLEvent::KEY_LEFT_RELEASED; break;
-                case SDLK_RIGHT: return SDLEvent::KEY_RIGHT_RELEASED; break;
-                default: break;
-            }
-        }
-    }
+bool SDLInterface::isPressed(SDLKey key)
+{
+    ASSERT(cScanCodeMap.count(key) == 1, "Key is not supported");
 
-    return SDLEvent::NONE;
+    return mKeyStates[cScanCodeMap[key]] == 1;
 }
 
 std::shared_ptr<SDLTexture> SDLInterface::createTextureFromString(std::string str, glm::u8vec4 color)
