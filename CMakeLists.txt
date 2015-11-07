@@ -103,6 +103,7 @@ set(PRODUCTION_SRC
     src/logic/jobs/Move.cpp
     src/logic/jobs/Wander.cpp
     src/logic/needs/Thirst.cpp
+    src/logic/utility/EntityUtils.cpp
     src/logic/utility/GameObjectFactory.cpp
     src/logic/utility/GameObjectUtils.cpp
     src/logic/Entity.cpp
@@ -125,16 +126,19 @@ set(PRODUCTION_SRC
 
 # Test code
 set(TEST_SRC
+    test/graphics/ascii/sdl/SDLRenderingSystemTest.cpp
     test/graphics/ascii/ASCIIRenderingSystemTest.cpp
     test/graphics/ascii/ASCIIWorldRendererTest.cpp
     test/graphics/CharBitmapTest.cpp
     test/graphics/CharBitmapLoaderTest.cpp
     test/graphics/RenderableStoreTest.cpp
     test/logic/jobs/background/IncreaseThirstTest.cpp
+    test/logic/jobs/background/PlayerControlTest.cpp
     test/logic/jobs/FindWaterTest.cpp
     test/logic/jobs/MoveTest.cpp
     test/logic/jobs/WanderTest.cpp
     test/logic/needs/ThirstTest.cpp
+    test/logic/utility/EntityUtilsTest.cpp
     test/logic/utility/GameObjectUtilsTest.cpp
     test/logic/EntityTest.cpp
     test/logic/GameObjectTest.cpp

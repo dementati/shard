@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <string>
 
 #include "../../utility/math/Math.hpp"
@@ -22,6 +23,7 @@ class FindWater : public Job
     World &mWorld;
     Entity &mOwner;
     RNG &mRng;
+    std::unique_ptr<GameObjectUtils> mGameObjectUtils;
 
 public:
     FindWater(World &world, Entity &owner);

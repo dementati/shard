@@ -1,5 +1,6 @@
 #include "SDLInputSystem.hpp"
 
+// LCOV_EXCL_START
 std::unordered_map<Key, SDLKey, EnumClassHash> SDLInputSystem::cKeyMap = 
 {
     {Key::Up, SDLKey::W},
@@ -31,3 +32,4 @@ bool SDLInputSystem::isPressed(Key key)
 
     return mSDL.isPressed(cKeyMap[key]);
 }
+// LCOV_EXCL_STOP

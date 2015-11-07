@@ -16,7 +16,7 @@ TEST_F(FindWaterTest, GetDistance_One)
 {
     FindWater findWater(mWorld, mOwner);
 
-    setWaterPosition(glm::ivec2(1, 0));
+    mWaterPosition.set<glm::ivec2>(glm::ivec2(1, 0));
 
     EXPECT_EQ(1, findWater.getDistance(mWater));
 }
@@ -32,7 +32,7 @@ TEST_F(FindWaterTest, Consume_ZeroThirst_ZeroReduction)
 
 TEST_F(FindWaterTest, Consume_ThirstOne_ZeroReduction)
 {
-    setOwnerThirst(1);
+    mOwnerThirst.set<unsigned int>(1);
 
     FindWater findWater(mWorld, mOwner);
 
@@ -43,8 +43,8 @@ TEST_F(FindWaterTest, Consume_ThirstOne_ZeroReduction)
 
 TEST_F(FindWaterTest, Consume_ThirstOne_ReductionOne)
 {
-    setOwnerThirst(1);
-    setWaterThirstReduction(1);
+    mOwnerThirst.set<unsigned int>(1);
+    mWaterThirstReduction.set<unsigned int>(1);
 
     FindWater findWater(mWorld, mOwner);
 
@@ -55,8 +55,8 @@ TEST_F(FindWaterTest, Consume_ThirstOne_ReductionOne)
 
 TEST_F(FindWaterTest, Consume_ThirstTwo_ReductionOne)
 {
-    setOwnerThirst(2);
-    setWaterThirstReduction(1);
+    mOwnerThirst.set<unsigned int>(2);
+    mWaterThirstReduction.set<unsigned int>(1);
 
     FindWater findWater(mWorld, mOwner);
 
@@ -67,8 +67,8 @@ TEST_F(FindWaterTest, Consume_ThirstTwo_ReductionOne)
 
 TEST_F(FindWaterTest, Consume_ThirstOne_ReductionTwo)
 {
-    setOwnerThirst(1);
-    setWaterThirstReduction(2);
+    mOwnerThirst.set<unsigned int>(1);
+    mWaterThirstReduction.set<unsigned int>(2);
 
     FindWater findWater(mWorld, mOwner);
 
@@ -79,7 +79,8 @@ TEST_F(FindWaterTest, Consume_ThirstOne_ReductionTwo)
 
 TEST_F(FindWaterTest, Consume_Consumable)
 {
-    setWaterConsumable(true);
+    ON_CALL(mWater, hasAttribute("consumable"))
+        .WillByDefault(Return(true));
 
     EXPECT_CALL(mWorld, removeObject(Ref(mWater)));
 
@@ -252,8 +253,8 @@ TEST_F(FindWaterTest, GetClosestWaterInRange_ObjectOutOfPerception)
 //
 TEST_F(FindWaterTest, TwoConsumables_OneOutOFRange_CollectOneWanderCollectOther)
 {
-    setOwnerPerception(2);
-    setOwnerThirst(3);
+    mOwnerPerception.set<unsigned int>(2);
+    mOwnerThirst.set<unsigned int>(3);
 
     std::vector<std::unique_ptr<GameObject>> objects;
 
@@ -323,7 +324,7 @@ TEST_F(FindWaterTest, TwoConsumables_OneOutOFRange_CollectOneWanderCollectOther)
 // Entity and consumable on top of each other
 TEST_F(FindWaterTest, OwnerAndConsumableOnTopOfEachOther)
 {
-    setOwnerThirst(1);
+    mOwnerThirst.set<unsigned int>(1);
 
     std::vector<std::unique_ptr<GameObject>> objects;
 

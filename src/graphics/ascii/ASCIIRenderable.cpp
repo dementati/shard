@@ -8,9 +8,9 @@ ASCIIRenderable::ASCIIRenderable(ASCIIRenderingSystem &renderingSystem)
     mRenderingSystem(renderingSystem)
 {
 }
-// LCOV_EXCL_STOP
 
 void ASCIIRenderable::setPosition(glm::ivec2 position)
 {
     mPosition = position;
 }
+// LCOV_EXCL_STOP

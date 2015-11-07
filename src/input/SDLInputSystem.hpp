@@ -8,6 +8,7 @@
 #include "../utility/LoggerFactory.hpp"
 #include "InputSystem.hpp"
 
+// LCOV_EXCL_START
 class SDLInputSystem : public InputSystem
 {
     static std::unordered_map<Key, SDLKey, EnumClassHash> cKeyMap;
@@ -22,3 +23,4 @@ public:
 
     virtual bool isPressed(Key key);
 };
+// LCOV_EXCL_STOP

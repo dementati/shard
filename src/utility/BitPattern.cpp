@@ -1,5 +1,6 @@
 #include "BitPattern.hpp"
 
+// LCOV_EXCL_START
 uint32_t BitPattern::concatenate(const short int a, const short int b)
 {
     static_assert(sizeof(short int) == 2, "Invalid size of short int");
@@ -13,6 +14,7 @@ uint64_t BitPattern::concatenate(const short int a, const short int b, const sho
 
     return concatenate16(a, b, c);
 }
+// LCOV_EXCL_STOP
 
 uint64_t BitPattern::concatenate(const int a, const int b)
 {

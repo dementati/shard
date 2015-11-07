@@ -4,6 +4,7 @@
 
 #include "../../../input/InputSystem.hpp"
 #include "../../../utility/Assert.hpp"
+#include "../../utility/EntityUtils.hpp"
 #include "../../Entity.hpp"
 #include "../../Job.hpp"
 #include "../../World.hpp"
@@ -13,15 +14,16 @@ class PlayerControl : public Job
 {
     InputSystem &mInput;
     World &mWorld;
-    Entity &mPlayer;
+    Entity &mOwner;
+    std::unique_ptr<EntityUtils> mEntityUtils;
 
 public:
-    PlayerControl(InputSystem &input, World &world, Entity &player);
+    PlayerControl(InputSystem &input, World &world, Entity &owner);
+
+    PlayerControl(InputSystem &input, World &world, Entity &owner, std::unique_ptr<EntityUtils> entityUtils);
 
     virtual void execute(unsigned int dt);
 
-    virtual bool canMove();
-
-    virtual void move(glm::ivec2 deltaPosition);
+    void synchronizeCamera();
 };
 // LCOV_EXCL_STOP

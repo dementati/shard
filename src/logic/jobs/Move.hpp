@@ -4,6 +4,7 @@
 
 #include "../../utility/algorithm/Pathfinding.hpp"
 #include "../../utility/LoggerFactory.hpp"
+#include "../utility/EntityUtils.hpp"
 #include "../utility/GameObjectUtils.hpp"
 #include "../Entity.hpp"
 #include "../Job.hpp"
@@ -15,8 +16,9 @@ class Move : public Job
     World &mWorld;
     Entity &mOwner;
     glm::ivec2 mTarget;
-
     LoggerPtr mLogger;
+    std::unique_ptr<EntityUtils> mEntityUtils;
+    std::unique_ptr<GameObjectUtils> mGameObjectUtils;
 
 public:
     Move(World &world, Entity &owner, glm::ivec2 target);
@@ -24,7 +26,5 @@ public:
     virtual void execute(unsigned int dt);
 
     virtual bool isBlocked(glm::ivec2 position);
-
-    virtual unsigned int getStepCount(unsigned int dt);
 };
 // LCOV_EXCL_STOP

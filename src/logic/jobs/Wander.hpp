@@ -4,6 +4,7 @@
 
 #include "../../core/RNG.hpp"
 #include "../../utility/LoggerFactory.hpp"
+#include "../utility/EntityUtils.hpp"
 #include "../Entity.hpp"
 #include "../Job.hpp"
 #include "../World.hpp"
@@ -22,16 +23,14 @@ class Wander : public Job
     World &mWorld;
     Entity &mOwner;
     RNG &mRng;
-
     LoggerPtr mLogger;
+    std::unique_ptr<EntityUtils> mEntityUtils;
 
 public:
     Wander(World &world, Entity &owner, RNG &rng);
 
     virtual void execute(unsigned int dt);
 
-    virtual bool canMove(unsigned int dt);
-
-    virtual std::shared_ptr<glm::ivec2> findTarget();
+    virtual std::shared_ptr<glm::ivec2> findDirection();
 };
 // LCOV_EXCL_STOP

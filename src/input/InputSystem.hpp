@@ -11,6 +11,7 @@ enum class Key
     Quit
 };
 
+// LCOV_EXCL_START
 class InputSystem
 {
 public:
@@ -18,3 +19,4 @@ public:
 
     virtual bool isPressed(Key key) = 0;
 };
+// LCOV_EXCL_STOP

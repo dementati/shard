@@ -10,6 +10,7 @@
 #include "../../../utility/LoggerFactory.hpp"
 #include "../ASCIIRenderingSystem.hpp"
 
+// LCOV_EXCL_START
 class SDLRenderingSystem : public ASCIIRenderingSystem
 {
     LoggerPtr mLogger;
@@ -27,3 +28,4 @@ public:
 
     void refresh();
 };
+// LCOV_EXCL_STOP

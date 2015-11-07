@@ -36,17 +36,17 @@ class SDLInterface
 public:
     SDLInterface(std::string windowTitle, glm::uvec2 windowSize);
 
-    ~SDLInterface();
+    virtual ~SDLInterface();
 
-    void pollEvents();
+    virtual void pollEvents();
 
-    bool isPressed(SDLKey key);
+    virtual bool isPressed(SDLKey key);
 
-    std::shared_ptr<SDLTexture> createTextureFromString(std::string, glm::u8vec4 color);
+    virtual std::shared_ptr<SDLTexture> createTextureFromString(std::string, glm::u8vec4 color);
 
-    void clear();
+    virtual void clear();
 
-    void render(SDLTexture &texture, glm::ivec2 position, glm::ivec2 dimensions);
+    virtual void render(SDLTexture &texture, glm::ivec2 position, glm::ivec2 dimensions);
 
-    void refresh();
+    virtual void refresh();
 };

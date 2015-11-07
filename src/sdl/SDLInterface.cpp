@@ -1,5 +1,6 @@
 #include "SDLInterface.hpp"
 
+// LCOV_EXCL_START
 std::unordered_map<SDLKey, SDL_Scancode, EnumClassHash> SDLInterface::cScanCodeMap =
 {
     {SDLKey::W, SDL_SCANCODE_W},
@@ -160,3 +161,4 @@ void SDLInterface::refresh()
     mLogger->debug("Refreshing");
     SDL_RenderPresent(mRenderer);
 }
+// LCOV_EXCL_STOP

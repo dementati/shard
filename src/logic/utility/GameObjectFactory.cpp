@@ -38,7 +38,7 @@ void GameObjectFactory::createHuman(World &world, glm::ivec2 position)
     }));
 
     // Add needs
-    human->add(CopyableNeed(Thirst(world, *human)));
+    human->add(std::make_unique<Thirst>(world, *human));
 
     world.addEntity(std::move(human));
 }
