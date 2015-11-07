@@ -18,15 +18,17 @@
 // LCOV_EXCL_START
 class Entity : public GameObject
 {
-    std::vector<CopyableNeed> mNeeds;
+    std::vector<std::unique_ptr<Need>> mNeeds;
 
 public:
     Entity();
 
     virtual ~Entity();
 
-    virtual void add(CopyableNeed need);
+    virtual void add(std::unique_ptr<Need> need);
 
     virtual Need& selectNeed();
+
+    virtual bool hasNeeds();
 };
 // LCOV_EXCL_STOP

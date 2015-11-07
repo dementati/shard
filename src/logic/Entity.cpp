@@ -3,7 +3,7 @@
 // LCOV_EXCL_START
 Entity::Entity()
 :
-    mNeeds(std::vector<CopyableNeed>())
+    mNeeds()
 {
 }
 
@@ -12,9 +12,9 @@ Entity::~Entity()
 }
 // LCOV_EXCL_STOP
 
-void Entity::add(CopyableNeed need)
+void Entity::add(std::unique_ptr<Need> need)
 {
-    mNeeds.push_back(need);
+    mNeeds.push_back(std::move(need));
 }
 
 Need& Entity::selectNeed()
@@ -27,4 +27,9 @@ Need& Entity::selectNeed()
     });
 
     return *mNeeds.back();
+}
+
+bool Entity::hasNeeds()
+{
+    return !mNeeds.empty();
 }

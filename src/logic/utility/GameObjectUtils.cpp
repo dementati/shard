@@ -1,5 +1,9 @@
 #include "GameObjectUtils.hpp"
 
+GameObjectUtils::~GameObjectUtils()
+{
+}
+
 Box GameObjectUtils::getPerceptionBox(GameObject &object)
 {
     ASSERT(object.hasAttribute("perception"), "Object must have perception");

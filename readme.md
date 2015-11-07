@@ -26,9 +26,12 @@ Google Test comes bundled with Google Mock
 7. Press c and g
 8. ```make```
 
-## Install NCurses
+## Install SDL2
 
-Use a package manager or Cygwin, or build from source, (>=v5.9). CMake will attempt to locate ncurses automatically. If that fails, contact a senior developer.
+1. Install SDL2
+2. Install SDL2_ttf
+
+Use a package manager or Cygwin, or build from source, (>=v5.9). CMake will attempt to locate SDL2 automatically. If that fails, contact a senior developer.
 
 ## Install GLM
 

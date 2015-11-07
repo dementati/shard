@@ -7,6 +7,14 @@
 class MockWorld : public World
 {
 public:
+    MOCK_METHOD1(getAttribute, Variant&(std::string));
+
+    MOCK_METHOD2(addAttribute, void(const std::string, Variant));
+
+    MOCK_METHOD1(hasAttribute, bool(std::string));
+
+    virtual Variant& operator[](const std::string attributeId) { return getAttribute(attributeId); };
+
     MOCK_METHOD0(getEntities, std::vector<std::unique_ptr<Entity>>&());
 
     virtual void addEntity(std::unique_ptr<Entity> entity)

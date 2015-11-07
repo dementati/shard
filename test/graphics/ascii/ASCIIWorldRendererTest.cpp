@@ -15,6 +15,7 @@
 #include "../../mocks/MockGameObject.hpp"
 #include "../../mocks/MockRenderableStore.hpp"
 #include "../../mocks/MockWorld.hpp"
+#include "../../logic/LogicTestBase.hpp"
 
 using ::testing::Return; 
 using ::testing::ReturnRef; 
@@ -23,31 +24,29 @@ using ::testing::StrEq;
 using MockRenderableType = ::testing::NiceMock<MockASCIIRenderable>;
 using MockRenderableStoreType = ::testing::NiceMock<MockRenderableStore<ASCIIRenderable>>;
 using MockRenderingSystemType = ::testing::NiceMock<MockASCIIRenderingSystem>;
-using MockWorldType = ::testing::NiceMock<MockWorld>;
 using MockEntityType = ::testing::NiceMock<MockEntity>;
 using MockGameObjectType = ::testing::NiceMock<MockGameObject>;
 
-class ASCIIWorldRendererTest : public ::testing::Test
+class ASCIIWorldRendererTest : public LogicTestBase
 {
 protected:
     MockRenderableType mEntityRenderable;
     MockRenderableType mObjectRenderable;
     MockRenderingSystemType mRenderingSystem;
     MockRenderableStoreType mStore;
-    MockWorldType mWorld;
     Variant mEntityRenderableId;
-    Variant mObjectRenderableId;
     Variant mEntityPosition;
+    Variant mObjectRenderableId;
     Variant mObjectPosition;
     std::vector<std::unique_ptr<Entity>> mEntities;
     std::vector<std::unique_ptr<GameObject>> mObjects;
     ASCIIWorldRenderer mRenderer;
 
     ASCIIWorldRendererTest()
-    : 
+    :
         mEntityRenderableId(std::string("entity")),
-        mObjectRenderableId(std::string("object")),
         mEntityPosition(glm::ivec2(1, 1)),
+        mObjectRenderableId(std::string("object")),
         mObjectPosition(glm::ivec2(1, 1)),
         mRenderer(mRenderingSystem, mStore, mWorld)
     {

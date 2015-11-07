@@ -5,7 +5,6 @@ ASCIISingleCharacterRenderable::ASCIISingleCharacterRenderable(ASCIIRenderingSys
 : 
     ASCIIRenderable(renderingSystem),
     mCharacter(character),
-    mPosition(glm::ivec2(0,0)),
     mLogger(LoggerFactory::createLogger("ASCIISingleCharacterRenderable", Severity::DEBUG)) 
 {
 }
@@ -13,11 +12,6 @@ ASCIISingleCharacterRenderable::ASCIISingleCharacterRenderable(ASCIIRenderingSys
 void ASCIISingleCharacterRenderable::draw()
 {
     mRenderingSystem.drawCharacter(mCharacter, mPosition);
-}
-
-void ASCIISingleCharacterRenderable::setPosition(glm::ivec2 position)
-{
-    mPosition = position;
 }
 // LCOV_EXCL_STOP
 

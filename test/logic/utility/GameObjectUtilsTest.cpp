@@ -47,7 +47,9 @@ protected:
 
 TEST_F(GameObjectUtilsTest, GetPerceptionBox_Perception1)
 {
-    Box box = GameObjectUtils::getPerceptionBox(mObject);
+    GameObjectUtils utils;
+
+    Box box = utils.getPerceptionBox(mObject);
 
     EXPECT_EQ(glm::ivec2(-1, -1), box.getPosition());
     EXPECT_EQ(glm::uvec2(3, 3), box.getDimensions());
@@ -57,7 +59,9 @@ TEST_F(GameObjectUtilsTest, GetPerceptionBox_Perception2)
 {
     setObjectPerception(2);
 
-    Box box = GameObjectUtils::getPerceptionBox(mObject);
+    GameObjectUtils utils;
+
+    Box box = utils.getPerceptionBox(mObject);
 
     EXPECT_EQ(glm::ivec2(-2, -2), box.getPosition());
     EXPECT_EQ(glm::uvec2(5, 5), box.getDimensions());

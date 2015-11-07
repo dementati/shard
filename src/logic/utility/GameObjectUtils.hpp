@@ -6,5 +6,7 @@
 class GameObjectUtils
 {
 public:
-    static Box getPerceptionBox(GameObject &object);
+    virtual ~GameObjectUtils();
+
+    virtual Box getPerceptionBox(GameObject &object);
 };

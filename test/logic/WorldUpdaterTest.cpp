@@ -41,6 +41,8 @@ protected:
             .WillByDefault(Return(true));
         ON_CALL(*entity, getAttribute("backgroundJobs"))
             .WillByDefault(ReturnRef(mEntityBackgroundJobs));
+        ON_CALL(*entity, hasNeeds())
+            .WillByDefault(Return(true));
         mEntities.push_back(std::move(entity));
 
         ON_CALL(mWorld, getEntities())

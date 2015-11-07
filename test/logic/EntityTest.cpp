@@ -6,30 +6,62 @@
 
 using ::testing::Return; 
 
-using WrappedMockNeed = MockNeedWrapper<::testing::NiceMock<MockNeed>>;
+using MockNeedType = ::testing::NiceMock<MockNeed>;
 
 class EntityTest : public ::testing::Test
 {
-public:
-    WrappedMockNeed createNeed(int intensity)
-    {
-        WrappedMockNeed need;
-        ON_CALL(need.get(), getIntensity())
-            .WillByDefault(Return(intensity));
-        return need;
-    }
 };
 
 TEST_F(EntityTest, SelectNeed)
 {
     Entity entity;
+  
+    {
+        auto need = std::make_unique<MockNeedType>();
+        ON_CALL(*need, getIntensity())
+            .WillByDefault(Return(3));
+        entity.add(std::move(need));
+    }
+
+    {
+        auto need = std::make_unique<MockNeedType>();
+        ON_CALL(*need, getIntensity())
+            .WillByDefault(Return(4));
+        entity.add(std::move(need));
+    }
+
+    {
+        auto need = std::make_unique<MockNeedType>();
+        ON_CALL(*need, getIntensity())
+            .WillByDefault(Return(1));
+        entity.add(std::move(need));
+    }
+
+    {
+        auto need = std::make_unique<MockNeedType>();
+        ON_CALL(*need, getIntensity())
+            .WillByDefault(Return(2));
+        entity.add(std::move(need));
+    }   
     
-    entity.add(createNeed(3));
-    entity.add(createNeed(4));
-    entity.add(createNeed(1));
-    entity.add(createNeed(2));
-    
-    WrappedMockNeed& selectedNeed = dynamic_cast<WrappedMockNeed&>(entity.selectNeed());
+    MockNeedType& selectedNeed = dynamic_cast<MockNeedType&>(entity.selectNeed());
 
     EXPECT_EQ(4, selectedNeed.getIntensity());
+}
+
+TEST_F(EntityTest, hasNeeds_NoNeeds)
+{
+    Entity entity;
+  
+    EXPECT_FALSE(entity.hasNeeds());
+}
+
+TEST_F(EntityTest, hasNeeds_OneNeed)
+{
+    Entity entity;
+
+    auto need = std::make_unique<MockNeedType>();
+    entity.add(std::move(need));
+  
+    EXPECT_TRUE(entity.hasNeeds());
 }

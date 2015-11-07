@@ -6,10 +6,14 @@ ASCIIWorldRenderer::ASCIIWorldRenderer(ASCIIRenderingSystem &renderingSystem, Re
     mRenderableStore(store), 
     mWorld(world)
 {
+    ASSERT(world.hasAttribute("cameraPosition"), "World must have a camera position");
+    ASSERT(world["cameraPosition"].isOfType<glm::ivec2>(), "Camera position must be a glm::ivec2");
 }
 
 void ASCIIWorldRenderer::render() const
 {
+    mRenderingSystem.setScreenPosition(mWorld["cameraPosition"].get<glm::ivec2>());
+
     mRenderingSystem.clear();
 
     for(std::unique_ptr<GameObject> &objectPtr : mWorld.getObjects())

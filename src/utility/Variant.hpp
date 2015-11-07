@@ -10,6 +10,7 @@
 
 #include "Assert.hpp"
 
+// LCOV_EXCL_START
 class Variant
 {
     public:
@@ -47,14 +48,12 @@ Variant::Variant(const Type& data) :
 {
     mStoredData = std::static_pointer_cast<void>(std::make_shared<Type>(data));
 
-    // LCOV_EXCL_START
     mCopier = [](std::shared_ptr<void> data)
     {
         std::shared_ptr<Type> toCopy = std::static_pointer_cast<Type>(data);
         std::shared_ptr<Type> copy = std::make_shared<Type>(*toCopy);
         return std::static_pointer_cast<void>(copy);
     };
-    // LCOV_EXCL_STOP
 }
 
 template<typename Type>
@@ -88,3 +87,4 @@ bool Variant::isOfType() const
 {
     return mStoredType == typeid(Type);
 }
+// LCOV_EXCL_STOP

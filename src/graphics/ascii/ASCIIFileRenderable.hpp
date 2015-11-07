@@ -21,15 +21,11 @@ class ASCIIFileRenderable : public ASCIIRenderable
 
     CharBitmap mBitmap;
 
-    glm::ivec2 mPosition;
-
     LoggerPtr mLogger;
 
 public:
     ASCIIFileRenderable(ASCIIRenderingSystem &renderingSystem, std::string filePath);
 
     void draw();
-
-    void setPosition(glm::ivec2 position);
 };
 // LCOV_EXCL_START

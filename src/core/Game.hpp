@@ -13,5 +13,7 @@ public:
     virtual void update(const unsigned int dt) = 0;
 
     virtual void render() const = 0;
+
+    virtual bool isRunning() = 0;
 };
 // LCOV_EXCL_STOP

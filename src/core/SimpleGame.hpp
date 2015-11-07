@@ -4,16 +4,16 @@
 
 #include <glm/glm.hpp>
 
-#include "../graphics/ascii/ncurses/NCursesRenderingSystem.hpp"
+#include "../graphics/ascii/sdl/SDLRenderingSystem.hpp"
 #include "../graphics/ascii/ASCIISingleCharacterRenderable.hpp"
 #include "../graphics/ascii/ASCIIRenderable.hpp"
 #include "../graphics/ascii/ASCIIWorldRenderer.hpp"
 #include "../graphics/RenderableStore.hpp"
+#include "../input/SDLInputSystem.hpp"
 #include "../logic/utility/GameObjectFactory.hpp"
 #include "../logic/World.hpp"
 #include "../logic/WorldUpdater.hpp"
-#include "../ncurses/NCursesInterface.hpp"
-#include "../ncurses/NCursesInterface.hpp"
+#include "../sdl/SDLInterface.hpp"
 #include "../utility/LoggerFactory.hpp"
 #include "Game.hpp"
 #include "RNG.hpp"
@@ -25,8 +25,9 @@ class SimpleGame : public Game
 
     RNG mRng;
 
-    NCursesInterface mNcurses;
-    NCursesRenderingSystem mRenderingSystem;
+    SDLInterface mSDL;
+    SDLRenderingSystem mRenderingSystem;
+    SDLInputSystem mInput;
 
     World mWorld;
     WorldUpdater mWorldUpdater;
@@ -43,5 +44,7 @@ public:
     void update(const unsigned int dt);
 
     void render() const;
+
+    bool isRunning();
 };
 // LCOV_EXCL_STOP

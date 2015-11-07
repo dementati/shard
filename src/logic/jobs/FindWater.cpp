@@ -13,7 +13,8 @@ FindWater::FindWater(World &world, Entity &owner, RNG &rng)
     mLogger(LoggerFactory::createLogger("FindWater", Severity::DEBUG)),
     mWorld(world),
     mOwner(owner),
-    mRng(rng)
+    mRng(rng),
+    mGameObjectUtils(std::make_unique<GameObjectUtils>())
 {
     ASSERT(owner.hasAttribute("perception"), "Owner must have perception attribute");
     ASSERT(owner["perception"].isOfType<unsigned int>(), "Owner perception must be an unsigned int");
@@ -62,7 +63,7 @@ GameObject* FindWater::getClosestWaterInRange()
         auto perception = mOwner["perception"].get<unsigned int>();
         mLogger->debug(std::string("Perception: ") + glm::to_string(perception));
         if(object->hasAttribute("thirstReduction") 
-            && GameObjectUtils::getPerceptionBox(mOwner).contains((*object)["position"].get<glm::ivec2>())) 
+            && mGameObjectUtils->getPerceptionBox(mOwner).contains((*object)["position"].get<glm::ivec2>())) 
         {
             mLogger->debug("Water object in range found.");
             waterObjectsInRange.push_back(std::ref(*object));

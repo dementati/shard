@@ -5,7 +5,8 @@ Wander::Wander(World &world, Entity &owner, RNG &rng)
     mWorld(world),
     mOwner(owner),
     mRng(rng),
-    mLogger(LoggerFactory::createLogger("Wander", Severity::DEBUG))
+    mLogger(LoggerFactory::createLogger("Wander", Severity::DEBUG)),
+    mEntityUtils(std::make_unique<EntityUtils>())
 {
     ASSERT(owner.hasAttribute("position"), "Owner must have a position");
     ASSERT(owner["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
@@ -19,37 +20,29 @@ void Wander::execute(unsigned int dt)
 {
     mLogger->debug("Executing.");
 
-    if(canMove(dt))
+    mEntityUtils->updateStepTimer(mOwner, dt);
+
+    if(mEntityUtils->canMove(mOwner))
     {
         mLogger->debug("Can move.");
 
-        auto target = findTarget();
-        if(target != nullptr)
+        auto direction = findDirection();
+        if(direction != nullptr)
         {
-            mLogger->debug(std::string("Moving to ") + glm::to_string(*target));
-            mOwner["position"].set<glm::ivec2>(*target);
-            mOwner["timeSinceLastStep"].set<unsigned int>(0);
+            mLogger->debug(std::string("Moving to ") + glm::to_string(*direction));
+            mEntityUtils->move(mOwner, *direction);
         } 
         else
         {
             // TODO: Test this branch when collision detection is in place
             // LCOV_EXCL_START
-            mLogger->debug("No viable target location found.");
+            mLogger->debug("No viable direction found.");
             // LCOV_EXCL_STOP
         }
     }
 }
 
-bool Wander::canMove(unsigned int dt)
-{
-    unsigned int timeSinceLastStep = mOwner["timeSinceLastStep"].get<unsigned int>() + dt;
-    mOwner["timeSinceLastStep"].set<unsigned int>(timeSinceLastStep);
-    unsigned int stepLimit = (unsigned int)(1000.0f / mOwner["speed"].get<float>());
-
-    return timeSinceLastStep >= stepLimit;
-}
-
-std::shared_ptr<glm::ivec2> Wander::findTarget()
+std::shared_ptr<glm::ivec2> Wander::findDirection()
 {
     std::vector<Direction> directions({ 
         Direction::UP, Direction::DOWN, Direction::LEFT, Direction::RIGHT 
@@ -61,16 +54,12 @@ std::shared_ptr<glm::ivec2> Wander::findTarget()
     glm::ivec2 moveDelta;
     switch(direction)
     {
-        case Direction::UP: moveDelta = glm::ivec2(0, -1); break;
-        case Direction::DOWN: moveDelta = glm::ivec2(0, 1); break;
-        case Direction::LEFT: moveDelta = glm::ivec2(-1, 0); break;
-        case Direction::RIGHT: moveDelta = glm::ivec2(1, 0); break;
+        case Direction::UP: return std::make_shared<glm::ivec2>(0, -1);
+        case Direction::DOWN: return std::make_shared<glm::ivec2>(0, 1); 
+        case Direction::LEFT: return std::make_shared<glm::ivec2>(-1, 0); 
+        case Direction::RIGHT: return std::make_shared<glm::ivec2>(1, 0); 
         // LCOV_EXCL_START
         default: ASSERT(false, "This shouldn't happen");
         // LCOV_EXCL_STOP
     };
-
-    auto position = mOwner["position"].get<glm::ivec2>();
-    
-    return std::make_shared<glm::ivec2>(position + moveDelta);
 }
