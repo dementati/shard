@@ -42,3 +42,72 @@ void EntityUtils::move(World &world, Entity &entity, glm::ivec2 deltaPosition)
         entity["position"].set<glm::ivec2>(position);
     }
 }
+
+GameObject* EntityUtils::getClosestObjectWithAttributeInRange(World &world, Entity &entity, std::string attribute, 
+    unsigned int range)
+{
+    ASSERT(entity.hasAttribute("position"), "Entity must have position");
+    ASSERT(entity["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
+    ASSERT(range > 0, "Range must be positive");
+
+    auto entityPosition = entity["position"].get<glm::ivec2>();
+
+    auto minDistance = -1;
+    GameObject* minObject = nullptr;
+
+    Box rangeBox = Math::getCenteredBox(entityPosition, range);
+    for(auto &objectPtr : world.getObjects())
+    {
+        auto &object = *objectPtr;
+
+        if(object.hasAttribute(attribute))
+        {
+            ASSERT(object.hasAttribute("position"), std::string("Object with attribute " + attribute + " must also have a position"));
+            ASSERT(object["position"].isOfType<glm::ivec2>(), "Object position must be a glm::ivec2");
+
+            auto objectPosition = object["position"].get<glm::ivec2>();
+
+            if(rangeBox.contains(objectPosition))
+            {
+                auto distance = Math::manhattanDistance(entityPosition, objectPosition);
+
+                if(minDistance == -1 || distance < (unsigned int)minDistance)
+                {
+                    minDistance = distance;
+                    minObject = objectPtr.get();
+                }
+            }
+        }
+    }
+
+    return minObject;
+}
+
+void EntityUtils::consumeWater(World &world, Entity &entity, GameObject &water)
+{
+    ASSERT(water.hasAttribute("thirstReduction"), "Object must have the attribute thirstReduction");
+    ASSERT(water["thirstReduction"].isOfType<unsigned int>(), "Object thirst reduction must be a unsigned int");
+    ASSERT(entity.hasAttribute("thirst"), "Entity must have thirst attribute.");
+    ASSERT(entity["thirst"].isOfType<unsigned int>(), "Thirst must be an unsigned int");
+
+    auto thirstReduction = water.getAttribute("thirstReduction").get<unsigned int>();
+    auto thirst = entity.getAttribute("thirst").get<unsigned int>();
+    if(thirst <= thirstReduction)
+    {
+        entity.getAttribute("thirst").set<unsigned int>(0);
+    }
+    else 
+    {
+        entity.getAttribute("thirst").set<unsigned int>(thirst - thirstReduction);
+    }
+
+    if(water.hasAttribute("consumable"))
+    {
+        ASSERT(water["consumable"].isOfType<bool>(), "Consumable flag must be a bool");
+        
+        if(water["consumable"].get<bool>())
+        {
+            world.removeObject(water);
+        }
+    }
+}

@@ -10,6 +10,8 @@ void GameObjectFactory::createPlayer(World &world, InputSystem &input, glm::ivec
     player->addAttribute("renderableId", std::string("player"));
     player->addAttribute("timeSinceLastStep", (unsigned int)0);
     player->addAttribute("speed", 10.0f);
+    player->addAttribute("thirst", (unsigned int)0);
+    player->addAttribute("maxThirst", (unsigned int)10);
 
     // Add background jobs
     player->addAttribute("backgroundJobs", std::vector<std::shared_ptr<Job>>({

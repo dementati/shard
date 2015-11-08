@@ -1,7 +1,7 @@
 #include "../../../../src/logic/jobs/background/IncreaseThirst.hpp"
-#include "../JobTestBase.hpp"
+#include "../../LogicTestBase.hpp"
 
-class IncreaseThirstTest : public JobTestBase
+class IncreaseThirstTest : public LogicTestBase
 {
 public:
     Variant mTimer;

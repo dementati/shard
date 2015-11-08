@@ -15,5 +15,5 @@ Box GameObjectUtils::getPerceptionBox(GameObject &object)
 
     glm::ivec2 position = object["position"].get<glm::ivec2>();
 
-    return Box(position - perception*glm::ivec2(1, 1), (2*perception + 1)*glm::ivec2(1, 1));
+    return Math::getCenteredBox(position, perception);
 }

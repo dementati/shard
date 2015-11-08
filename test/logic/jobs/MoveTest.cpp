@@ -1,7 +1,7 @@
 #include "../../../src/logic/jobs/Move.hpp"
-#include "JobTestBase.hpp"
+#include "../LogicTestBase.hpp"
 
-class MoveTest : public JobTestBase
+class MoveTest : public LogicTestBase
 {
 };
 

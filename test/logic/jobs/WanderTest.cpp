@@ -1,7 +1,7 @@
 #include "../../../src/logic/jobs/Wander.hpp"
-#include "JobTestBase.hpp"
+#include "../LogicTestBase.hpp"
 
-class WanderTest : public JobTestBase
+class WanderTest : public LogicTestBase
 {
 };
 
