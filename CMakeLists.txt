@@ -8,31 +8,35 @@ set (Shard_VERSION_PATCH 1)
 
 # Set compiler
 set(CMAKE_CXX_COMPILER g++.exe)
-set(CMAKE_C_COMPILER /usr/bin/gcc.exe)
+set(CMAKE_C_COMPILER gcc.exe)
 
 # Set custom CMake modules path
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
-# C++ compile features
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -Dgtest_disable_pthreads=ON")
+# C++ flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Dgtest_disable_pthreads=ON")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
+set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
 
-# Google mock
-set (GMOCK_ROOT "" CACHE PATH "Path to Google Mock")
-set (GMOCK_INCLUDE_DIRS "${GMOCK_ROOT}/include")
-set (GMOCK_LIB ${GMOCK_ROOT}/libgmock.a)
-set (GMOCK_MAIN_LIB ${GMOCK_ROOT/libgmock_main.a})
-set (GMOCK_BOTH_LIBRARIES ${GMOCK_ROOT}/libgmock.a ${GMOCK_ROOT}/libgmock_main.a)
-include_directories(SYSTEM ${GMOCK_INCLUDE_DIRS})
+# Google mock (only debug mode)
+set(BUILD_TESTS ON CACHE BOOL "Path to GLM")
+if (BUILD_TESTS)
+    set (GMOCK_ROOT "" CACHE PATH "Path to Google Mock")
+    set (GMOCK_INCLUDE_DIRS "${GMOCK_ROOT}/include")
+    set (GMOCK_LIB ${GMOCK_ROOT}/libgmock.a)
+    set (GMOCK_MAIN_LIB ${GMOCK_ROOT/libgmock_main.a})
+    set (GMOCK_BOTH_LIBRARIES ${GMOCK_ROOT}/libgmock.a ${GMOCK_ROOT}/libgmock_main.a)
+    include_directories(SYSTEM ${GMOCK_INCLUDE_DIRS})
+endif (BUILD_TESTS)
 
 # Google testing framework
-set (GTEST_ROOT ${GMOCK_ROOT}/gtest)
-enable_testing()
-find_package(GTest REQUIRED)
-include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
-
-# NCurses
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIRS})
+if (BUILD_TESTS)
+    set (GTEST_ROOT ${GMOCK_ROOT}/gtest)
+    enable_testing()
+    find_package(GTest REQUIRED)
+    include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
+endif (BUILD_TESTS)
 
 # SDL
 find_package(SDL2 REQUIRED)
@@ -41,9 +45,9 @@ find_package(SDL2_ttf REQUIRED)
 include_directories(SYSTEM ${SDL2_TTF_INCLUDE_DIRS})
 
 # Code coverage
-include(CodeCoverage)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
-set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
+if (BUILD_TESTS)
+    include(CodeCoverage)
+endif (BUILD_TESTS)
 
 # GLM
 set(GLM_ROOT "" CACHE PATH "Path to GLM")
@@ -174,12 +178,16 @@ target_link_libraries(Shard ${PRODUCTION_LIBRARIES})
 target_compile_features(Shard PRIVATE ${CXX_COMPILE_FEATURES})
 
 # Test target
-add_executable(RunTests ${TEST_SRC} ${PRODUCTION_SRC})
-target_link_libraries(RunTests ${TEST_LIBRARIES})
-target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
+if (BUILD_TESTS)
+    add_executable(RunTests ${TEST_SRC} ${PRODUCTION_SRC})
+    target_link_libraries(RunTests ${TEST_LIBRARIES})
+    target_compile_features(RunTests PRIVATE ${CXX_COMPILE_FEATURES})
+endif (BUILD_TESTS)
 
 # Coverage target
-setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
+if (BUILD_TESTS)
+    setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR}/src/*')
+endif (BUILD_TESTS)
 
 # NCurses test app
 # add_executable(NCursesTestApp test/manual/NCursesTestApp.cpp ${PRODUCTION_SRC})
@@ -190,5 +198,5 @@ setup_target_for_coverage(coverage RunTests coverage '${CMAKE_CURRENT_SOURCE_DIR
 # add_executable(BuildTestApp test/manual/BuildTestApp.cpp)
 
 # Keyboard input test app
-add_executable(SDLApp test/manual/SDLApp.cpp)
-target_link_libraries(SDLApp ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES})
+#add_executable(SDLApp test/manual/SDLApp.cpp)
+#target_link_libraries(SDLApp ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES})
