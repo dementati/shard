@@ -12,10 +12,12 @@ void GameObjectFactory::createPlayer(World &world, InputSystem &input, glm::ivec
     player->addAttribute("speed", 10.0f);
     player->addAttribute("thirst", (unsigned int)0);
     player->addAttribute("maxThirst", (unsigned int)10);
+    player->addAttribute("isPlayer", true);
 
     // Add background jobs
     player->addAttribute("backgroundJobs", std::vector<std::shared_ptr<Job>>({
-        std::make_shared<PlayerControl>(input, world, *player)
+        std::make_shared<PlayerControl>(input, world, *player),
+        std::make_shared<IncreaseThirst>(world, *player, 0.5f)
     }));
 
     world.addEntity(std::move(player));

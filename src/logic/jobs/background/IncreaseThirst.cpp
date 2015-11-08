@@ -39,5 +39,18 @@ void IncreaseThirst::execute(unsigned int dt)
     if(mOwner["thirst"].get<unsigned int>() > mOwner["maxThirst"].get<unsigned int>())
     {
         mOwner.addAttribute("dead", true);
+
+        if(mOwner.hasAttribute("isPlayer"))
+        {
+            ASSERT(mOwner["isPlayer"].isOfType<bool>(), "isPlayer flag must be a bool");
+
+            if(mOwner["isPlayer"].get<bool>())
+            {
+                ASSERT(mWorld.hasAttribute("running"), "World must have running flag");
+                ASSERT(mWorld["running"].isOfType<bool>(), "Running flag must be a bool");
+
+                mWorld["running"].set<bool>(false);
+            }
+        }
     }
 }

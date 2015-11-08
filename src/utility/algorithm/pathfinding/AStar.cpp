@@ -34,15 +34,23 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     logger->debug(std::string("offset startPosition = " + glm::to_string(startPosition)));
     logger->debug(std::string("offset stopPosition = " + glm::to_string(stopPosition)));
 
+    logger->debug("Initializing");
+
+    logger->debug("Setting up lambdas");
     std::function<bool(glm::ivec2)> isBlockedOffset = [&] (glm::ivec2 p) {
+        logger->debug(std::string("isBlockedOffset(") + glm::to_string(p) + ")");
+        logger->debug(std::string("offset = ") + glm::to_string(offset));
         return isBlocked(p - offset);
     };
 
-    std::function<glm::ivec2(int)> indexToVector = [&boundingBox](int i) {
+    std::function<glm::ivec2(int)> indexToVector = [&](int i) {
+        logger->debug(std::string("indexToVector") + glm::to_string(i) + ")");
+        logger->debug(std::string("boundingBox dimenions = ") + glm::to_string(boundingBox.getDimensions()));
         return glm::ivec2(i % boundingBox.getDimensions().x, i / boundingBox.getDimensions().x);
     };
 
     std::function<bool(int)> isBlockedInt = [&](int i) {
+        logger->debug(std::string("isBlockedInt(") + glm::to_string(i) + ")");
         return isBlockedOffset(indexToVector(i));
     };
 
@@ -57,6 +65,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     std::vector<bool> closed;
     std::vector<int> parent;
     
+    logger->debug("Initializing start position");
     auto start = 0;
     x.push_back(startPosition.x);
     y.push_back(startPosition.y);
@@ -67,6 +76,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     closed.push_back(false);
     parent.push_back(start);
 
+    logger->debug("Initializing target position");
     auto target = 1;
     x.push_back(stopPosition.x);
     y.push_back(stopPosition.y);
@@ -77,20 +87,30 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     closed.push_back(false);
     parent.push_back(-1);
 
+    logger->debug("Checking if start or target is blocked");
 	if(isBlockedInt(index[start]) || isBlockedInt(index[target]))
+    {
+       logger->debug("Either start or target position is blocked");
 	   return std::vector<glm::ivec2>();	
+    }
 
+    logger->debug("Constructing open node heap");
 	std::vector<int> open;
 	open.push_back(start);
 	std::make_heap(open.begin(), open.end(), PosFComp(f));
 
+    logger->debug("Constructing neighbour map");
 	std::unordered_map<int, int> neighbours;
 	neighbours[index[start]] = start;
+
+    logger->debug("Commencing main loop");
 
     bool targetReached = false;
 	while(!open.empty()) 
 	{
 		auto current = open.front();
+
+        logger->debug(std::string("Current node = " + glm::to_string(indexToVector(current))));
 
 		if(index[current] == index[target]) 
 		{
@@ -191,6 +211,8 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
 			}
 		}		
 	}
+
+    logger->debug("Main loop finished, constructing path or returning empty path");
 
 	if(targetReached) 
 	{

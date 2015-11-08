@@ -131,3 +131,17 @@ TEST_F(IncreaseThirstTest, Execute_OwnerDoesntDie_MaxThirst1_ThirstBecomes1)
 
     increaseThirst.execute(1000);
 }
+
+TEST_F(IncreaseThirstTest, Execute_OwnerDies_IsPlayer_GameEnds)
+{
+    Variant ownerIsPlayer = true;
+    ON_CALL(mOwner, hasAttribute("isPlayer"))
+        .WillByDefault(Return(true));
+    ON_CALL(mOwner, getAttribute("isPlayer"))
+        .WillByDefault(ReturnRef(ownerIsPlayer));
+
+    IncreaseThirst increaseThirst(mWorld, mOwner, 1);
+    increaseThirst.execute(1000);
+
+    EXPECT_FALSE(mWorld["running"].get<bool>());
+}

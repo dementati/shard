@@ -81,3 +81,13 @@ TEST_F(MoveTest, Execute_TimeTwoSeconds_TargetMinus1xMinus1)
     EXPECT_EQ(glm::ivec2(-1, -1), mOwnerPosition.get<glm::ivec2>());
     EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
+
+TEST_F(MoveTest, Execute_TargetIsBlocked)
+{
+    ON_CALL(mWorld, isBlocked(glm::ivec2(1, 0)))
+        .WillByDefault(Return(true));
+
+    Move move(mWorld, mOwner, glm::ivec2(1, 0));
+    move.execute(1000);
+    EXPECT_EQ(glm::ivec2(0, 0), mOwnerPosition.get<glm::ivec2>());
+}
