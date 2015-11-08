@@ -1,6 +1,8 @@
 #include "World.hpp"
 
 World::World()
+:
+    mLogger(LoggerFactory::createLogger("World", Severity::DEBUG))
 {
     (*this)["running"] = true;
     (*this)["cameraPosition"] = glm::ivec2(0, 0);
@@ -80,13 +82,18 @@ void World::setBlockedMapIfSolid(GameObject &object, bool blocked)
 
 bool World::isBlocked(glm::ivec2 position)
 {
+    mLogger->debug(std::string("isBlocked(") + glm::to_string(position) + ")");
+
+    mLogger->debug(std::string("Getting blockedMap reference"));
     auto &blockedMap = 
         (*this)["blockedMap"].get<std::unordered_map<glm::ivec2, bool, VectorHash>>();
 
     if(blockedMap.count(position) > 0)
     {
+        mLogger->debug(std::string("position is in blockedMap"));
         return blockedMap[position];
     }
 
+    mLogger->debug(std::string("position is not in blockedMap"));
     return false;
 }

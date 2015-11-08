@@ -4,6 +4,7 @@
 
 #include "../../../input/InputSystem.hpp"
 #include "../../../utility/Assert.hpp"
+#include "../../../utility/LoggerFactory.hpp"
 #include "../../utility/EntityUtils.hpp"
 #include "../../Entity.hpp"
 #include "../../Job.hpp"
@@ -16,6 +17,7 @@ class PlayerControl : public Job
     World &mWorld;
     Entity &mOwner;
     std::unique_ptr<EntityUtils> mEntityUtils;
+    LoggerPtr mLogger;
 
 public:
     PlayerControl(InputSystem &input, World &world, Entity &owner);

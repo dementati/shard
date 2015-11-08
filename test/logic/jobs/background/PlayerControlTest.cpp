@@ -1,12 +1,12 @@
 #include "../../../../src/logic/jobs/background/PlayerControl.hpp"
 #include "../../../mocks/MockEntityUtils.hpp"
 #include "../../../mocks/MockInputSystem.hpp"
-#include "../JobTestBase.hpp"
+#include "../../LogicTestBase.hpp"
 
 using MockEntityUtilsType = ::testing::NiceMock<MockEntityUtils>;
 using MockInputSystemType = ::testing::NiceMock<MockInputSystem>;
 
-class PlayerControlTest : public JobTestBase
+class PlayerControlTest : public LogicTestBase
 {
 public:
     MockInputSystemType mInput;

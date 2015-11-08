@@ -1,7 +1,7 @@
 #include "../../../src/logic/needs/Thirst.hpp"
-#include "../jobs/JobTestBase.hpp"
+#include "../LogicTestBase.hpp"
 
-class ThirstTest : public JobTestBase
+class ThirstTest : public LogicTestBase
 {
 };
 

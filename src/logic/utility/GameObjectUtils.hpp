@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../utility/math/geometry/Box.hpp"
+#include "../../utility/math/Math.hpp"
 #include "../GameObject.hpp"
 
 class GameObjectUtils

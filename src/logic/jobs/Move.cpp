@@ -35,12 +35,17 @@ void Move::execute(unsigned int dt)
                 [&] (auto p) { return this->isBlocked(p); }, 
                 mGameObjectUtils->getPerceptionBox(mOwner));
 
-        mLogger->debug(std::string("Moving to ") + glm::to_string(path[path.size() - 2]));
-        mEntityUtils->move(mWorld, mOwner, path[path.size() - 2] - position);
+        if(path.size() > 0)
+        {
+            ASSERT(path.size() > 1, "Pathfinding returned a path of size 1, which doesn't make sense");
+            mLogger->debug(std::string("Moving to ") + glm::to_string(path[path.size() - 2]));
+            mEntityUtils->move(mWorld, mOwner, path[path.size() - 2] - position);
+        }
     } 
 }
 
 bool Move::isBlocked(glm::ivec2 position)
 {
+    mLogger->debug(std::string("isBlocked(") + glm::to_string(position) + ")");
     return mWorld.isBlocked(position);
 }

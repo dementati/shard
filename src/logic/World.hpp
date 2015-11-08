@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <utility>
 
+#include "../utility/LoggerFactory.hpp"
 #include "../utility/VectorHash.hpp"
 #include "Entity.hpp"
 #include "GameObject.hpp"
@@ -14,6 +15,7 @@ class World : public GameObject
     GameObject mState;
     std::vector<std::unique_ptr<Entity>> mEntities = std::vector<std::unique_ptr<Entity>>();
     std::vector<std::unique_ptr<GameObject>> mObjects = std::vector<std::unique_ptr<GameObject>>();
+    LoggerPtr mLogger;
 
 public:
     World();

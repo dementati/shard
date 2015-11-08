@@ -130,3 +130,339 @@ TEST_F(EntityUtilsTest, move_resetTimeSinceLastStep)
 
     EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }
+
+TEST_F(EntityUtilsTest, consumeWater_ZeroThirst_ZeroReduction)
+{
+    EntityUtils utils;
+
+    utils.consumeWater(mWorld, mOwner, mWater);
+
+    EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
+}
+
+TEST_F(EntityUtilsTest, consumeWater_ThirstOne_ZeroReduction)
+{
+    mOwnerThirst.set<unsigned int>(1);
+    
+    EntityUtils utils;
+
+    utils.consumeWater(mWorld, mOwner, mWater);
+
+    EXPECT_EQ(1, mOwnerThirst.get<unsigned int>());
+}
+
+TEST_F(EntityUtilsTest, consumeWater_ThirstOne_ReductionOne)
+{
+    mOwnerThirst.set<unsigned int>(1);
+    mWaterThirstReduction.set<unsigned int>(1);
+
+    EntityUtils utils;
+
+    utils.consumeWater(mWorld, mOwner, mWater);
+
+    EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
+}
+
+TEST_F(EntityUtilsTest, consumeWater_ThirstTwo_ReductionOne)
+{
+    mOwnerThirst.set<unsigned int>(2);
+    mWaterThirstReduction.set<unsigned int>(1);
+
+    EntityUtils utils;
+
+    utils.consumeWater(mWorld, mOwner, mWater);
+
+    EXPECT_EQ(1, mOwnerThirst.get<unsigned int>());
+}
+
+TEST_F(EntityUtilsTest, consumeWater_ThirstOne_ReductionTwo)
+{
+    mOwnerThirst.set<unsigned int>(1);
+    mWaterThirstReduction.set<unsigned int>(2);
+
+    EntityUtils utils;
+
+    utils.consumeWater(mWorld, mOwner, mWater);
+
+    EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
+}
+
+TEST_F(EntityUtilsTest, consumeWater_Consumable)
+{
+    Variant waterConsumable = true;
+
+    ON_CALL(mWater, hasAttribute("consumable"))
+        .WillByDefault(Return(true));
+    ON_CALL(mWater, getAttribute("consumable"))
+        .WillByDefault(ReturnRef(waterConsumable));
+
+    EXPECT_CALL(mWorld, removeObject(Ref(mWater)));
+
+    EntityUtils utils;
+
+    utils.consumeWater(mWorld, mOwner, mWater);
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_NoObjects)
+{
+    std::vector<std::unique_ptr<GameObject>> objects;
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+        
+    EntityUtils utils;
+
+    EXPECT_EQ(nullptr, utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, "", 1));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_NoObjectsWithAttribute)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    auto object = std::make_unique<MockGameObjectType>();
+    ON_CALL(*object, hasAttribute(attribute))
+        .WillByDefault(Return(false));
+    objects.push_back(std::move(object));
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+
+    EntityUtils utils;
+
+    EXPECT_EQ(nullptr, utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 1));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_ObjectWithAttributeAt0x0)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant objectPosition = glm::ivec2(0, 0);
+
+    auto object = std::make_unique<MockGameObjectType>();
+    ON_CALL(*object, hasAttribute(attribute))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, hasAttribute("position"))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, getAttribute("position"))
+        .WillByDefault(ReturnRef(objectPosition));
+    objects.push_back(std::move(object));
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+
+    EntityUtils utils;
+
+    EXPECT_EQ(objects[0].get(), 
+        utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 1));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_ObjectWithAttributeAt1x0)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant objectPosition = glm::ivec2(1, 0);
+
+    auto object = std::make_unique<MockGameObjectType>();
+    ON_CALL(*object, hasAttribute(attribute))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, hasAttribute("position"))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, getAttribute("position"))
+        .WillByDefault(ReturnRef(objectPosition));
+    objects.push_back(std::move(object));
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+
+    EntityUtils utils;
+
+    EXPECT_EQ(objects[0].get(), 
+        utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 1));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_ObjectWithAttributeAt1x1)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant objectPosition = glm::ivec2(1, 1);
+
+    auto object = std::make_unique<MockGameObjectType>();
+    ON_CALL(*object, hasAttribute(attribute))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, hasAttribute("position"))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, getAttribute("position"))
+        .WillByDefault(ReturnRef(objectPosition));
+    objects.push_back(std::move(object));
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+
+    EntityUtils utils;
+
+    EXPECT_EQ(objects[0].get(), 
+        utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 1));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_objectsWithAttributeAt0x0And1x0)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant object1Position = glm::ivec2(1, 0);
+    {
+        auto object = std::make_unique<MockGameObjectType>();
+        ON_CALL(*object, hasAttribute(attribute))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, hasAttribute("position"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("position"))
+            .WillByDefault(ReturnRef(object1Position));
+        objects.push_back(std::move(object));
+    }
+
+    Variant object2Position = glm::ivec2(0, 0);
+    {
+        auto object = std::make_unique<MockGameObjectType>();
+        ON_CALL(*object, hasAttribute(attribute))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, hasAttribute("position"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("position"))
+            .WillByDefault(ReturnRef(object2Position));
+        objects.push_back(std::move(object));
+    }
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+        
+    EntityUtils utils;
+
+    EXPECT_EQ(objects[1].get(), 
+        utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 1));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_ObjectWithAttribute2x0_Range1)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant objectPosition = glm::ivec2(2, 0);
+
+    auto object = std::make_unique<MockGameObjectType>();
+    ON_CALL(*object, hasAttribute(attribute))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, hasAttribute("position"))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, getAttribute("position"))
+        .WillByDefault(ReturnRef(objectPosition));
+    objects.push_back(std::move(object));
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+
+    EntityUtils utils;
+
+    EXPECT_EQ(nullptr, 
+        utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 1));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_ObjectWithAttribute2x0_Range2)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant objectPosition = glm::ivec2(2, 0);
+
+    auto object = std::make_unique<MockGameObjectType>();
+    ON_CALL(*object, hasAttribute(attribute))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, hasAttribute("position"))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, getAttribute("position"))
+        .WillByDefault(ReturnRef(objectPosition));
+    objects.push_back(std::move(object));
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+
+    EntityUtils utils;
+
+    EXPECT_EQ(objects[0].get(), 
+        utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 2));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_ObjectWithAttribute3x0_Range2)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant objectPosition = glm::ivec2(3, 0);
+
+    auto object = std::make_unique<MockGameObjectType>();
+    ON_CALL(*object, hasAttribute(attribute))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, hasAttribute("position"))
+        .WillByDefault(Return(true));
+    ON_CALL(*object, getAttribute("position"))
+        .WillByDefault(ReturnRef(objectPosition));
+    objects.push_back(std::move(object));
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+
+    EntityUtils utils;
+
+    EXPECT_EQ(nullptr, 
+        utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 2));
+}
+
+TEST_F(EntityUtilsTest, getClosestObjectWithAttributeInRange_objectsWithAndWithoutAttribute)
+{
+    std::string attribute = "";
+
+    std::vector<std::unique_ptr<GameObject>> objects;
+
+    Variant object1Position = glm::ivec2(1, 0);
+    {
+        auto object = std::make_unique<MockGameObjectType>();
+        ON_CALL(*object, hasAttribute(attribute))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, hasAttribute("position"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("position"))
+            .WillByDefault(ReturnRef(object1Position));
+        objects.push_back(std::move(object));
+    }
+
+    Variant object2Position = glm::ivec2(0, 0);
+    {
+        auto object = std::make_unique<MockGameObjectType>();
+        ON_CALL(*object, hasAttribute(attribute))
+            .WillByDefault(Return(false));
+        ON_CALL(*object, hasAttribute("position"))
+            .WillByDefault(Return(true));
+        ON_CALL(*object, getAttribute("position"))
+            .WillByDefault(ReturnRef(object2Position));
+        objects.push_back(std::move(object));
+    }
+
+    ON_CALL(mWorld, getObjects())
+        .WillByDefault(ReturnRef(objects));
+        
+    EntityUtils utils;
+
+    EXPECT_EQ(objects[0].get(), 
+        utils.getClosestObjectWithAttributeInRange(mWorld, mOwner, attribute, 1));
+}

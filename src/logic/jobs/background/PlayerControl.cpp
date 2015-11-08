@@ -20,7 +20,8 @@ PlayerControl::PlayerControl(InputSystem &input, World &world, Entity &owner, st
     mInput(input),
     mWorld(world),
     mOwner(owner),
-    mEntityUtils(std::move(entityUtils))
+    mEntityUtils(std::move(entityUtils)),
+    mLogger(LoggerFactory::createLogger("PlayerControl", Severity::DEBUG))
 {
     ASSERT(world.hasAttribute("running"), "World must have running flag");
     ASSERT(world["running"].isOfType<bool>(), "Running flag must be a bool");
@@ -36,10 +37,12 @@ PlayerControl::PlayerControl(InputSystem &input, World &world, Entity &owner, st
 // LCOV_EXCL_START
 void PlayerControl::execute(unsigned int dt)
 {
+    mLogger->debug("Updating step timer.");
     mEntityUtils->updateStepTimer(mOwner, dt);
 
     if(mEntityUtils->canMove(mOwner))
     {
+        mLogger->debug("Can move.");
         if(mInput.isPressed(Key::Up))
         {
             mEntityUtils->move(mWorld, mOwner, glm::ivec2(0, -1));
@@ -59,6 +62,18 @@ void PlayerControl::execute(unsigned int dt)
         {
             mEntityUtils->move(mWorld, mOwner, glm::ivec2(1, 0));
             synchronizeCamera();
+        }
+        else if(mInput.isPressed(Key::Use))
+        {
+            mLogger->debug("Use key pressed.");
+            mLogger->debug("Finding water.");
+            GameObject *water = mEntityUtils->getClosestObjectWithAttributeInRange(mWorld, mOwner, "thirstReduction", 1);
+
+            if(water != nullptr)
+            {
+                mLogger->debug("Water found, consuming.");
+                mEntityUtils->consumeWater(mWorld, mOwner, *water);
+            }
         }
         else if(mInput.isPressed(Key::Quit))
         {

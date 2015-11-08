@@ -6,6 +6,7 @@
 
 #include "../../utility/math/Math.hpp"
 #include "../../utility/LoggerFactory.hpp"
+#include "../utility/EntityUtils.hpp"
 #include "../utility/GameObjectUtils.hpp"
 #include "../Entity.hpp"
 #include "../Job.hpp"
@@ -23,6 +24,7 @@ class FindWater : public Job
     World &mWorld;
     Entity &mOwner;
     RNG &mRng;
+    std::unique_ptr<EntityUtils> mEntityUtils;
     std::unique_ptr<GameObjectUtils> mGameObjectUtils;
 
 public:
@@ -32,10 +34,6 @@ public:
 
     virtual void execute(unsigned int dt);
 
-    virtual GameObject* getClosestWaterInRange();
-
     virtual unsigned int getDistance(GameObject &object);
-
-    virtual void consume(GameObject &water);
 };
 // LCOV_EXCL_STOP
