@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "../Entity.hpp"
+#include "../World.hpp"
 
 class Entity;
 
@@ -15,5 +16,5 @@ public:
 
     virtual bool canMove(Entity &entity);
 
-    virtual void move(Entity &entity, glm::ivec2 deltaPosition);
+    virtual void move(World &world, Entity &entity, glm::ivec2 deltaPosition);
 };

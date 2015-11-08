@@ -42,22 +42,22 @@ void PlayerControl::execute(unsigned int dt)
     {
         if(mInput.isPressed(Key::Up))
         {
-            mEntityUtils->move(mOwner, glm::ivec2(0, -1));
+            mEntityUtils->move(mWorld, mOwner, glm::ivec2(0, -1));
             synchronizeCamera();
         }
         else if(mInput.isPressed(Key::Down))
         {
-            mEntityUtils->move(mOwner, glm::ivec2(0, 1));
+            mEntityUtils->move(mWorld, mOwner, glm::ivec2(0, 1));
             synchronizeCamera();
         }
         else if(mInput.isPressed(Key::Left))
         {
-            mEntityUtils->move(mOwner, glm::ivec2(-1, 0));
+            mEntityUtils->move(mWorld, mOwner, glm::ivec2(-1, 0));
             synchronizeCamera();
         }
         else if(mInput.isPressed(Key::Right))
         {
-            mEntityUtils->move(mOwner, glm::ivec2(1, 0));
+            mEntityUtils->move(mWorld, mOwner, glm::ivec2(1, 0));
             synchronizeCamera();
         }
         else if(mInput.isPressed(Key::Quit))

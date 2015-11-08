@@ -57,4 +57,16 @@ void GameObjectFactory::createWater(World &world, glm::ivec2 position)
 
     world.addObject(std::move(water));
 }
+
+void GameObjectFactory::createRock(World &world, glm::ivec2 position)
+{
+    auto rock = std::make_unique<GameObject>();
+
+    // Add attributes
+    rock->addAttribute("position", position);
+    rock->addAttribute("renderableId", std::string("rock"));
+    rock->addAttribute("solid", true);
+
+    world.addObject(std::move(rock));
+}
 // LCOV_EXCL_STOP

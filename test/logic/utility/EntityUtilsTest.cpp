@@ -84,7 +84,7 @@ TEST_F(EntityUtilsTest, move_position0x0_deltaPosition1x0)
 {
     EntityUtils utils;
 
-    utils.move(mOwner, glm::ivec2(1, 0));
+    utils.move(mWorld, mOwner, glm::ivec2(1, 0));
 
     EXPECT_EQ(glm::ivec2(1, 0), mOwnerPosition.get<glm::ivec2>());
 }
@@ -93,7 +93,7 @@ TEST_F(EntityUtilsTest, move_position0x0_deltaPosition0xMinus1)
 {
     EntityUtils utils;
 
-    utils.move(mOwner, glm::ivec2(0, -1));
+    utils.move(mWorld, mOwner, glm::ivec2(0, -1));
 
     EXPECT_EQ(glm::ivec2(0, -1), mOwnerPosition.get<glm::ivec2>());
 }
@@ -104,7 +104,7 @@ TEST_F(EntityUtilsTest, move_positionMinus1xMinus1_deltaPosition1x0)
 
     EntityUtils utils;
 
-    utils.move(mOwner, glm::ivec2(1, 0));
+    utils.move(mWorld, mOwner, glm::ivec2(1, 0));
 
     EXPECT_EQ(glm::ivec2(0, -1), mOwnerPosition.get<glm::ivec2>());
 }
@@ -115,7 +115,7 @@ TEST_F(EntityUtilsTest, move_position1x1_deltaPositionMinus1x0)
 
     EntityUtils utils;
 
-    utils.move(mOwner, glm::ivec2(1, 0));
+    utils.move(mWorld, mOwner, glm::ivec2(1, 0));
 
     EXPECT_EQ(glm::ivec2(2, 1), mOwnerPosition.get<glm::ivec2>());
 }
@@ -126,7 +126,7 @@ TEST_F(EntityUtilsTest, move_resetTimeSinceLastStep)
 
     EntityUtils utils;
 
-    utils.move(mOwner, glm::ivec2(1, 0));
+    utils.move(mWorld, mOwner, glm::ivec2(1, 0));
 
     EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
 }

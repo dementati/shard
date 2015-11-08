@@ -30,7 +30,7 @@ void Wander::execute(unsigned int dt)
         if(direction != nullptr)
         {
             mLogger->debug(std::string("Moving to ") + glm::to_string(*direction));
-            mEntityUtils->move(mOwner, *direction);
+            mEntityUtils->move(mWorld, mOwner, *direction);
         } 
         else
         {

@@ -19,4 +19,6 @@ public:
     static void createHuman(World &world, glm::ivec2 position);
 
     static void createWater(World &world, glm::ivec2 position);
+
+    static void createRock(World &world, glm::ivec2 position);
 };

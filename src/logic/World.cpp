@@ -4,6 +4,7 @@ World::World()
 {
     (*this)["running"] = true;
     (*this)["cameraPosition"] = glm::ivec2(0, 0);
+    (*this)["blockedMap"] = std::unordered_map<glm::ivec2, bool, VectorHash>();
 }
 
 // LCOV_EXCL_START
@@ -41,10 +42,14 @@ std::vector<std::unique_ptr<GameObject>>& World::getObjects()
 void World::addObject(std::unique_ptr<GameObject> object)
 {
     mObjects.push_back(std::move(object));
+
+    setBlockedMapIfSolid(*mObjects.back(), true);
 }
 
 void World::removeObject(GameObject &object)
 {
+    setBlockedMapIfSolid(object, false);
+
     mObjects.erase(
         std::remove_if(mObjects.begin(), mObjects.end(),
             // LCOV_EXCL_START
@@ -52,4 +57,36 @@ void World::removeObject(GameObject &object)
             // LCOV_EXCL_STOP
         ), 
         mObjects.end());
+}
+
+void World::setBlockedMapIfSolid(GameObject &object, bool blocked)
+{
+    if(object.hasAttribute("solid"))
+    {
+        ASSERT(object["solid"].isOfType<bool>(), "Solid flag must be a bool");
+
+        if(object["solid"].get<bool>())
+        {
+            ASSERT(object.hasAttribute("position"), "Solid object must have position");
+            ASSERT(object["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
+
+            auto position = object["position"].get<glm::ivec2>();
+            auto &blockedMap = 
+                (*this)["blockedMap"].get<std::unordered_map<glm::ivec2, bool, VectorHash>>();
+            blockedMap[position] = blocked;
+        }
+    }
+}
+
+bool World::isBlocked(glm::ivec2 position)
+{
+    auto &blockedMap = 
+        (*this)["blockedMap"].get<std::unordered_map<glm::ivec2, bool, VectorHash>>();
+
+    if(blockedMap.count(position) > 0)
+    {
+        return blockedMap[position];
+    }
+
+    return false;
 }

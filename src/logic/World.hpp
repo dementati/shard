@@ -1,9 +1,11 @@
 #pragma once
 
 #include <memory>
-#include <utility>
 #include <vector>
+#include <unordered_map>
+#include <utility>
 
+#include "../utility/VectorHash.hpp"
 #include "Entity.hpp"
 #include "GameObject.hpp"
 
@@ -29,4 +31,8 @@ public:
     virtual void addObject(std::unique_ptr<GameObject> object);
 
     virtual void removeObject(GameObject& object);
+
+    virtual void setBlockedMapIfSolid(GameObject &object, bool blocked);
+
+    virtual bool isBlocked(glm::ivec2 position);
 };

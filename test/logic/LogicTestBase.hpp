@@ -53,6 +53,8 @@ protected:
             .WillByDefault(Return(true));
         ON_CALL(mWorld, getAttribute(StrEq("cameraPosition")))
             .WillByDefault(ReturnRef(mWorldCameraPosition));
+        ON_CALL(mWorld, isBlocked(_))
+            .WillByDefault(Return(false));
 
         ON_CALL(mOwner, hasAttribute(StrEq("perception")))
             .WillByDefault(Return(true));

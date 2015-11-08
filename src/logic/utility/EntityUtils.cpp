@@ -25,7 +25,7 @@ bool EntityUtils::canMove(Entity &entity)
     return timeSinceLastStep >= stepLimit;
 }
 
-void EntityUtils::move(Entity &entity, glm::ivec2 deltaPosition)
+void EntityUtils::move(World &world, Entity &entity, glm::ivec2 deltaPosition)
 {
     ASSERT(entity.hasAttribute("position"), "Entity must have a position");
     ASSERT(entity["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
@@ -33,7 +33,12 @@ void EntityUtils::move(Entity &entity, glm::ivec2 deltaPosition)
     ASSERT(entity["timeSinceLastStep"].isOfType<unsigned int>(), "timeSinceLastStep must be an unsigned int");
     ASSERT(deltaPosition != glm::ivec2(0, 0), "deltaPosition cannot be (0, 0)");
 
-    entity["timeSinceLastStep"].set<unsigned int>(0);
     auto position = entity["position"].get<glm::ivec2>() + deltaPosition;
-    entity["position"].set<glm::ivec2>(position);
+
+    entity["timeSinceLastStep"].set<unsigned int>(0);
+
+    if(!world.isBlocked(position))
+    {
+        entity["position"].set<glm::ivec2>(position);
+    }
 }

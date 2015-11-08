@@ -4,8 +4,11 @@
 
 #include "BitPattern.hpp"
 
-class VectorHash
+struct VectorHash
 {
-public:
-    static uint64_t hash(glm::ivec2 vector);
+    template <typename T>
+    std::size_t operator()(T t) const
+    {
+        return BitPattern::concatenate(t.x, t.y);
+    }
 };

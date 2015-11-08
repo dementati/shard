@@ -34,4 +34,8 @@ public:
     MOCK_METHOD1(addObjectProxy, void(GameObject*));
 
     MOCK_METHOD1(removeObject, void(GameObject&));
+
+    MOCK_METHOD2(setBlockedMapIfSolid, void(GameObject&, bool));
+
+    MOCK_METHOD1(isBlocked, bool(glm::ivec2));
 };

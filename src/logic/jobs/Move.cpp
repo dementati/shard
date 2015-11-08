@@ -36,13 +36,11 @@ void Move::execute(unsigned int dt)
                 mGameObjectUtils->getPerceptionBox(mOwner));
 
         mLogger->debug(std::string("Moving to ") + glm::to_string(path[path.size() - 2]));
-        mEntityUtils->move(mOwner, path[path.size() - 2] - position);
+        mEntityUtils->move(mWorld, mOwner, path[path.size() - 2] - position);
     } 
 }
 
 bool Move::isBlocked(glm::ivec2 position)
 {
-    ASSERT(position == position, "");
-
-    return false;
+    return mWorld.isBlocked(position);
 }

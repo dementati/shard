@@ -22,18 +22,28 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     ASSERT(boundingBox.contains(stopPosition), "Bounding box must contain stop position");
 
     LoggerPtr logger = LoggerFactory::createLogger("AStar", Severity::DEBUG);
-    
+   
+    logger->debug(std::string("startPosition = " + glm::to_string(startPosition)));
+    logger->debug(std::string("stopPosition = " + glm::to_string(stopPosition)));
+
     // Translate the search area to the positive quadrant originating at 0,0
     glm::ivec2 offset = -boundingBox.getPosition();
     startPosition = startPosition + offset;
     stopPosition = stopPosition + offset;
 
+    logger->debug(std::string("offset startPosition = " + glm::to_string(startPosition)));
+    logger->debug(std::string("offset stopPosition = " + glm::to_string(stopPosition)));
+
+    std::function<bool(glm::ivec2)> isBlockedOffset = [&] (glm::ivec2 p) {
+        return isBlocked(p - offset);
+    };
+
     std::function<glm::ivec2(int)> indexToVector = [&boundingBox](int i) {
         return glm::ivec2(i % boundingBox.getDimensions().x, i / boundingBox.getDimensions().x);
     };
 
-    std::function<bool(int)> isBlockedInt = [&isBlocked, &indexToVector](int i) {
-        return isBlocked(indexToVector(i));
+    std::function<bool(int)> isBlockedInt = [&](int i) {
+        return isBlockedOffset(indexToVector(i));
     };
 
     int inf = std::numeric_limits<int>::max();

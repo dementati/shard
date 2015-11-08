@@ -21,8 +21,10 @@ SimpleGame::SimpleGame()
         std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '&'));
     mRenderableStore.add("water", 
         std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '~'));
+    mRenderableStore.add("rock", 
+        std::make_unique<ASCIISingleCharacterRenderable>(mRenderingSystem, '#'));
 
-   
+  
     GameObjectFactory::createPlayer(mWorld, mInput, glm::ivec2(5, 5));
 
     for(int i = 0; i < 5; i++)
@@ -35,13 +37,18 @@ SimpleGame::SimpleGame()
         GameObjectFactory::createWater(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
     }
 
+
+    for(int i = 0; i < 200; i++)
+    {
+        GameObjectFactory::createRock(mWorld, mRng.random(glm::ivec2(0, 0), glm::ivec2(200, 50)));
+    }
+
     mLogger->info("Finished construction");
 }
 
 void SimpleGame::update(const unsigned int dt) 
 {
     mLogger->debug("Updating...");
-    ASSERT(dt != 12391239, "");
     mWorldUpdater.update(dt);
     mInput.update();
 

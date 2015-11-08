@@ -14,6 +14,28 @@ using MockGameObjectType = ::testing::NiceMock<MockGameObject>;
 
 class WorldTest : public ::testing::Test
 {
+protected:
+    MockGameObjectType mObject;
+    Variant mObjectSolid;
+    Variant mObjectPosition;
+
+    WorldTest()
+    :
+        mObjectSolid(true),
+        mObjectPosition(glm::ivec2(0, 0))
+    {
+        ON_CALL(mObject, hasAttribute("solid"))
+        .WillByDefault(Return(true));
+
+        ON_CALL(mObject, getAttribute("solid"))
+            .WillByDefault(ReturnRef(mObjectSolid));
+
+        ON_CALL(mObject, hasAttribute("position"))
+            .WillByDefault(Return(true));
+
+        ON_CALL(mObject, getAttribute("position"))
+            .WillByDefault(ReturnRef(mObjectPosition));
+    }
 };
 
 TEST_F(WorldTest, AddAndGetEntity)
@@ -55,4 +77,100 @@ TEST_F(WorldTest, AddAndRemoveObject)
     world.removeObject(object);
 
     EXPECT_EQ(0, world.getObjects().size());
+}
+
+TEST_F(WorldTest, isBlocked_emptyWorld)
+{
+    World world;
+
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 1)));
+}
+
+TEST_F(WorldTest, setObjectWithoutSolidAttributeAndCheckMap)
+{
+    World world;
+
+    MockGameObjectType object;
+
+    world.setBlockedMapIfSolid(object, true);
+
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 1)));
+}
+
+TEST_F(WorldTest, setNonSolidObjectAndCheckMap)
+{
+    World world;
+
+    MockGameObjectType object;
+    Variant objectSolid = false;
+
+    ON_CALL(object, hasAttribute("solid"))
+        .WillByDefault(Return(true));
+
+    ON_CALL(object, getAttribute("solid"))
+        .WillByDefault(ReturnRef(objectSolid));
+
+    world.setBlockedMapIfSolid(object, true);
+
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 1)));
+}
+
+TEST_F(WorldTest, setSolidObjectAndCheckMap_position0x0)
+{
+    World world;
+
+    world.setBlockedMapIfSolid(mObject, true);
+
+    EXPECT_TRUE(world.isBlocked(glm::ivec2(0, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 1)));
+}
+
+TEST_F(WorldTest, setSolidObjectAndCheckMap_position1x0)
+{
+    World world;
+
+    mObjectPosition.set<glm::ivec2>(glm::ivec2(1, 0));
+
+    world.setBlockedMapIfSolid(mObject, true);
+
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 0)));
+    EXPECT_TRUE(world.isBlocked(glm::ivec2(1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 0)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(0, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, 1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(1, -1)));
+    EXPECT_FALSE(world.isBlocked(glm::ivec2(-1, 1)));
 }

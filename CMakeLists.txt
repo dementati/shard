@@ -121,7 +121,6 @@ set(PRODUCTION_SRC
     src/utility/LoggerFactory.cpp
     src/utility/StreamLogger.cpp
     src/utility/Variant.cpp
-    src/utility/VectorHash.cpp
 )
 
 # Test code
@@ -151,7 +150,6 @@ set(TEST_SRC
     test/utility/DateTimeTest.cpp
     test/utility/StreamLoggerTest.cpp
     test/utility/VariantTest.cpp
-    test/utility/VectorHashTest.cpp
 )
 
 # Libraries
