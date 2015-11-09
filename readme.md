@@ -4,7 +4,7 @@ Shard project.
 
 ## Requirements
 
-* If on Windows, Cygwin.
+* If on Windows, Cygwin or MinGW.
 * g++
 * make
 * Perl (for lcov)
@@ -13,9 +13,9 @@ Shard project.
 
 Go to https://cmake.org/download/#latest and download and install the latest stable release. If you're on a Unix-based system, you might wanna use a package manager. If you're on Windows, you can install it through Cygwin.
 
-## Install Google Testing Framework and Google Mock
+## Optional: Install Google Testing Framework and Google Mock
 
-Google Test comes bundled with Google Mock
+Google Test comes bundled with Google Mock. This is only required if you want to build the tests.
 
 1. Download the latest release of gmock from https://code.google.com/p/googlemock/downloads/list
 2. Unzip it to a directory of your choice
@@ -31,7 +31,7 @@ Google Test comes bundled with Google Mock
 1. Install SDL2
 2. Install SDL2_ttf
 
-Use a package manager or Cygwin, or build from source, (>=v5.9). CMake will attempt to locate SDL2 automatically. If that fails, contact a senior developer.
+Use a package manager or Cygwin, or build from source, (>=v5.9). CMake will attempt to locate SDL2 automatically. This should work fine in Cygwin and probably in many Linux distros, but doesn't seem to work on Windows, so you can use the FIND_SDL2_MANUALLY CMake cache flag to enable specifying the path to SDL2 and SDL2_ttf manually.
 
 ## Install GLM
 
@@ -40,7 +40,10 @@ Use a package manager or Cygwin, or build from source, (>=v5.9). CMake will atte
 3. If you're on native *nix, download the latest release.
 4. Unzip it anywhere.
 
-## Cygwin only: Install lcov
+## Optional: Cygwin only: Install lcov
+
+This is only required if you want to build the tests.
+
 1. Download http://downloads.sourceforge.net/ltp/lcov-1.12.tar.gz
 2. Extract it to a directory of your choice
 3. cd into it and run ```make install```
