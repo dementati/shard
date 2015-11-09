@@ -5,13 +5,13 @@ WorldUpdater::WorldUpdater(World &world)
     mLogger(LoggerFactory::createLogger("WorldUpdater", Severity::DEBUG)),
     mWorld(world)
 {
-    mLogger->info("Finished construction");
+    LOG_INFO(mLogger, "Finished construction");
 }
 
 void WorldUpdater::update(unsigned int dt)
 {
-    mLogger->debug("Running object background jobs");
-    mLogger->debug(std::string("Number of objects: ") + glm::to_string((int)mWorld.getObjects().size()));
+    LOG_DEBUG(mLogger, "Running object background jobs");
+    LOG_DEBUG(mLogger, "Number of objects: " << mWorld.getObjects().size());
     for(auto &object : mWorld.getObjects())
     {
         if(object->hasAttribute("backgroundJobs"))
@@ -23,11 +23,11 @@ void WorldUpdater::update(unsigned int dt)
         }
     }
 
-    mLogger->debug("Updating entities");
-    mLogger->debug(std::string("Number of entities: ") + glm::to_string((int)mWorld.getObjects().size()));
+    LOG_DEBUG(mLogger, "Updating entities");
+    LOG_DEBUG(mLogger, "Number of entities: " << mWorld.getObjects().size());
     for(auto &entity : mWorld.getEntities())
     {
-        mLogger->debug("Running entity background jobs");
+        LOG_DEBUG(mLogger, "Running entity background jobs");
         if(entity->hasAttribute("backgroundJobs"))
         {
             for(auto &job : (*entity)["backgroundJobs"].get<std::vector<std::shared_ptr<Job>>>())
@@ -37,12 +37,12 @@ void WorldUpdater::update(unsigned int dt)
         } 
         else
         {
-            mLogger->debug("No background jobs");
+            LOG_DEBUG(mLogger, "No background jobs");
         }
 
         if(entity->hasNeeds())
         {
-            mLogger->debug("Selecting needs");
+            LOG_DEBUG(mLogger, "Selecting needs");
             Need& need = entity->selectNeed();
             need.execute(dt);
         }

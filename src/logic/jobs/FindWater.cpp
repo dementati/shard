@@ -27,28 +27,28 @@ FindWater::FindWater(World &world, Entity &owner, RNG &rng)
 
 void FindWater::execute(unsigned int dt)
 {
-    mLogger->debug("Executing...");
+    LOG_DEBUG(mLogger, "Executing...");
 
     // Check if water source can be found within sensory range
     auto perception = mOwner["perception"].get<unsigned int>();
     auto water = mEntityUtils->getClosestObjectWithAttributeInRange(mWorld, mOwner, "thirstReduction", perception);
     if(water != nullptr) {
-        mLogger->debug("Water detected.");
+        LOG_DEBUG(mLogger, "Water detected.");
         if(getDistance(*water) <= 1)
         {
-            mLogger->debug("Water is close.");
+            LOG_DEBUG(mLogger, "Water is close.");
             mEntityUtils->consumeWater(mWorld, mOwner, *water);
         } 
         else
         {
-            mLogger->debug("Water is far away.");
+            LOG_DEBUG(mLogger, "Water is far away.");
             Move move(mWorld, mOwner, (*water)["position"].get<glm::ivec2>());
             move.execute(dt);
         }
     } 
     else 
     {
-        mLogger->debug("No water in sight.");
+        LOG_DEBUG(mLogger, "No water in sight.");
         Wander wander(mWorld, mOwner, mRng);
         wander.execute(dt);
     }

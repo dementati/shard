@@ -9,16 +9,16 @@ Thirst::Thirst(World &world, Entity &owner)
     ASSERT(owner.hasAttribute("thirst"), "Owner must have the thirst attribute");
     ASSERT(owner.getAttribute("thirst").isOfType<unsigned int>(), "Owner thirst attribute must be an unsigned int");
 
-    mLogger->info("Finished construction");
+    LOG_INFO(mLogger, "Finished construction");
 }
 
 // LCOV_EXCL_START
 void Thirst::execute(unsigned int dt)
 {
-    mLogger->debug("Executing...");
+    LOG_DEBUG(mLogger, "Executing...");
     auto job = getJob();
     job->execute(dt);
-    mLogger->debug("Finished executing");
+    LOG_DEBUG(mLogger, "Finished executing");
 }
 // LCOV_EXCL_STOP
 
@@ -32,12 +32,12 @@ std::unique_ptr<Job> Thirst::getJob()
 {
     if(getIntensity() == 0)
     {
-        mLogger->debug("Thirst is zero, idling...");
+        LOG_DEBUG(mLogger, "Thirst is zero, idling...");
         return std::make_unique<Idle>();
     } 
     else 
     {
-        mLogger->debug("Thirst is non-zero, finding water...");
+        LOG_DEBUG(mLogger, "Thirst is non-zero, finding water...");
         return std::make_unique<FindWater>(mWorld, mOwner);
     }
 }

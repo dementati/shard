@@ -20,7 +20,7 @@ CharBitmap CharBitmapLoader::load(std::string filePath) const
 {
     ASSERT(filePath.length() > 0, "File path cannot be empty");
 
-    mLogger->info(std::string("Loading ") + filePath);
+    LOG_INFO(mLogger, "Loading " << filePath);
 
     std::ifstream file(filePath);
     if(!file.good())

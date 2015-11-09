@@ -6,7 +6,7 @@ SDLRenderingSystem::SDLRenderingSystem(SDLInterface &sdl)
     mSDL(sdl),
     mCharTextureMap()
 {
-    mLogger->debug("Finished construction");
+    LOG_DEBUG(mLogger, "Finished construction");
 }
 
 // LCOV_EXCL_START
@@ -23,7 +23,7 @@ void SDLRenderingSystem::drawCharacter(const char character, const glm::ivec2 po
 {
     auto screenPosition = getScreenCoordinates(position);
 
-    mLogger->debug(std::string("Drawing ") + character + " at " + glm::to_string(screenPosition));
+    LOG_DEBUG(mLogger, "Drawing " << character << " at " << glm::to_string(screenPosition));
 
     if(mCharTextureMap.count(character) == 0)
     {
@@ -38,13 +38,13 @@ void SDLRenderingSystem::drawCharacter(const char character, const glm::ivec2 po
 // LCOV_EXCL_START
 void SDLRenderingSystem::clear()
 {
-    mLogger->debug("Clearing");
+    LOG_DEBUG(mLogger, "Clearing");
     mSDL.clear();
 }
 
 void SDLRenderingSystem::refresh()
 {
-    mLogger->debug("Refreshing");
+    LOG_DEBUG(mLogger, "Refreshing");
     mSDL.refresh();
 }
 // LCOV_EXCL_STOP

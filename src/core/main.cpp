@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
     LoggerPtr logger(LoggerFactory::createLogger("main", Severity::DEBUG));
 
-    logger->info("Initializing...");
+    LOG_INFO(logger, "Initializing...");
 
     // Create game object
     SimpleGame simpleGame;
@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     ).count();
 
     // Start main loop
-    logger->info("Starting main game loop");
+    LOG_INFO(logger, "Starting main game loop");
     while(game->isRunning()) {
         // Compute delta time
         uint64_t currentTime = std::chrono::duration_cast< std::chrono::milliseconds >(
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
             lastTime = currentTime;
         }
 
-        logger->debug(std::string("Computed delta time: ") + glm::to_string(dt));
+        LOG_DEBUG(logger, "Computed delta time: " << dt);
 
         // Call update method 
         game->update(dt);

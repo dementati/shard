@@ -18,25 +18,25 @@ Wander::Wander(World &world, Entity &owner, RNG &rng)
 
 void Wander::execute(unsigned int dt)
 {
-    mLogger->debug("Executing.");
+    LOG_DEBUG(mLogger, "Executing.");
 
     mEntityUtils->updateStepTimer(mOwner, dt);
 
     if(mEntityUtils->canMove(mOwner))
     {
-        mLogger->debug("Can move.");
+        LOG_DEBUG(mLogger, "Can move.");
 
         auto direction = findDirection();
         if(direction != nullptr)
         {
-            mLogger->debug(std::string("Moving to ") + glm::to_string(*direction));
+            LOG_DEBUG(mLogger, "Moving to " << glm::to_string(*direction));
             mEntityUtils->move(mWorld, mOwner, *direction);
         } 
         else
         {
             // TODO: Test this branch when collision detection is in place
             // LCOV_EXCL_START
-            mLogger->debug("No viable direction found.");
+            LOG_DEBUG(mLogger, "No viable direction found.");
             // LCOV_EXCL_STOP
         }
     }

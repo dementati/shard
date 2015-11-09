@@ -23,34 +23,34 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
 
     LoggerPtr logger = LoggerFactory::createLogger("AStar", Severity::DEBUG);
    
-    logger->debug(std::string("startPosition = " + glm::to_string(startPosition)));
-    logger->debug(std::string("stopPosition = " + glm::to_string(stopPosition)));
+    LOG_DEBUG(logger, "startPosition = " << glm::to_string(startPosition));
+    LOG_DEBUG(logger, "stopPosition = " << glm::to_string(stopPosition));
 
     // Translate the search area to the positive quadrant originating at 0,0
     glm::ivec2 offset = -boundingBox.getPosition();
     startPosition = startPosition + offset;
     stopPosition = stopPosition + offset;
 
-    logger->debug(std::string("offset startPosition = " + glm::to_string(startPosition)));
-    logger->debug(std::string("offset stopPosition = " + glm::to_string(stopPosition)));
+    LOG_DEBUG(logger, "offset startPosition = " << glm::to_string(startPosition));
+    LOG_DEBUG(logger, "offset stopPosition = " << glm::to_string(stopPosition));
 
-    logger->debug("Initializing");
+    LOG_DEBUG(logger, "Initializing");
 
-    logger->debug("Setting up lambdas");
+    LOG_DEBUG(logger, "Setting up lambdas");
     std::function<bool(glm::ivec2)> isBlockedOffset = [&] (glm::ivec2 p) {
-        logger->debug(std::string("isBlockedOffset(") + glm::to_string(p) + ")");
-        logger->debug(std::string("offset = ") + glm::to_string(offset));
+        LOG_DEBUG(logger, "isBlockedOffset(" << glm::to_string(p) << ")");
+        LOG_DEBUG(logger, "offset = " << glm::to_string(offset));
         return isBlocked(p - offset);
     };
 
     std::function<glm::ivec2(int)> indexToVector = [&](int i) {
-        logger->debug(std::string("indexToVector") + glm::to_string(i) + ")");
-        logger->debug(std::string("boundingBox dimenions = ") + glm::to_string(boundingBox.getDimensions()));
+        LOG_DEBUG(logger, "indexToVector" << i << ")");
+        LOG_DEBUG(logger, "boundingBox dimenions = " << glm::to_string(boundingBox.getDimensions()));
         return glm::ivec2(i % boundingBox.getDimensions().x, i / boundingBox.getDimensions().x);
     };
 
     std::function<bool(int)> isBlockedInt = [&](int i) {
-        logger->debug(std::string("isBlockedInt(") + glm::to_string(i) + ")");
+        LOG_DEBUG(logger, "isBlockedInt(" << i << ")");
         return isBlockedOffset(indexToVector(i));
     };
 
@@ -65,7 +65,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     std::vector<bool> closed;
     std::vector<int> parent;
     
-    logger->debug("Initializing start position");
+    LOG_DEBUG(logger, "Initializing start position");
     auto start = 0;
     x.push_back(startPosition.x);
     y.push_back(startPosition.y);
@@ -76,7 +76,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     closed.push_back(false);
     parent.push_back(start);
 
-    logger->debug("Initializing target position");
+    LOG_DEBUG(logger, "Initializing target position");
     auto target = 1;
     x.push_back(stopPosition.x);
     y.push_back(stopPosition.y);
@@ -87,30 +87,30 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     closed.push_back(false);
     parent.push_back(-1);
 
-    logger->debug("Checking if start or target is blocked");
+    LOG_DEBUG(logger, "Checking if start or target is blocked");
 	if(isBlockedInt(index[start]) || isBlockedInt(index[target]))
     {
-       logger->debug("Either start or target position is blocked");
+       LOG_DEBUG(logger, "Either start or target position is blocked");
 	   return std::vector<glm::ivec2>();	
     }
 
-    logger->debug("Constructing open node heap");
+    LOG_DEBUG(logger, "Constructing open node heap");
 	std::vector<int> open;
 	open.push_back(start);
 	std::make_heap(open.begin(), open.end(), PosFComp(f));
 
-    logger->debug("Constructing neighbour map");
+    LOG_DEBUG(logger, "Constructing neighbour map");
 	std::unordered_map<int, int> neighbours;
 	neighbours[index[start]] = start;
 
-    logger->debug("Commencing main loop");
+    LOG_DEBUG(logger, "Commencing main loop");
 
     bool targetReached = false;
 	while(!open.empty()) 
 	{
 		auto current = open.front();
 
-        logger->debug(std::string("Current node = " + glm::to_string(indexToVector(current))));
+        LOG_DEBUG(logger, "Current node = " << glm::to_string(indexToVector(current)));
 
 		if(index[current] == index[target]) 
 		{
@@ -212,7 +212,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
 		}		
 	}
 
-    logger->debug("Main loop finished, constructing path or returning empty path");
+    LOG_DEBUG(logger, "Main loop finished, constructing path or returning empty path");
 
 	if(targetReached) 
 	{

@@ -37,12 +37,12 @@ PlayerControl::PlayerControl(InputSystem &input, World &world, Entity &owner, st
 // LCOV_EXCL_START
 void PlayerControl::execute(unsigned int dt)
 {
-    mLogger->debug("Updating step timer.");
+    LOG_DEBUG(mLogger, "Updating step timer.");
     mEntityUtils->updateStepTimer(mOwner, dt);
 
     if(mEntityUtils->canMove(mOwner))
     {
-        mLogger->debug("Can move.");
+        LOG_DEBUG(mLogger, "Can move.");
         if(mInput.isPressed(Key::Up))
         {
             mEntityUtils->move(mWorld, mOwner, glm::ivec2(0, -1));
@@ -65,13 +65,13 @@ void PlayerControl::execute(unsigned int dt)
         }
         else if(mInput.isPressed(Key::Use))
         {
-            mLogger->debug("Use key pressed.");
-            mLogger->debug("Finding water.");
+            LOG_DEBUG(mLogger, "Use key pressed.");
+            LOG_DEBUG(mLogger, "Finding water.");
             GameObject *water = mEntityUtils->getClosestObjectWithAttributeInRange(mWorld, mOwner, "thirstReduction", 1);
 
             if(water != nullptr)
             {
-                mLogger->debug("Water found, consuming.");
+                LOG_DEBUG(mLogger, "Water found, consuming.");
                 mEntityUtils->consumeWater(mWorld, mOwner, *water);
             }
         }

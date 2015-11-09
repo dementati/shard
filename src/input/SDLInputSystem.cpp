@@ -16,12 +16,12 @@ SDLInputSystem::SDLInputSystem(SDLInterface &sdl)
     mLogger(LoggerFactory::createLogger("SDLInputSystem", Severity::DEBUG)),
     mSDL(sdl)
 {
-    mLogger->info("Finished construction.");
+    LOG_INFO(mLogger, "Finished construction.");
 }
 
 void SDLInputSystem::update()
 {
-    mLogger->debug("Updating...");
+    LOG_DEBUG(mLogger, "Updating...");
 
     mSDL.pollEvents();
 }

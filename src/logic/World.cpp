@@ -82,18 +82,18 @@ void World::setBlockedMapIfSolid(GameObject &object, bool blocked)
 
 bool World::isBlocked(glm::ivec2 position)
 {
-    mLogger->debug(std::string("isBlocked(") + glm::to_string(position) + ")");
+    LOG_DEBUG(mLogger, "isBlocked(" << glm::to_string(position) << ")");
 
-    mLogger->debug(std::string("Getting blockedMap reference"));
+    LOG_DEBUG(mLogger, "Getting blockedMap reference");
     auto &blockedMap = 
         (*this)["blockedMap"].get<std::unordered_map<glm::ivec2, bool, VectorHash>>();
 
     if(blockedMap.count(position) > 0)
     {
-        mLogger->debug(std::string("position is in blockedMap"));
+        LOG_DEBUG(mLogger, "position is in blockedMap");
         return blockedMap[position];
     }
 
-    mLogger->debug(std::string("position is not in blockedMap"));
+    LOG_DEBUG(mLogger, "position is not in blockedMap");
     return false;
 }

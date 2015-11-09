@@ -62,7 +62,7 @@ GameObject* EntityUtils::getClosestObjectWithAttributeInRange(World &world, Enti
 
         if(object.hasAttribute(attribute))
         {
-            ASSERT(object.hasAttribute("position"), std::string("Object with attribute " + attribute + " must also have a position"));
+            ASSERT(object.hasAttribute("position"), "Object with attribute " << attribute << " must also have a position");
             ASSERT(object["position"].isOfType<glm::ivec2>(), "Object position must be a glm::ivec2");
 
             auto objectPosition = object["position"].get<glm::ivec2>();

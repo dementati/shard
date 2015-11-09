@@ -19,13 +19,13 @@ Move::Move(World &world, Entity &owner, glm::ivec2 target)
 
 void Move::execute(unsigned int dt)
 {
-    mLogger->debug("Executing.");
+    LOG_DEBUG(mLogger, "Executing.");
 
     mEntityUtils->updateStepTimer(mOwner, dt);
 
     if(mEntityUtils->canMove(mOwner))
     {
-        mLogger->debug("Can move.");
+        LOG_DEBUG(mLogger, "Can move.");
 
         auto position = mOwner["position"].get<glm::ivec2>();
         auto path = 
@@ -38,7 +38,7 @@ void Move::execute(unsigned int dt)
         if(path.size() > 0)
         {
             ASSERT(path.size() > 1, "Pathfinding returned a path of size 1, which doesn't make sense");
-            mLogger->debug(std::string("Moving to ") + glm::to_string(path[path.size() - 2]));
+            LOG_DEBUG(mLogger, "Moving to " << glm::to_string(path[path.size() - 2]));
             mEntityUtils->move(mWorld, mOwner, path[path.size() - 2] - position);
         }
     } 
@@ -46,6 +46,6 @@ void Move::execute(unsigned int dt)
 
 bool Move::isBlocked(glm::ivec2 position)
 {
-    mLogger->debug(std::string("isBlocked(") + glm::to_string(position) + ")");
+    LOG_DEBUG(mLogger, "isBlocked(" << glm::to_string(position) << ")");
     return mWorld.isBlocked(position);
 }
