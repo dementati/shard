@@ -1,10 +1,12 @@
 #include <chrono>
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+
 #include "../utility/LoggerFactory.hpp"
 #include "Game.hpp"
 #include "SimpleGame.hpp"
 
-int main() 
+int main(int argc, char **argv) 
 {
     LoggerPtr logger(LoggerFactory::createLogger("main", Severity::DEBUG));
 

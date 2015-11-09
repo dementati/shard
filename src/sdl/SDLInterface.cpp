@@ -59,7 +59,7 @@ SDLInterface::SDLInterface(std::string windowTitle, glm::uvec2 windowSize)
         mLogger->info("Renderer created successfully");
     }
 
-    mFont = TTF_OpenFont( "../fonts/Anonymous_Pro.ttf", 13); 
+    mFont = TTF_OpenFont( "fonts/Anonymous_Pro.ttf", 13); 
     if(mFont == NULL)
     {
         mLogger->error(std::string("Couldn't open font: ") + TTF_GetError());
