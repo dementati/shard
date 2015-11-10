@@ -35,6 +35,7 @@ void GameObjectFactory::createHuman(World &world, glm::ivec2 position)
     human->addAttribute("perception", (unsigned int)10);
     human->addAttribute("timeSinceLastStep", (unsigned int)0);
     human->addAttribute("speed", 10.0f);
+	human->addAttribute("blood"), (unsigned int)5);
 
     // Add background jobs
     human->addAttribute("backgroundJobs", std::vector<std::shared_ptr<Job>>({

@@ -111,3 +111,33 @@ void EntityUtils::consumeWater(World &world, Entity &entity, GameObject &water)
         }
     }
 }
+
+void EntityUtils::consumeBlood(World &world, Entity &entity, GameObject &human)
+{
+    ASSERT(human.hasAttribute("blood"), "Object must have the attribute blood");
+    ASSERT(human["blood"].isOfType<unsigned int>(), "Object thirst reduction must be a unsigned int");
+    ASSERT(entity.hasAttribute("thirst"), "Entity must have thirst attribute.");
+    ASSERT(entity["thirst"].isOfType<unsigned int>(), "Thirst must be an unsigned int");
+
+    auto thirstReduction = human.getAttribute("blood").get<unsigned int>();
+    auto thirst = entity.getAttribute("thirst").get<unsigned int>();
+    if(thirst <= thirstReduction)
+    {
+        entity.getAttribute("thirst").set<unsigned int>(0);
+    }
+    else 
+    {
+        entity.getAttribute("thirst").set<unsigned int>(thirst - thirstReduction);
+    }
+
+	world.removeObject(human);
+    /*if(blood.hasAttribute("consumable"))
+    {
+        ASSERT(blood["consumable"].isOfType<bool>(), "Consumable flag must be a bool");
+        
+        if(blood["consumable"].get<bool>())
+        {
+            world.removeObject(blood);
+        }
+    }*/
+}

@@ -8,6 +8,7 @@ enum class Key
     Left,
     Right,
     Use,
+	DrinkBlood,
     Quit
 };
 

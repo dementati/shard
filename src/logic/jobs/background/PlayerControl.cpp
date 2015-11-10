@@ -75,6 +75,18 @@ void PlayerControl::execute(unsigned int dt)
                 mEntityUtils->consumeWater(mWorld, mOwner, *water);
             }
         }
+        else if(mInput.isPressed(Key::DrinkBlood))
+        {
+            LOG_DEBUG(mLogger, "Drink blood key pressed.");
+            LOG_DEBUG(mLogger, "Finding blood.");
+            GameObject *blood = mEntityUtils->getClosestObjectWithAttributeInRange(mWorld, mOwner, "blood", 1);
+
+            if(blood != nullptr)
+            {
+                LOG_DEBUG(mLogger, "Blood found, consuming.");
+                mEntityUtils->consumeWater(mWorld, mOwner, *blood);
+            }
+        }
         else if(mInput.isPressed(Key::Quit))
         {
             mWorld["running"].set<bool>(false);
