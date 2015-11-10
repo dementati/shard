@@ -8,6 +8,7 @@ std::unordered_map<Key, SDLKey, EnumClassHash> SDLInputSystem::cKeyMap =
     {Key::Left, SDLKey::A},
     {Key::Right, SDLKey::D},
     {Key::Use, SDLKey::E},
+	{Key::DrinkBlood, SDLKey::Q},
     {Key::Quit, SDLKey::Escape}
 };
 
