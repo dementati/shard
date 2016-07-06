@@ -6,6 +6,7 @@
 #include "../jobs/background/IncreaseThirst.hpp"
 #include "../jobs/background/PlayerControl.hpp"
 #include "../needs/Thirst.hpp"
+#include "../BackgroundJob.hpp"
 #include "../Entity.hpp"
 #include "../GameObject.hpp"
 #include "../Need.hpp"

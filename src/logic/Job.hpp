@@ -11,3 +11,5 @@ public:
 
     virtual void execute(unsigned int dt) = 0;
 };
+
+using JobStack = std::vector<std::shared_ptr<Job>>;

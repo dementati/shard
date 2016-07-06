@@ -261,3 +261,28 @@ TEST_F(AStarTest, Map20x20OneObstacle)
     EXPECT_EQ(stop, path[0]);
     EXPECT_EQ(start, path[4]);
 }
+
+// #######
+// #S>v¤¤#
+// #v¤>>v#
+// #>>o¤G#
+// #######
+TEST_F(AStarTest, SwitchRouteTest)
+{
+    glm::ivec2 start(0, 0);
+    glm::ivec2 stop(4, 2);
+    std::function<bool(glm::ivec2)> isBlocked = [] (glm::ivec2 v) 
+    { 
+        return v == glm::ivec2(3, 0) 
+            || v == glm::ivec2(4, 0)
+            || v == glm::ivec2(3, 2)
+            || v == glm::ivec2(1, 1); 
+    };
+    Box boundingBox(glm::ivec2(0, 0), glm::uvec2(5, 3));
+
+    std::vector<glm::ivec2> path = AStar::findPath(start, stop, isBlocked, boundingBox);
+
+    EXPECT_EQ(7, path.size());
+    EXPECT_EQ(stop, path[0]);
+    EXPECT_EQ(start, path[6]);
+}

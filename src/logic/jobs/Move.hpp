@@ -19,9 +19,10 @@ class Move : public Job
     LoggerPtr mLogger;
     std::unique_ptr<EntityUtils> mEntityUtils;
     std::unique_ptr<GameObjectUtils> mGameObjectUtils;
+    JobStack &mJobStack;
 
 public:
-    Move(World &world, Entity &owner, glm::ivec2 target);
+    Move(JobStack &jobStack, World &world, Entity &owner, glm::ivec2 target);
 
     virtual void execute(unsigned int dt);
 

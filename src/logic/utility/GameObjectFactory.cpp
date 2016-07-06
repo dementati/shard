@@ -15,10 +15,14 @@ void GameObjectFactory::createPlayer(World &world, InputSystem &input, glm::ivec
     player->addAttribute("isPlayer", true);
 
     // Add background jobs
-    player->addAttribute("backgroundJobs", std::vector<std::shared_ptr<Job>>({
-        std::make_shared<PlayerControl>(input, world, *player),
-        std::make_shared<IncreaseThirst>(world, *player, 0.5f)
-    }));
+    std::make_unique<PlayerControl>(input, world, *player);
+
+    auto playerControl = std::make_shared<PlayerControl>(input, world, *player);
+    auto jobStack = std::make_shared<JobStack>();
+    jobStack->push_back(playerControl);
+
+    player->addAttribute("backgroundJobStacks", 
+        std::vector<std::shared_ptr<JobStack>>({ jobStack }));
 
     world.addEntity(std::move(player));
 }
@@ -37,9 +41,19 @@ void GameObjectFactory::createHuman(World &world, glm::ivec2 position)
     human->addAttribute("speed", 10.0f);
 
     // Add background jobs
-    human->addAttribute("backgroundJobs", std::vector<std::shared_ptr<Job>>({
-        std::make_shared<IncreaseThirst>(world, *human, 0.5f)
+    /*
+    human->addAttribute("backgroundJobs", std::move(std::vector<std::unique_ptr<BackgroundJob>>({
+        std::make_unique<IncreaseThirst>(world, *human, 0.5f) 
     }));
+    */
+
+    auto increaseThirst = std::make_shared<IncreaseThirst>(world, *human, 0.5f);
+    auto jobStack = std::make_shared<JobStack>();
+    jobStack->push_back(increaseThirst);
+
+    human->addAttribute("backgroundJobStacks", 
+        std::vector<std::shared_ptr<JobStack>>({ jobStack }));
+
 
     // Add needs
     human->add(std::make_unique<Thirst>(world, *human));

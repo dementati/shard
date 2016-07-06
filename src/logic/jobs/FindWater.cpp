@@ -2,20 +2,21 @@
 
 RNG FindWater::cTrueRng = RNG::createTrueRandomRNG();
 
-FindWater::FindWater(World &world, Entity &owner)
+FindWater::FindWater(JobStack &jobStack, World &world, Entity &owner)
 :
-    FindWater(world, owner, cTrueRng)
+    FindWater(jobStack, world, owner, cTrueRng)
 {
 }
 
-FindWater::FindWater(World &world, Entity &owner, RNG &rng)
+FindWater::FindWater(JobStack &jobStack, World &world, Entity &owner, RNG &rng)
 :
     mLogger(LoggerFactory::createLogger("FindWater", Severity::DEBUG)),
     mWorld(world),
     mOwner(owner),
     mRng(rng),
     mEntityUtils(std::make_unique<EntityUtils>()),
-    mGameObjectUtils(std::make_unique<GameObjectUtils>())
+    mGameObjectUtils(std::make_unique<GameObjectUtils>()),
+    mJobStack(jobStack)
 {
     ASSERT(owner.hasAttribute("perception"), "Owner must have perception attribute");
     ASSERT(owner["perception"].isOfType<unsigned int>(), "Owner perception must be an unsigned int");
@@ -27,6 +28,8 @@ FindWater::FindWater(World &world, Entity &owner, RNG &rng)
 
 void FindWater::execute(unsigned int dt)
 {
+    ASSERT(dt == dt, ""); // Getting rid of unused parameter warning
+
     LOG_DEBUG(mLogger, "Executing...");
 
     // Check if water source can be found within sensory range
@@ -38,19 +41,20 @@ void FindWater::execute(unsigned int dt)
         {
             LOG_DEBUG(mLogger, "Water is close.");
             mEntityUtils->consumeWater(mWorld, mOwner, *water);
+            mJobStack.pop_back();
         } 
         else
         {
             LOG_DEBUG(mLogger, "Water is far away.");
-            Move move(mWorld, mOwner, (*water)["position"].get<glm::ivec2>());
-            move.execute(dt);
+            mJobStack.push_back(
+                std::make_unique<Move>(mJobStack, mWorld, mOwner, 
+                    (*water)["position"].get<glm::ivec2>()));
         }
     } 
     else 
     {
         LOG_DEBUG(mLogger, "No water in sight.");
-        Wander wander(mWorld, mOwner, mRng);
-        wander.execute(dt);
+        mJobStack.push_back(std::make_unique<Wander>(mJobStack, mWorld, mOwner, mRng));
     }
 }
 
@@ -59,5 +63,6 @@ unsigned int FindWater::getDistance(GameObject &object)
     ASSERT(object.hasAttribute("position"), "Object must have position");
     ASSERT(object["position"].isOfType<glm::ivec2>(), "Object position must be a glm::ivec2");
 
-    return Math::manhattanDistance(mOwner["position"].get<glm::ivec2>(), object["position"].get<glm::ivec2>());
+    return Math::manhattanDistance(mOwner["position"].get<glm::ivec2>(), 
+        object["position"].get<glm::ivec2>());
 }

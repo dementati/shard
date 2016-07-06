@@ -42,6 +42,8 @@ protected:
 
     MockRNGType mRng;
 
+    JobStack mJobStack;
+
     LogicTestBase()
     :
         mWorldRunning(true),

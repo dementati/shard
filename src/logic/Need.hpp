@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include "Job.hpp"
 
@@ -12,4 +13,6 @@ public:
     virtual ~Need() {};
 
     virtual unsigned int getIntensity() = 0;
+
+    virtual JobStack& getJobStack() = 0; 
 };

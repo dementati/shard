@@ -1,13 +1,14 @@
 #include "Move.hpp"
 
-Move::Move(World &world, Entity &owner, glm::ivec2 target)
+Move::Move(JobStack &jobStack, World &world, Entity &owner, glm::ivec2 target)
 :
     mWorld(world),
     mOwner(owner),
     mTarget(target),
     mLogger(LoggerFactory::createLogger("Move", Severity::DEBUG)),
     mEntityUtils(std::make_unique<EntityUtils>()),
-    mGameObjectUtils(std::make_unique<GameObjectUtils>())
+    mGameObjectUtils(std::make_unique<GameObjectUtils>()),
+    mJobStack(jobStack)
 {
     ASSERT(owner.hasAttribute("position"), "Owner must have a position");
     ASSERT(owner["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
@@ -40,6 +41,13 @@ void Move::execute(unsigned int dt)
             ASSERT(path.size() > 1, "Pathfinding returned a path of size 1, which doesn't make sense");
             LOG_DEBUG(mLogger, "Moving to " << glm::to_string(path[path.size() - 2]));
             mEntityUtils->move(mWorld, mOwner, path[path.size() - 2] - position);
+
+            if(path.size() == 2)
+            {
+                ASSERT(mJobStack.size() > 0, "Supplied job stack must not be empty");
+                ASSERT(mJobStack.back().get() == this, "Top of supplied job stack should be this job");
+                mJobStack.pop_back();
+            }
         }
     } 
 }

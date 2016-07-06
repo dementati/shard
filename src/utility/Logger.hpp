@@ -10,6 +10,7 @@ enum class Severity
     ERROR = 3
 };
 
+// LCOV_EXCL_START
 class Logger
 {
 public:
@@ -23,3 +24,4 @@ public:
 
     virtual void error(const std::string &message) const = 0;
 };
+// LCOV_EXCL_STOP

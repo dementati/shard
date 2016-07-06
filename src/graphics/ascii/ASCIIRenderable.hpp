@@ -7,6 +7,7 @@
 #include "../Renderable.hpp"
 #include "ASCIIRenderingSystem.hpp"
 
+// LCOV_EXCL_START
 class ASCIIRenderable : public Renderable
 {
     LoggerPtr mLogger;
@@ -20,3 +21,4 @@ public:
 
     virtual void setPosition(glm::ivec2 position);
 };
+// LCOV_EXCL_STOP

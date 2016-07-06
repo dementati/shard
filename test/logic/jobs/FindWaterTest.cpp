@@ -7,14 +7,14 @@ class FindWaterTest : public LogicTestBase
 
 TEST_F(FindWaterTest, GetDistance_Zero)
 {
-    FindWater findWater(mWorld, mOwner);
+    FindWater findWater(mJobStack, mWorld, mOwner);
 
     EXPECT_EQ(0, findWater.getDistance(mWater));
 }
 
 TEST_F(FindWaterTest, GetDistance_One)
 {
-    FindWater findWater(mWorld, mOwner);
+    FindWater findWater(mJobStack, mWorld, mOwner);
 
     mWaterPosition.set<glm::ivec2>(glm::ivec2(1, 0));
 
@@ -75,30 +75,54 @@ TEST_F(FindWaterTest, TwoConsumables_OneOutOFRange_CollectOneWanderCollectOther)
 
     ON_CALL(mWorld, getObjects())
         .WillByDefault(ReturnRef(objects));
-       
-    FindWater findWater(mWorld, mOwner, mRng);
+      
+    // Push find water job onto job stack
+    auto findWater = std::make_shared<FindWater>(mJobStack, mWorld, mOwner, mRng);
+    mJobStack.push_back(findWater);
 
-    // Collect first object
-    EXPECT_CALL(mWorld, removeObject(Ref(*objects[0]))); 
-    findWater.execute(1000);
+    // Collect first object. 
+    EXPECT_CALL(mWorld, removeObject(Ref(*objects[0])));
+    // Stack: FindWater 
+    mJobStack.back()->execute(1000);
     EXPECT_EQ(2, mOwnerThirst.get<unsigned int>());
     objects.erase(objects.begin());
+
+    //This pops the job off the job stack, so we need to add another one
+    // to collect the second water object.
+    mJobStack.push_back(findWater);
+
+    // Figure out that there's no water close by and start wandering.
+    // Stack: FindWater 
+    mJobStack.back()->execute(1000);
 
     // Wander right
     EXPECT_CALL(mRng, random(0, 3))
         .WillOnce(Return(3));
-    findWater.execute(1000);
+    // Stack: FindWater, Wander 
+    mJobStack.back()->execute(1000);
     EXPECT_EQ(glm::ivec2(1, 0), mOwnerPosition.get<glm::ivec2>());
 
-    // Detect second object and move towards it
-    findWater.execute(1000);
+    // Detect second object and start moving towards it.
+    // Stack: FindWater
+    mJobStack.back()->execute(1000);
+
+    // Move towards it.
+    // Stack: FindWater, Move
+    mJobStack.back()->execute(1000);
 
     // Keep moving towards it
-    findWater.execute(1000);
+    // Stack: FindWater, Move
+    mJobStack.back()->execute(1000);
+
+    // Stand on top of it
+    // Stack: FindWater, Move
+    mJobStack.back()->execute(1000);
+    EXPECT_EQ(glm::ivec2(3, 1), mOwnerPosition.get<glm::ivec2>());
 
     // Collect it
     EXPECT_CALL(mWorld, removeObject(Ref(*objects[0]))); 
-    findWater.execute(1000);
+    // Stack: FindWater
+    mJobStack.back()->execute(1000);
     EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
 }
 
@@ -132,10 +156,11 @@ TEST_F(FindWaterTest, OwnerAndConsumableOnTopOfEachOther)
     ON_CALL(mWorld, getObjects())
         .WillByDefault(ReturnRef(objects));
        
-    FindWater findWater(mWorld, mOwner, mRng);
+    auto findWater = std::make_shared<FindWater>(mJobStack, mWorld, mOwner, mRng);
+    mJobStack.push_back(findWater);
 
     // Collect it
     EXPECT_CALL(mWorld, removeObject(Ref(*objects[0]))); 
-    findWater.execute(1000);
+    mJobStack.back()->execute(1000);
     EXPECT_EQ(0, mOwnerThirst.get<unsigned int>());
 }

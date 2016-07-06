@@ -25,9 +25,10 @@ class Wander : public Job
     RNG &mRng;
     LoggerPtr mLogger;
     std::unique_ptr<EntityUtils> mEntityUtils;
+    JobStack &mJobStack;
 
 public:
-    Wander(World &world, Entity &owner, RNG &rng);
+    Wander(JobStack &jobStack, World &world, Entity &owner, RNG &rng);
 
     virtual void execute(unsigned int dt);
 

@@ -28,11 +28,14 @@ void WorldUpdater::update(unsigned int dt)
     for(auto &entity : mWorld.getEntities())
     {
         LOG_DEBUG(mLogger, "Running entity background jobs");
-        if(entity->hasAttribute("backgroundJobs"))
+        if(entity->hasAttribute("backgroundJobStacks"))
         {
-            for(auto &job : (*entity)["backgroundJobs"].get<std::vector<std::shared_ptr<Job>>>())
+            for(auto &jobStack : (*entity)["backgroundJobStacks"].get<std::vector<std::shared_ptr<JobStack>>>())
             {
-                job->execute(dt);
+                if(!jobStack->empty()) 
+                {
+                    jobStack->back()->execute(dt);
+                }
             }
         } 
         else
@@ -44,7 +47,14 @@ void WorldUpdater::update(unsigned int dt)
         {
             LOG_DEBUG(mLogger, "Selecting needs");
             Need& need = entity->selectNeed();
-            need.execute(dt);
+            if(need.getJobStack().empty())
+            {
+                need.execute(dt);
+            }
+            else
+            {
+                need.getJobStack().back()->execute(dt);
+            }
         }
     }
 

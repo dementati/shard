@@ -27,7 +27,7 @@ TEST_F(ThirstTest, GetJob_Idle)
 
     mOwnerThirst.set<unsigned int>(0);
 
-    dynamic_cast<Idle&>(*thirst.getJob());
+    EXPECT_EQ(0, thirst.getJobStack().size());
 }
 
 TEST_F(ThirstTest, GetJob_FindWater)
@@ -36,6 +36,8 @@ TEST_F(ThirstTest, GetJob_FindWater)
 
     mOwnerThirst.set<unsigned int>(1);
 
-    dynamic_cast<FindWater&>(*thirst.getJob());
-}
+    thirst.execute(0);
 
+    EXPECT_EQ(1, thirst.getJobStack().size());
+    dynamic_cast<FindWater*>(thirst.getJobStack().back().get());
+}

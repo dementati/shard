@@ -1,12 +1,13 @@
 #include "Wander.hpp"
 
-Wander::Wander(World &world, Entity &owner, RNG &rng)
+Wander::Wander(JobStack &jobStack, World &world, Entity &owner, RNG &rng)
 :
     mWorld(world),
     mOwner(owner),
     mRng(rng),
     mLogger(LoggerFactory::createLogger("Wander", Severity::DEBUG)),
-    mEntityUtils(std::make_unique<EntityUtils>())
+    mEntityUtils(std::make_unique<EntityUtils>()),
+    mJobStack(jobStack)
 {
     ASSERT(owner.hasAttribute("position"), "Owner must have a position");
     ASSERT(owner["position"].isOfType<glm::ivec2>(), "Position must be a glm::ivec2");
@@ -40,6 +41,9 @@ void Wander::execute(unsigned int dt)
             // LCOV_EXCL_STOP
         }
     }
+
+    ASSERT(mJobStack.size() > 0, "Top of supplied job stack should be this job");
+    mJobStack.pop_back();
 }
 
 std::shared_ptr<glm::ivec2> Wander::findDirection()

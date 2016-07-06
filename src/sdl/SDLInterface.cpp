@@ -101,16 +101,18 @@ bool SDLInterface::isPressed(SDLKey key)
 {
     ASSERT(cScanCodeMap.count(key) == 1, "Key is not supported");
 
+    LOG_DEBUG(mLogger, "isPressed: " << (char)key);
+
     return mKeyStates[cScanCodeMap[key]] == 1;
 }
 
 std::shared_ptr<SDLTexture> SDLInterface::createTextureFromString(std::string str, glm::u8vec4 color)
 {
     LOG_INFO(mLogger, "Creating texture from string '" << str << "' with color " 
-        << color.r << ", " 
-        << color.g << ", " 
-        << color.b << ", " 
-        << color.a);
+        << (int)color.r << ", " 
+        << (int)color.g << ", " 
+        << (int)color.b << ", " 
+        << (int)color.a);
 
     SDL_Color sdlColor = { color.r, color.g, color.b, color.a };
     auto textSurface = TTF_RenderText_Solid(mFont, str.c_str(), sdlColor);
@@ -124,14 +126,8 @@ std::shared_ptr<SDLTexture> SDLInterface::createTextureFromString(std::string st
     }
 
     auto texture = SDL_CreateTextureFromSurface(mRenderer, textSurface);
-    if(texture == NULL)
-    {
-        LOG_ERROR(mLogger, "Texture could not be rendered: " << SDL_GetError());
-    }
-    else
-    {
-        LOG_INFO(mLogger, "Texture rendered successfully");
-    }
+    ASSERT(texture != NULL, "Texture could not be rendered: " << SDL_GetError());
+    LOG_INFO(mLogger, "Texture rendered successfully");
 
     SDL_FreeSurface(textSurface);
 

@@ -6,7 +6,6 @@
 #include "../../utility/Assert.hpp"
 #include "../../utility/LoggerFactory.hpp"
 #include "../jobs/FindWater.hpp"
-#include "../jobs/Idle.hpp"
 #include "../Job.hpp"
 #include "../Need.hpp"
 
@@ -16,6 +15,7 @@ class Thirst : public Need
     LoggerPtr mLogger;
     World &mWorld;
     Entity &mOwner;
+    JobStack mJobStack;
 
 public:
     Thirst(World &world, Entity &owner);
@@ -24,6 +24,6 @@ public:
 
     virtual unsigned int getIntensity();
 
-    virtual std::unique_ptr<Job> getJob();
+    virtual JobStack& getJobStack();
 };
 // LCOV_EXCL_STOP

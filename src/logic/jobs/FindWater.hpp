@@ -20,17 +20,17 @@ class FindWater : public Job
     static RNG cTrueRng; 
 
     LoggerPtr mLogger;
-
     World &mWorld;
     Entity &mOwner;
     RNG &mRng;
     std::unique_ptr<EntityUtils> mEntityUtils;
     std::unique_ptr<GameObjectUtils> mGameObjectUtils;
+    JobStack &mJobStack;
 
 public:
-    FindWater(World &world, Entity &owner);
+    FindWater(JobStack& jobStack, World &world, Entity &owner);
 
-    FindWater(World &world, Entity &owner, RNG &rng);
+    FindWater(JobStack& jobStack, World &world, Entity &owner, RNG &rng);
 
     virtual void execute(unsigned int dt);
 

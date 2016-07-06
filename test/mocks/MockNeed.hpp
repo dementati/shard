@@ -17,6 +17,8 @@ public:
     MOCK_METHOD0(getIntensity, unsigned int());
 
     MOCK_METHOD1(execute, void(unsigned int));
+
+    MOCK_METHOD0(getJobStack, JobStack&());
 };
 
 template<class NeedType>

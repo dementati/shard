@@ -27,8 +27,10 @@ void SDLRenderingSystem::drawCharacter(const char character, const glm::ivec2 po
 
     if(mCharTextureMap.count(character) == 0)
     {
+        LOG_DEBUG(mLogger, "Creating texture for " << character);
         mCharTextureMap[character] = 
             mSDL.createTextureFromString(std::string() + character, glm::u8vec4(255, 255, 255, 255));
+        ASSERT(mCharTextureMap[character]->get() != nullptr, "Failed to create texture");
     }
 
     glm::ivec2 dimensions(10, 13);

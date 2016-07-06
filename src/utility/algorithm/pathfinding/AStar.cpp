@@ -2,15 +2,15 @@
 
 class PosFComp
 {
-	const std::vector<int>& mF;
+    const std::vector<int>& mF;
 
 public:
-	PosFComp(const std::vector<int>& f) : mF(f) {}
+    PosFComp(const std::vector<int>& f) : mF(f) {}
 
-	bool operator() (const int& i1, const int& i2) const
-	{
-		return mF[i1] > mF[i2];
-	}
+    bool operator() (const int& i1, const int& i2) const
+    {
+        return mF[i1] > mF[i2];
+    }
 };
 
 std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 stopPosition,
@@ -38,19 +38,14 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
 
     LOG_DEBUG(logger, "Setting up lambdas");
     std::function<bool(glm::ivec2)> isBlockedOffset = [&] (glm::ivec2 p) {
-        LOG_DEBUG(logger, "isBlockedOffset(" << glm::to_string(p) << ")");
-        LOG_DEBUG(logger, "offset = " << glm::to_string(offset));
         return isBlocked(p - offset);
     };
 
     std::function<glm::ivec2(int)> indexToVector = [&](int i) {
-        LOG_DEBUG(logger, "indexToVector" << i << ")");
-        LOG_DEBUG(logger, "boundingBox dimenions = " << glm::to_string(boundingBox.getDimensions()));
         return glm::ivec2(i % boundingBox.getDimensions().x, i / boundingBox.getDimensions().x);
     };
 
     std::function<bool(int)> isBlockedInt = [&](int i) {
-        LOG_DEBUG(logger, "isBlockedInt(" << i << ")");
         return isBlockedOffset(indexToVector(i));
     };
 
@@ -70,7 +65,7 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     x.push_back(startPosition.x);
     y.push_back(startPosition.y);
     index.push_back(y[start]*boundingBox.getDimensions().x + x[start]);
-	g.push_back(0);
+    g.push_back(0);
     f.push_back(Math::manhattanDistance(startPosition, stopPosition));
     inOpen.push_back(true);
     closed.push_back(false);
@@ -88,91 +83,98 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
     parent.push_back(-1);
 
     LOG_DEBUG(logger, "Checking if start or target is blocked");
-	if(isBlockedInt(index[start]) || isBlockedInt(index[target]))
+    if(isBlockedInt(index[start]) || isBlockedInt(index[target]))
     {
        LOG_DEBUG(logger, "Either start or target position is blocked");
-	   return std::vector<glm::ivec2>();	
+       return std::vector<glm::ivec2>();    
     }
 
     LOG_DEBUG(logger, "Constructing open node heap");
-	std::vector<int> open;
-	open.push_back(start);
-	std::make_heap(open.begin(), open.end(), PosFComp(f));
+    std::vector<int> open;
+    open.push_back(start);
+    std::make_heap(open.begin(), open.end(), PosFComp(f));
 
     LOG_DEBUG(logger, "Constructing neighbour map");
-	std::unordered_map<int, int> neighbours;
-	neighbours[index[start]] = start;
+    std::unordered_map<int, int> neighbours;
+    neighbours[index[start]] = start;
 
     LOG_DEBUG(logger, "Commencing main loop");
 
     bool targetReached = false;
-	while(!open.empty()) 
-	{
-		auto current = open.front();
+    while(!open.empty()) 
+    {
+        // Select the position with the smallest F value from the sorted queue
+        auto current = open.front();
 
-        LOG_DEBUG(logger, "Current node = " << glm::to_string(indexToVector(current)));
+        LOG_DEBUG(logger, "Current node = " << glm::to_string(indexToVector(index[current])));
 
-		if(index[current] == index[target]) 
-		{
-			target = current;
-			targetReached = true;
-			break;
-		}
+        // If position is target, exit
+        if(index[current] == index[target]) 
+        {
+            target = current;
+            targetReached = true;
+            break;
+        }
 
-		std::pop_heap(open.begin(), open.end(), PosFComp(f));
-		open.pop_back();
-		inOpen[current] = false;
-		closed[current] = true;
+        // Remove the position with the smallest F value from the queue
+        std::pop_heap(open.begin(), open.end(), PosFComp(f));
+        open.pop_back();
+        inOpen[current] = false;
+        closed[current] = true;
 
-		for(int i = 0; i < 4; i++) 
-		{
-			int n_x, n_y;
-			switch(i)
-			{
-				case 0:
-					n_x = x[current];
-					n_y = y[current] - 1;
-					break;
+        // For each position up, down, left and right of the current position
+        for(int i = 0; i < 4; i++) 
+        {
+            int n_x, n_y;
+            switch(i)
+            {
+                case 0:
+                    n_x = x[current];
+                    n_y = y[current] - 1;
+                    break;
 
-				case 1:
-					n_x = x[current];
-					n_y = y[current] + 1;
-					break;
+                case 1:
+                    n_x = x[current];
+                    n_y = y[current] + 1;
+                    break;
 
-				case 2:
-					n_x = x[current] - 1;
-					n_y = y[current];
-					break;
+                case 2:
+                    n_x = x[current] - 1;
+                    n_y = y[current];
+                    break;
 
-				case 3:
-					n_x = x[current] + 1;
-					n_y = y[current];
-					break;
+                case 3:
+                    n_x = x[current] + 1;
+                    n_y = y[current];
+                    break;
 
                 default:
                     // LCOV_EXCL_START
                     ASSERT(false, "This shouldn't happen");
                     // LCOV_EXCL_STOP
                     break;
-			}
+            }
 
-			if(n_x < 0 
+            // If the neighbour is outside the bounding box, ignore it
+            if(n_x < 0 
                 || n_x >= (int)boundingBox.getDimensions().x 
                 || n_y < 0 
                 || n_y >= (int)boundingBox.getDimensions().y)
             {
-				continue;
+                continue;
             }
 
-			int n_i = n_y*boundingBox.getDimensions().x + n_x;
-			if(isBlockedInt(n_i))
+            // If the neighbour is blocked by an obstacle, ignore it
+            int n_i = n_y*boundingBox.getDimensions().x + n_x;
+            if(isBlockedInt(n_i))
             {
-				continue;
+                continue;
             }
 
-			unsigned int neighbour;
-			if(neighbours.find(n_i) == neighbours.end())
-			{
+            // If neighbour is not in neighbours map, account for it in all relevant buffers
+            unsigned int neighbour;
+            if(neighbours.find(n_i) == neighbours.end())
+            {
                 x.push_back(n_x);
                 y.push_back(n_y);
                 index.push_back(n_y*boundingBox.getDimensions().x + n_x);
@@ -181,56 +183,59 @@ std::vector<glm::ivec2> AStar::findPath(glm::ivec2 startPosition, glm::ivec2 sto
                 inOpen.push_back(false);
                 closed.push_back(false);
                 parent.push_back(-1);
-				neighbour = (unsigned int)x.size() - 1; 
-				neighbours[n_i] = neighbour;
-			} 
-			else 
-			{
-				neighbour = neighbours[n_i];
-			}
+                neighbour = (unsigned int)x.size() - 1; 
+                neighbours[n_i] = neighbour;
+            } 
+            else 
+            {
+                neighbour = neighbours[n_i];
+            }
 
-			if(closed[neighbour])
-				continue;
+            // If neighbour has already been visited, ignore it
+            if(closed[neighbour])
+                continue;
 
-			int tentative_g = g[current] + 1;
-			if(!inOpen[neighbour] || tentative_g < g[neighbour])
-			{
+            // If the best route to the neighbour is through the curre
+            int tentative_g = g[current] + 1;
+            if(!inOpen[neighbour] || tentative_g < g[neighbour])
+            {
                 parent[neighbour] = current;
-				g[neighbour] = tentative_g;
-				f[neighbour] = g[neighbour] + Math::manhattanDistance(x[neighbour], y[neighbour], x[target], y[target]);
-				if(!inOpen[neighbour]) 
-				{
-					open.push_back(neighbour);
-					std::push_heap(open.begin(), open.end(), PosFComp(f));
-					inOpen[neighbour] = true;
-				} 
-				else 
-				{
-					std::make_heap(open.begin(), open.end(), PosFComp(f));
-				}
-			}
-		}		
-	}
+                g[neighbour] = tentative_g;
+                f[neighbour] = g[neighbour] + Math::manhattanDistance(x[neighbour], y[neighbour], x[target], y[target]);
+                if(!inOpen[neighbour]) 
+                {
+                    LOG_DEBUG(logger, "Adding " << glm::to_string(indexToVector(index[neighbour])) << " to open queue");
+                    open.push_back(neighbour);
+                    std::push_heap(open.begin(), open.end(), PosFComp(f));
+                    inOpen[neighbour] = true;
+                } 
+                else 
+                {
+                    std::make_heap(open.begin(), open.end(), PosFComp(f));
+                }
+            }
+        }       
+    }
 
     LOG_DEBUG(logger, "Main loop finished, constructing path or returning empty path");
 
-	if(targetReached) 
-	{
+    if(targetReached) 
+    {
         std::vector<glm::ivec2> path;
-		auto current = target;
-		while(current != start) 
-		{
+        auto current = target;
+        while(current != start) 
+        {
             path.push_back(indexToVector(index[current]) - offset);
-			current = parent[current];
-		}
+            current = parent[current];
+        }
         path.push_back(indexToVector(index[start]) - offset);
 
-		return path;
-	} 
-	else 
-	{
-		return std::vector<glm::ivec2>();
-	}
+        return path;
+    } 
+    else 
+    {
+        return std::vector<glm::ivec2>();
+    }
 }
 
 

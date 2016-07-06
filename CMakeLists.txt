@@ -21,7 +21,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 # C++ flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Dgtest_disable_pthreads=ON")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} --coverage -O0")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
 
@@ -38,8 +38,8 @@ endif (BUILD_TESTS)
 
 # Google testing framework
 if (BUILD_TESTS)
+    include(CTest)
     set (GTEST_ROOT ${GMOCK_ROOT}/gtest)
-    enable_testing()
     find_package(GTest REQUIRED)
     include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 endif (BUILD_TESTS)
@@ -79,7 +79,7 @@ include_directories(SYSTEM ${GLM_ROOT})
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
 # Warning flags
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O -Wall -Weffc++ -pedantic  \
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Weffc++ -pedantic  \
     -pedantic-errors -Wextra -Wcast-align \
     -Wcast-qual  -Wchar-subscripts  -Wcomment -Wconversion \
     -Wdisabled-optimization \
@@ -123,7 +123,6 @@ set(PRODUCTION_SRC
     src/logic/jobs/background/IncreaseThirst.cpp
     src/logic/jobs/background/PlayerControl.cpp
     src/logic/jobs/FindWater.cpp
-    src/logic/jobs/Idle.cpp
     src/logic/jobs/Move.cpp
     src/logic/jobs/Wander.cpp
     src/logic/needs/Thirst.cpp

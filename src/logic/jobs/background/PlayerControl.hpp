@@ -7,11 +7,11 @@
 #include "../../../utility/LoggerFactory.hpp"
 #include "../../utility/EntityUtils.hpp"
 #include "../../Entity.hpp"
-#include "../../Job.hpp"
+#include "../../BackgroundJob.hpp"
 #include "../../World.hpp"
 
 // LCOV_EXCL_START
-class PlayerControl : public Job
+class PlayerControl : public BackgroundJob
 {
     InputSystem &mInput;
     World &mWorld;

@@ -7,7 +7,7 @@ class WanderTest : public LogicTestBase
 
 TEST_F(WanderTest, FindDirectionUp)
 {
-    Wander wander(mWorld, mOwner, mRng);
+    Wander wander(mJobStack, mWorld, mOwner, mRng);
 
     EXPECT_CALL(mRng, random(0, 3))
         .WillOnce(Return(0));
@@ -19,7 +19,7 @@ TEST_F(WanderTest, FindDirectionUp)
 
 TEST_F(WanderTest, FindDirectionDown)
 {
-    Wander wander(mWorld, mOwner, mRng);
+    Wander wander(mJobStack, mWorld, mOwner, mRng);
 
     EXPECT_CALL(mRng, random(0, 3))
         .WillOnce(Return(1));
@@ -31,7 +31,7 @@ TEST_F(WanderTest, FindDirectionDown)
 
 TEST_F(WanderTest, FindDirectionLeft)
 {
-    Wander wander(mWorld, mOwner, mRng);
+    Wander wander(mJobStack, mWorld, mOwner, mRng);
 
     EXPECT_CALL(mRng, random(0, 3))
         .WillOnce(Return(2));
@@ -43,7 +43,7 @@ TEST_F(WanderTest, FindDirectionLeft)
 
 TEST_F(WanderTest, FindDirectionRight)
 {
-    Wander wander(mWorld, mOwner, mRng);
+    Wander wander(mJobStack, mWorld, mOwner, mRng);
 
     EXPECT_CALL(mRng, random(0, 3))
         .WillOnce(Return(3));
@@ -53,14 +53,25 @@ TEST_F(WanderTest, FindDirectionRight)
     EXPECT_EQ(glm::ivec2(1, 0), *direction);
 }
 
+TEST_F(WanderTest, Execute_JobStackPopped)
+{
+    auto wander = std::make_shared<Wander>(mJobStack, mWorld, mOwner, mRng);
+    mJobStack.push_back(wander);
+
+    wander->execute(0);
+
+    EXPECT_EQ(0, mJobStack.size());
+}
+
 TEST_F(WanderTest, Execute_OneSecond_Up)
 {
-    Wander wander(mWorld, mOwner, mRng);
+    auto wander = std::make_shared<Wander>(mJobStack, mWorld, mOwner, mRng);
+    mJobStack.push_back(wander);
 
     EXPECT_CALL(mRng, random(0, 3))
         .WillOnce(Return(0));
 
-    wander.execute(1000);
+    wander->execute(1000);
 
     EXPECT_EQ(glm::ivec2(0, -1), mOwnerPosition.get<glm::ivec2>());
     EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
@@ -68,14 +79,15 @@ TEST_F(WanderTest, Execute_OneSecond_Up)
 
 TEST_F(WanderTest, Execute_HalfSecond_DoubleSpeed_Down)
 {
-    Wander wander(mWorld, mOwner, mRng);
+    auto wander = std::make_shared<Wander>(mJobStack, mWorld, mOwner, mRng);
+    mJobStack.push_back(wander);
 
     EXPECT_CALL(mRng, random(0, 3))
         .WillOnce(Return(1));
 
     mOwnerSpeed.set<float>(2.0f);
 
-    wander.execute(500);
+    wander->execute(500);
 
     EXPECT_EQ(glm::ivec2(0, 1), mOwnerPosition.get<glm::ivec2>());
     EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
@@ -83,14 +95,15 @@ TEST_F(WanderTest, Execute_HalfSecond_DoubleSpeed_Down)
 
 TEST_F(WanderTest, Execute_Start1x1_OneSecond_Left)
 {
-    Wander wander(mWorld, mOwner, mRng);
+    auto wander = std::make_shared<Wander>(mJobStack, mWorld, mOwner, mRng);
+    mJobStack.push_back(wander);
 
     EXPECT_CALL(mRng, random(0, 3))
         .WillOnce(Return(2));
 
     mOwnerPosition.set<glm::ivec2>(glm::ivec2(1, 1));
 
-    wander.execute(1000);
+    wander->execute(1000);
 
     EXPECT_EQ(glm::ivec2(0, 1), mOwnerPosition.get<glm::ivec2>());
     EXPECT_EQ(0, mOwnerTimeSinceLastStep.get<unsigned int>());
@@ -98,9 +111,13 @@ TEST_F(WanderTest, Execute_Start1x1_OneSecond_Left)
 
 TEST_F(WanderTest, Execute_StartMinus1xMinus1_HalfSecond)
 {
-    Wander wander(mWorld, mOwner, mRng);
+    auto wander = std::make_shared<Wander>(mJobStack, mWorld, mOwner, mRng);
+    mJobStack.push_back(wander);
+
     mOwnerPosition.set<glm::ivec2>(glm::ivec2(-1, -1));
-    wander.execute(500);
+
+    wander->execute(500);
+
     EXPECT_EQ(glm::ivec2(-1, -1), mOwnerPosition.get<glm::ivec2>());
     EXPECT_EQ(500, mOwnerTimeSinceLastStep.get<unsigned int>());
 }

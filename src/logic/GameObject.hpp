@@ -4,6 +4,7 @@
 
 #include "../utility/Variant.hpp"
 
+// LCOV_EXCL_START
 class GameObject 
 {
     std::unordered_map<std::string, Variant> mAttributes;
@@ -19,3 +20,4 @@ public:
 
     virtual Variant& operator[](const std::string attributeId);
 };
+// LCOV_EXCL_STOP

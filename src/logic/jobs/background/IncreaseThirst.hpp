@@ -4,11 +4,11 @@
 
 #include "../../../utility/Assert.hpp"
 #include "../../Entity.hpp"
-#include "../../Job.hpp"
+#include "../../BackgroundJob.hpp"
 #include "../../World.hpp"
 
 // LCOV_EXCL_START
-class IncreaseThirst : public Job
+class IncreaseThirst : public BackgroundJob
 {
     World &mWorld;
     Entity &mOwner;

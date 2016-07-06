@@ -24,23 +24,34 @@ protected:
     std::vector<std::unique_ptr<Entity>> mEntities;
     std::vector<std::unique_ptr<GameObject>> mObjects;
     MockNeedType mNeed;
+    std::shared_ptr<MockJobType> mJob;
     WorldUpdater mUpdater;
-    Variant mEntityBackgroundJobs;
+    std::shared_ptr<JobStack> mEntityBackgroundJobStack;
+    Variant mEntityBackgroundJobStacks;
     Variant mObjectBackgroundJobs;
+    JobStack mJobStack;
 
     WorldUpdaterTest()
     :
+        mJob(std::make_shared<MockJobType>()),
         mUpdater(mWorld),
-        mEntityBackgroundJobs(std::vector<std::shared_ptr<Job>>()),
+        mEntityBackgroundJobStack(std::make_shared<JobStack>()),
+        mEntityBackgroundJobStacks(std::vector<std::shared_ptr<JobStack>>()),
         mObjectBackgroundJobs(std::vector<std::shared_ptr<Job>>())
     {
+        mEntityBackgroundJobStacks.get<std::vector<std::shared_ptr<JobStack>>>()
+            .push_back(mEntityBackgroundJobStack);
+
+        ON_CALL(mNeed, getJobStack())
+            .WillByDefault(ReturnRef(mJobStack));
+
         auto entity = std::make_unique<MockEntityType>();
         ON_CALL(*entity, selectNeed())
             .WillByDefault(ReturnRef(mNeed));
-        ON_CALL(*entity, hasAttribute("backgroundJobs"))
+        ON_CALL(*entity, hasAttribute("backgroundJobStacks"))
             .WillByDefault(Return(true));
-        ON_CALL(*entity, getAttribute("backgroundJobs"))
-            .WillByDefault(ReturnRef(mEntityBackgroundJobs));
+        ON_CALL(*entity, getAttribute("backgroundJobStacks"))
+            .WillByDefault(ReturnRef(mEntityBackgroundJobStacks));
         ON_CALL(*entity, hasNeeds())
             .WillByDefault(Return(true));
         mEntities.push_back(std::move(entity));
@@ -58,14 +69,29 @@ protected:
         ON_CALL(mWorld, getObjects())
             .WillByDefault(ReturnRef(mObjects));
     }
+
+    
 };
 
-TEST_F(WorldUpdaterTest, SelectedNeedJobGetsExecuted)
+TEST_F(WorldUpdaterTest, SelectedNeedGetsExecuted)
 {
-    ON_CALL(dynamic_cast<MockEntityType&>(*mEntities[0]), hasAttribute("backgroundJobs"))
+    ON_CALL(dynamic_cast<MockEntityType&>(*mEntities[0]), hasAttribute("backgroundJobStacks"))
         .WillByDefault(Return(false));
 
     EXPECT_CALL(mNeed, execute(0))
+        .Times(1);
+
+    mUpdater.update(0);
+}
+
+TEST_F(WorldUpdaterTest, SelectedNeedJobStackTopGetsExecuted)
+{
+    ON_CALL(dynamic_cast<MockEntityType&>(*mEntities[0]), hasAttribute("backgroundJobStacks"))
+        .WillByDefault(Return(false));
+
+    mJobStack.push_back(mJob);
+
+    EXPECT_CALL(*mJob, execute(0))
         .Times(1);
 
     mUpdater.update(0);
@@ -76,8 +102,7 @@ TEST_F(WorldUpdaterTest, EntityBackgroundJobGetsExecuted)
     auto backgroundJob = std::make_shared<MockJobType>();
     EXPECT_CALL(*backgroundJob, execute(0))
         .Times(1);
-    mEntityBackgroundJobs.get<std::vector<std::shared_ptr<Job>>>()
-        .push_back(backgroundJob);
+    mEntityBackgroundJobStack->push_back(backgroundJob);
 
     EXPECT_CALL(mNeed, execute(0))
         .Times(1);
